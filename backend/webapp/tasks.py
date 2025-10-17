@@ -20,7 +20,6 @@ from .functions import render_pdf_html
 from .functions import render_pdf
 from .functions import send_mail_attach
 
-from .models import WagenArea
 
 os.environ.update({'GRASSBIN': settings.GRASS_BIN})
 ##export LD_LIBRARY_PATH=$(grass78 --config path)/lib
@@ -138,13 +137,12 @@ def wagen_report(self, area, start, stop, precip, et, wri_data,current_user):
     #get the area and create a new GRASS vector for this
     #from grass.pygrass.vector import VectorTopo
     #from grass.pygrass.vector import geometry as geo 
-    myarea = WagenArea.objects.get(id=area)
-    #centroid = geo.Point(myarea.geom.centroid.x, myarea.geom.centroid.y)
-    #bound = geo.Line([myarea[0][0]])
-    #vectname = "{na}_{job}".format(na=myarea.name, job=jobid.replace("-", "_"))
-    vectname = "{na}_{job}".format(na=myarea.name.replace(' ', '').replace("-", "_").replace("'", "_").replace("ô", "_").replace("&", "and").replace("(", "_").replace(")", "_"), job=jobid.replace("-", "_"))
+    #centroid = geo.Point(area.geom.centroid.x, area.geom.centroid.y)
+    #bound = geo.Line([area[0][0]])
+    #vectname = "{na}_{job}".format(na=area.name, job=jobid.replace("-", "_"))
+    vectname = "{na}_{job}".format(na=area.name.replace(' ', '').replace("-", "_").replace("'", "_").replace("ô", "_").replace("&", "and").replace("(", "_").replace(")", "_"), job=jobid.replace("-", "_"))
     print("area of Interest: ")
-    print(myarea.name)
+    print(area.name)
 
     print("jobid: ")
     print(jobid)
@@ -1774,9 +1772,9 @@ def wagen_report(self, area, start, stop, precip, et, wri_data,current_user):
 
 
 
-    htmlfile1 = render_prod_html(jobid, myarea, stats)
+    htmlfile1 = render_prod_html(jobid, area, stats)
     print("wri_data",wri_data)
-    htmlfile2 = render_pdf_html(jobid, myarea, stats,wri_data)
+    htmlfile2 = render_pdf_html(jobid, area, stats,wri_data)
     pdffile = render_pdf(htmlfile2, jobid)
     print("Preparing report !")
 

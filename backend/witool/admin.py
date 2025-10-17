@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import WagenUser, WagenArea, TaskHistory, WagenProject
+from .models import WIUser, WIArea, ReportHistory
 from django.db.models import OuterRef, Subquery
 from django_celery_results.models import TaskResult
 # Register your models here.
@@ -11,37 +11,18 @@ admin.site.site_title = "WAGen Admin"
 admin.site.index_title = "Welcome to the WAGen Admin Dashboard"
 
 
-@admin.register(WagenUser)
+@admin.register(WIUser)
 class CustomUserAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'email','is_active')
-    search_fields = ('name', 'email')
+    list_display = ('id', 'name', 'email','username','tool','is_active')
+    search_fields = ('name', 'email','tool')
     ordering = ('id',)
 
 
 
 
-@admin.register(WagenProject)
-class ProjectAdmin(admin.ModelAdmin):
-    list_display = ('project_name','id', 'user', 'registration_time')
-    search_fields = ('project_name', )
-    list_filter = ('registration_time',)
-    ordering = ('-registration_time',)
 
-    fieldsets = (
-        ('Project Details', {
-            'fields': (
-                'project_name',
-                'user',
-                'registration_time',
-            )
-        }),
-    )
-
-
-
-
-@admin.register(WagenArea)
-class AreaAdmin(admin.ModelAdmin):
+@admin.register(WIArea)
+class WIArea(admin.ModelAdmin):
     list_display = ('name', 'user')
 
     def get_queryset(self, request):
@@ -52,8 +33,8 @@ class AreaAdmin(admin.ModelAdmin):
     
 
 
-@admin.register(TaskHistory)
-class TaskHistoryAdmin(admin.ModelAdmin):
+@admin.register(ReportHistory)
+class ReportHistory(admin.ModelAdmin):
     list_display = ('task', 'user', 'area', 'task_status', 'date')
     ordering = ('-date',)  # Default ordering
 

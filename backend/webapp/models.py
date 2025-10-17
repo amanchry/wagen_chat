@@ -27,6 +27,11 @@ class WagenUser(models.Model):  # ✅ renamed
     password = models.CharField(max_length=255)
     is_active = models.BooleanField(default=False)
 
+    class Meta:
+        verbose_name = _("WAGen User")
+        verbose_name_plural = _("WAGen Users")
+
+
     def __str__(self):
         return self.name
     
@@ -48,7 +53,9 @@ class WagenProject(models.Model):
             user=self.user
         ).exclude(pk=self.pk).exists():
             raise ValidationError("A project with this name already exists for this user.")
-            
+    class Meta:
+        verbose_name = _("WAGen Project")
+        verbose_name_plural = _("WAGen Projects")
    
 
     def __str__(self):
@@ -69,8 +76,8 @@ class WagenArea(models.Model):
     class Meta:
         db_table = u"wagen_area"
         ordering = ["name"]
-        verbose_name = _("wagen_area")
-        verbose_name_plural = _("wagen_areas")
+        verbose_name = _("WAGen Area")
+        verbose_name_plural = _("WAGen Areas")
         unique_together = ['name', 'user']
 
     def __unicode__(self):
@@ -131,8 +138,8 @@ class TaskHistory(models.Model):
     class Meta:
         db_table = u"taskhistory"
         ordering = ["-date"]
-        verbose_name = _("Task history")
-        verbose_name_plural = _("Tasks history")
+        verbose_name = _("Task History")
+        verbose_name_plural = _("Tasks History")
 
     def __unicode__(self):
         return smart_str("{us} - {ar}, {da}".format(us=self.user,

@@ -32,7 +32,7 @@ function WaterAccountingReport() {
           {/* Page Title */}
           <Box mb="5">
             <Text as="h1" weight="medium" size="8" className="text-gray-900">
-              💧 Water Accounting Report Generator
+              Water Accounting Report Generator
             </Text>
             <Text as="p" size="3" className="text-gray-600 mt-2 leading-relaxed max-w-3xl">
               Generate satellite-based <strong>Water Accounting Reports</strong> for any
