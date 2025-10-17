@@ -34,7 +34,8 @@ BASE_URL = "https://wagen.waterinag.org/"
 
 
 CORS_ALLOWED_ORIGINS = [
-     'http://localhost:3000','http://localhost:3001','https://wagen.waterinag.org','http://65.108.77.67:3007'
+     'http://localhost:3000','http://localhost:3001','https://wagen.waterinag.org','http://65.108.77.67:3007',
+     'https://zambia.waterinformatics.org'
 ]
 
 JWT_SECRET = os.environ.get("JWT_SECRET", "super-secret")
