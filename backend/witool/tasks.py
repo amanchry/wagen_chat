@@ -20,7 +20,7 @@ from .functions import render_pdf_html
 from .functions import render_pdf
 from .functions import send_mail_attach
 
-from .models import WagenArea
+from .models import WIArea
 
 os.environ.update({'GRASSBIN': settings.GRASS_BIN})
 ##export LD_LIBRARY_PATH=$(grass78 --config path)/lib
@@ -138,7 +138,7 @@ def wagen_report(self, area, start, stop, precip, et, wri_data,current_user):
     #get the area and create a new GRASS vector for this
     #from grass.pygrass.vector import VectorTopo
     #from grass.pygrass.vector import geometry as geo 
-    myarea = WagenArea.objects.get(id=area)
+    myarea = WIArea.objects.get(id=area)
     #centroid = geo.Point(myarea.geom.centroid.x, myarea.geom.centroid.y)
     #bound = geo.Line([myarea[0][0]])
     #vectname = "{na}_{job}".format(na=myarea.name, job=jobid.replace("-", "_"))

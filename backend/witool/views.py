@@ -36,7 +36,7 @@ from celery.result import AsyncResult
 from django_celery_results.models import TaskResult
 from django.core.serializers import serialize
 from itertools import chain
-from webapp.tasks import wagen_report
+from .tasks import wagen_report
 load_dotenv()
 
 base_url = settings.BASE_URL
@@ -414,7 +414,7 @@ def generate_report(request):
         print('areaid',area.id)
         
         current_user = user.email
-        tsk = wagen_report.delay(area, start, end, precip, et,wri_data, current_user)
+        tsk = wagen_report.delay(area.id, start, end, precip, et,wri_data, current_user)
         tskhist = ReportHistory(user=user, area=area, task=tsk.id)
         tskhist.save()
         #"job id {}".format(tsk.id)

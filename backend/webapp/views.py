@@ -535,7 +535,7 @@ def getReport(request):
         
         myarea = WagenArea.objects.get(id__exact=areaid)
         current_user = user.email
-        tsk = wagen_report.delay(myarea, start, end, precip, et,wri_data, current_user)
+        tsk = wagen_report.delay(areaid, start, end, precip, et,wri_data, current_user)
         tskhist = TaskHistory(user=user, area=myarea, task=tsk.id)
         tskhist.save()
         #"job id {}".format(tsk.id)
