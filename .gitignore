@@ -9,10 +9,12 @@ frontend/.env.
 frontend/.DS_Store
 
 backend/.env
+
 backend/.env.development
 backend/.env.production
 backend/.DS_Store
 backend/media
+backend/static
 backend/db.sqlite3
 
 

@@ -29,7 +29,7 @@ DEBUG = True
 ALLOWED_HOSTS = ["*"]
 CSRF_TRUSTED_ORIGINS = ['http://127.0.0.1:8000/','https://wagen.waterinag.org','http://65.108.77.67:3007']
 # BASE_URL = "http://127.0.0.1:8000/"
-BASE_URL = "https://wagen.waterinag.org/"
+BASE_URL = "https://wagen.waterinag.org/wagenApi/"
 
 
 CORS_ALLOWED_ORIGINS = [
@@ -177,8 +177,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = '/django_static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'django_static/')
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 

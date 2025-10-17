@@ -32,8 +32,8 @@ urlpatterns = [
 
 
 if settings.DEBUG:
-    urlpatterns += static("/wagenApi/media/",
+    urlpatterns += static("/media/",
                           document_root=settings.MEDIA_ROOT)
-    urlpatterns += static("/wagenApi/static/",
+    urlpatterns += static("/static/",
                           document_root=settings.STATIC_ROOT)
     
