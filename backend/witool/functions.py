@@ -53,6 +53,60 @@ def validate_jwt_request(request):
 
 
 
+def send_mail_attach(sub, mess, to, attach=None):
+    try:
+        email = EmailMessage(
+            subject=sub,
+            body=mess,
+            from_email=settings.EMAIL_ADDR,
+            to=[to],
+        )
+        if attach:
+            email.attach_file(attach)
+        email.send()
+    except Exception as e:
+        # Check if error is related to message sending quota exceeded
+        if hasattr(e, 'args') and e.args and e.args[0] == 551 and 'message sending quota exceeded' in e.args[1]:
+            time.sleep(120)  # Wait for 2 minutes before retrying
+            send_mail_attach(sub, mess, to, attach)
+        else:
+            return {"result": f"There was an error sending email to {to}",
+                    "error": str(e)}
+    return {"result": f"Email sent to {to}", "status": "success"}
+
+
+
+
+
+def send_otp(user_email, otp):
+    subject = "Your OTP for Email Verification"
+    from_email = settings.EMAIL_HOST_USER
+    to_email = [user_email]
+    print("user_email",user_email)
+    print("otp",otp)
+
+    # HTML body
+    html_content = f"""
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; border: 1px solid #eee; border-radius: 8px; padding: 20px;">
+          <h2 style="color: #1e3a8a; text-align: center;"> Email Verification</h2>
+          <p>Hi <strong>{user_email}</strong>,</p>
+          <p>Your verification code is:</p>
+          <h1 style="font-size: 32px; letter-spacing: 6px; background-color: #f4f4f4; padding: 12px; text-align: center; border-radius: 5px;">
+            {otp}
+          </h1>
+          <p>This code will expire in <strong>10 minutes</strong>.</p>
+          <p>Thank you</p>
+        </div>
+    """
+
+    try:
+        email = EmailMultiAlternatives(subject, "", from_email, to_email)
+        email.attach_alternative(html_content, "text/html")
+        email.send(fail_silently=False)
+        return {"result": "OTP sent successfully.", "status": "success"}
+    except Exception as e:
+        return {"result": "Failed to send OTP.", "status": "error", "error": str(e)}
+
 
 
 
