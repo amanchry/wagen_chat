@@ -154,14 +154,9 @@ def wagen_report(self, area, start, stop, precip, et, wri_data,current_user):
     #area = geo.Area(boundary=bound, centroid=centroid)
     #new.write(area)
     #new.close()
-#     v.in_ogr(input="PG:dbname={db} host={add} port={po} user={us} password={pwd}".format(db=settings.DATABASES['default']['NAME'], add=settings.DATABASES['default']['HOST'], po=settings.DATABASES['default']['PORT'],  us=settings.DATABASES['default']['USER'], pwd=settings.DATABASES['default']['PASSWORD']), output=vectname, where="id={}".format(area))
+    v.in_ogr(input="PG:dbname={db} host={add} port={po} user={us} password={pwd}".format(db=settings.DATABASES['default']['NAME'], add=settings.DATABASES['default']['HOST'], po=settings.DATABASES['default']['PORT'],  us=settings.DATABASES['default']['USER'], pwd=settings.DATABASES['default']['PASSWORD']), output=vectname, where="id={}".format(area))
 
-    v.in_ogr(
-        input=f"PG:dbname={settings.DATABASES['default']['NAME']} host={settings.DATABASES['default']['HOST']} port={settings.DATABASES['default']['PORT']} user={settings.DATABASES['default']['USER']} password={settings.DATABASES['default']['PASSWORD']}",
-        layer="witool_wiarea",   # ✅ explicit layer name
-        output=vectname,
-        where=f"id={area}",
-    )
+
 
     out1 = os.path.join(newdir, "bound.gpkg")
     out2 = os.path.join(newdir, "bound.geojson")
