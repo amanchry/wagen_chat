@@ -229,8 +229,7 @@ function AppHeader() {
                     </p> */}
                     <button
                       className="text-sm text-primary3 mt-6 border border-primary3 px-3 py-1 rounded-sm"
-                      onClick={() =>
-        signOut({callbackUrl: "/auth/login"})
+                      onClick={() => signOut({ callbackUrl: `${process.env.NEXT_PUBLIC_APP_URL}/auth/login` })
       }
                     >
                       Sign out
