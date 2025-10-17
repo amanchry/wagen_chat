@@ -88,7 +88,9 @@ function ChatBox() {
   const [input, setInput] = useState("");
   const [answers, setAnswers] = useState({});
   const messagesEndRef = useRef(null);
-
+  const [progress, setProgress] = useState(null);
+    const [isGenerating, setIsGenerating] = useState(false);
+    const [taskId, setTaskId] = useState(null);
   const { selectedArea } = useGlobal();
   const { showToast } = useToast();
   const { data: session, status } = useSession()
@@ -125,6 +127,9 @@ function ChatBox() {
       // ✅ Use the *local* updatedAnswers instead of stale state
       if (steps[nextStepIndex]?.id === "done") {
         console.log("✅ final answers", updatedAnswers);
+        setIsGenerating(true);
+        setProgress(0);
+
 
         try {
           const formData = new FormData();
@@ -146,27 +151,67 @@ function ChatBox() {
             }
           );
 
+
+setTaskId(res.data.task_id);
           setMessages((prev) => [
             ...prev,
-            {
-              sender: "system",
-              text:
-                res.data?.result ||
-                "✅ Report generation started! You’ll be notified when it’s ready.",
-            },
+            { sender: "system", text: "Report generation started! You’ll be notified when it’s ready..." },
+            { sender: "system", text: "Progress: 0%", type: "progress" },
           ]);
+
         } catch (err) {
           console.error("Report error:", err);
-          setMessages((prev) => [
-            ...prev,
-            { sender: "system", text: "⚠️ Error generating report. Try again." },
-          ]);
-          showToast("Error generating report.");
+          etIsGenerating(false);
+        setMessages((prev) => [
+          ...prev,
+          { sender: "system", text: "⚠️ Failed to start report." },
+        ]);
+          // showToast("Error generating report.");
         }
       }
     }
   };
 
+useEffect(() => {
+  if (!taskId || !isGenerating) return;
+
+  const checkStatus = async () => {
+    try {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/get-task-status/${taskId}`,
+        { headers: { Authorization: `Token ${token}` } }
+      );
+      const data = await res.json();
+      console.log("data",data)
+
+      if (data.state === "PROGRESS") {
+        setProgress(data.progress || 0);
+      } else if (data.state === "SUCCESS") {
+        setProgress(100);
+        setIsGenerating(false);
+        showToast("✅ Report completed successfully!");
+        setMessages((prev) => [
+          ...prev,
+          { sender: "system", text: "✅ Report completed successfully!" },
+        ]);
+      } else if (data.state === "FAILURE") {
+        setProgress(0);
+        setIsGenerating(false);
+        showToast("⚠️ Report failed");
+        setMessages((prev) => [
+          ...prev,
+          { sender: "system", text: "⚠️ Report failed. Please retry." },
+        ]);
+      }
+    } catch (err) {
+      console.error("Status check error:", err);
+    }
+  };
+
+  checkStatus(); // immediate first call
+  const interval = setInterval(checkStatus, 10000); // every 10 s
+  return () => clearInterval(interval);
+}, [taskId, isGenerating]);
 
 
 

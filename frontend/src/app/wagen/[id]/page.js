@@ -84,6 +84,7 @@ function HomePage() {
   const { filteredData, setFilteredData } = useGlobal();
   const [activeOverlays, setActiveOverlays] = useState([]);
 
+
   const { drawnGeojson, setDrawnGeojson, selectedArea, setSelectedArea } = useGlobal();
 
   function handleOverlayToggle(layerValue) {
@@ -208,6 +209,11 @@ function HomePage() {
       showToast("⚠️ Error fetching area list.");
     }
   };
+
+
+
+  
+
 
 
 
