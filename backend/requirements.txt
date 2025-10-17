@@ -58,4 +58,3 @@ djangorestframework
 djangorestframework-simplejwt
 python-dotenv
 requests
-python-decouple
