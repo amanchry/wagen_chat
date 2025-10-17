@@ -27,7 +27,8 @@ SECRET_KEY = 'django-insecure-v2z$aa_^1e+yv=&_w-+066(uyjk_xuv(*6l#^ci)o8+l41y1&d
 DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
-CSRF_TRUSTED_ORIGINS = ['http://127.0.0.1:8000/','https://wagen.waterinag.org','http://65.108.77.67:3007']
+CSRF_TRUSTED_ORIGINS = ['http://127.0.0.1:8000/','https://wagen.waterinag.org','http://65.108.77.67:3007',
+                        'https://zambia.waterinformatics.org']
 # BASE_URL = "http://127.0.0.1:8000/"
 BASE_URL = "https://wagen.waterinag.org/"
 
