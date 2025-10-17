@@ -20,6 +20,8 @@ import jwt
 from django.contrib.auth.hashers import make_password
 from .models import WIUser, WIArea, ReportHistory
 from webapp.functions import send_otp,send_contact_email
+from .functions import validate_jwt_request
+
 import geopandas as gpd
 from django.contrib.gis.geos import Point, LineString, Polygon, MultiPolygon, MultiLineString, MultiPoint
 from django.contrib.gis.geos import GEOSGeometry
@@ -44,32 +46,7 @@ base_url = settings.BASE_URL
 
 
 
-def validate_jwt_request(request):
-    """Check JWT in Authorization header and return (user, error_response)."""
-    auth_header = request.headers.get("Authorization")
 
-
-    if not auth_header or not auth_header.startswith("Token "):
-        return None, JsonResponse({"success": False, "message": "Authorization header missing"}, status=401)
-
-    token = auth_header.split(" ")[1]
-
-    try:
-        payload = jwt.decode(token, settings.JWT_SECRET, algorithms=["HS256"])
-        user_id = payload.get("user_id")
-
-        try:
-            user = WIUser.objects.get(id=user_id, is_active=True)
-        except WIUser.DoesNotExist:
-            return None, JsonResponse({"success": False, "message": "User not found"}, status=401)
-
-        return user, None
-
-    except jwt.ExpiredSignatureError:
-        return None, JsonResponse({"success": False, "message": "Token expired"}, status=401)
-    except jwt.InvalidTokenError:
-        return None, JsonResponse({"success": False, "message": "Invalid token"}, status=401)
-    
 
 
 
