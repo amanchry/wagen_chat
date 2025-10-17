@@ -1,0 +1,26 @@
+.apexcharts-tooltip-series-group .apexcharts-tooltip-marker {
+  margin-bottom: 3px !important;
+}
+
+.apexcharts-tooltip-text {
+  width: 100% !important; 
+}
+
+.apexcharts-tooltip-y-group {
+  width: 100% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+}
+
+.apexcharts-tooltip .apexcharts-tooltip-series-group:not(:last-child),
+.apexcharts-tooltip [class*="apexcharts-tooltip-series-group-"]:not(:last-child) {
+  margin-bottom: -8px !important;
+}
+
+.apexcharts-tooltip-title {
+  background: transparent !important;
+  border: none !important;
+  margin-left: 6px !important;
+  font-size: 12px !important;
+}

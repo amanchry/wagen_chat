@@ -1,0 +1,779 @@
+[
+  {
+    "DataID": 3,
+    "title": "SRTM Digital Elevation Data Version 4",
+    "shortTitle": "SRTM Elevation",
+    "description": "The Shuttle Radar Topography Mission (SRTM) digital elevation dataset was originally produced to provide consistent, high-quality elevation data at near global scope. This version of the SRTM digital elevation data has been processed to fill data voids, and to facilitate its ease of use.",
+    "scale_factor": null,
+    "collectionId": "CGIAR/SRTM90_V4",
+    "unit": "m",
+    "show_mosaic":false,
+    "band": "elevation",
+    "available_year": [2000],
+    "spatial_extent": [[-180, -90, 180, 90]],
+    "source": "GEE",
+    "assetType": "image",
+    "thumbnail": "https://developers.google.com/earth-engine/datasets/images/CGIAR/CGIAR_SRTM90_V4_sample.png",
+    "color_palette_type": "continuous",
+    "legend_heading": "Elevation (m)",
+    "vis_params": {
+      "min": 0,
+      "max": 1600,
+      "palette": [
+        "285d1e",
+        "09a954",
+        "aee068",
+        "f9edcd",
+        "d1ab57",
+        "945a02",
+        "4f2f02",
+        "949393",
+        "c2c2c2",
+        "e5e5e5"
+      ]
+    }
+  },
+
+  {
+    "DataID": 4,
+    "title": "Precipitation (Global - Annual - ~5 km) - CHIRPS",
+    "shortTitle": "Precipitation",
+    "description": "Precipitation data is delivered on a daily basis. The source of this dataset is CHIRPS (Climate Hazards Group InfraRed Precipitation with Station) quasi-global rainfall dataset, starting from 1981 up to near present. The value of each pixel represents the total of daily precipitation in the year expressed in mm (1mm=1l/m² or 1mm=10m³/ha). For details see http://chg.geog.ucsb.edu/data/chirps.",
+    "scale_factor": 0.1,
+    "collectionId": "gs://fao-gismgr-wapor-3-data/DATA/WAPOR-3/MAPSET/L1-PCP-A/WAPOR-3.L1-PCP-A.",
+    "unit": "mm/year",
+    "show_mosaic":false,
+    "band": "",
+    "available_year": [2018, 2019, 2020, 2021, 2022, 2023, 2024],
+    "spatial_extent": [[-180, -90, 180, 90]],
+    "source": "WaPOR",
+    "assetType": "cloud_bucket",
+    "thumbnail": "https://developers.google.com/earth-engine/datasets/images/UCSB-CHG/UCSB-CHG_CHIRPS_DAILY_sample.png",
+    "color_palette_type": "continuous",
+    "legend_heading": "Precipitation (mm/year)",
+    "vis_params": {
+      "min": 0,
+      "max": 1600,
+      "palette": [
+        "ca001b",
+        "ff7c3d",
+        "ffc469",
+        "fffbb1",
+        "c8ecf4",
+        "5ba8d2",
+        "345ead"
+      ]
+    }
+  },
+  {
+    "DataID": 5,
+    "title": "Actual evapotranspiration and interception (Global - Annual - 300 m) - WaPOR v3",
+    "shortTitle": "Evapotranspiration",
+    "description": "The actual evapotranspiration and interception (ETIa) is the sum of the soil evaporation (E), canopy transpiration (T), and evaporation from rainfall intercepted by leaves (I). The value of each pixel represents the ETIa in a given year.",
+    "scale_factor": 0.1,
+    "collectionId": "gs://fao-gismgr-wapor-3-data/DATA/WAPOR-3/MAPSET/L1-AETI-A/WAPOR-3.L1-AETI-A.",
+    "unit": "mm/year",
+    "show_mosaic":false,
+    "band": "",
+    "available_year": [2018, 2019, 2020, 2021, 2022, 2023, 2024],
+    "spatial_extent": [[-180, -90, 180, 90]],
+    "source": "WaPOR",
+    "assetType": "cloud_bucket",
+    "thumbnail": "https://developers.google.com/earth-engine/datasets/images/FAO/FAO_WAPOR_2_L1_AETI_D_sample.png",
+    "color_palette_type": "continuous",
+    "legend_heading": "Evapotranspiration (mm/year)",
+    "vis_params": {
+      "min": 0,
+      "max": 1600,
+      "palette": [
+        "d9d9d900",
+        "f0f9e8ff",
+        "bae4bcff",
+        "7bccc4ff",
+        "43a2caff",
+        "0868acff"
+      ]
+    }
+  },
+  {
+    "DataID": 6,
+    "title": "Evaporation (Global - Annual - 300 m) - WaPOR v3",
+    "shortTitle": "Evaporation",
+    "description": "The Evaporation (E) data component is the actual evaporation of the soil surface. The value of each pixel represents the total annual evaporation for that specific year.",
+    "scale_factor": 0.1,
+    "collectionId": "gs://fao-gismgr-wapor-3-data/DATA/WAPOR-3/MAPSET/L1-E-A/WAPOR-3.L1-E-A.",
+    "unit": "mm/year",
+    "show_mosaic":false,
+    "band": "",
+    "available_year": [2018, 2019, 2020, 2021, 2022, 2023, 2024],
+    "spatial_extent": [[-180, -90, 180, 90]],
+    "source": "WaPOR",
+    "assetType": "cloud_bucket",
+    "thumbnail": "https://developers.google.com/earth-engine/datasets/images/FAO/FAO_WAPOR_2_L1_E_D_sample.png",
+    "color_palette_type": "continuous",
+    "legend_heading": "Evaporation (mm/year)",
+    "vis_params": {
+      "min": 0,
+      "max": 1600,
+      "palette": [
+        "d9d9d900",
+        "f0f9e8ff",
+        "bae4bcff",
+        "7bccc4ff",
+        "43a2caff",
+        "0868acff"
+      ]
+    }
+  },
+  {
+    "DataID": 7,
+    "title": "Transpiration (Global - Annual - 300 m) - WaPOR v3",
+    "shortTitle": "Transpiration",
+    "description": "The Transpiration (T) data component is the actual transpiration of the vegetation canopy. The value of each pixel represents the total annual transpiration for that specific year.",
+    "scale_factor": 0.1,
+    "collectionId": "gs://fao-gismgr-wapor-3-data/DATA/WAPOR-3/MAPSET/L1-T-A/WAPOR-3.L1-T-A.",
+    "unit": "mm/year",
+    "show_mosaic":false,
+    "band": "",
+    "available_year": [2018, 2019, 2020, 2021, 2022, 2023, 2024],
+    "spatial_extent": [[-180, -90, 180, 90]],
+    "source": "WaPOR",
+    "assetType": "cloud_bucket",
+    "thumbnail": "https://developers.google.com/earth-engine/datasets/images/FAO/FAO_WAPOR_2_L1_T_D_sample.png",
+    "color_palette_type": "continuous",
+    "legend_heading": "Transpiration (mm/year)",
+    "vis_params": {
+      "min": 0,
+      "max": 1600,
+      "palette": [
+        "d9d9d900",
+        "f0f9e8ff",
+        "bae4bcff",
+        "7bccc4ff",
+        "43a2caff",
+        "0868acff"
+      ]
+    }
+  },
+  {
+    "DataID": 8,
+    "title": "Interception (Global - Annual - 300 m) - WaPOR v3",
+    "shortTitle": "Interception",
+    "description": "Interception is the process where rainfall is captured by the leaves. Part of this captured rainfall will evaporate again. The Interception (I) data component represents the evaporation of intercepted rainfall from the vegetation canopy. The value of each pixel represents the total annual interception for that specific year.",
+    "scale_factor": 0.1,
+    "collectionId": "gs://fao-gismgr-wapor-3-data/DATA/WAPOR-3/MAPSET/L1-I-A/WAPOR-3.L1-I-A.",
+    "unit": "mm/year",
+    "show_mosaic":false,
+    "band": "",
+    "available_year": [2018, 2019, 2020, 2021, 2022, 2023, 2024],
+    "spatial_extent": [[-180, -90, 180, 90]],
+    "source": "WaPOR",
+    "assetType": "cloud_bucket",
+    "thumbnail": "https://developers.google.com/earth-engine/datasets/images/FAO/FAO_WAPOR_2_L1_I_D_sample.png",
+    "color_palette_type": "continuous",
+    "legend_heading": "Interception (mm/year)",
+    "vis_params": {
+      "min": 0,
+      "max": 1600,
+      "palette": [
+        "d9d9d900",
+        "f0f9e8ff",
+        "bae4bcff",
+        "7bccc4ff",
+        "43a2caff",
+        "0868acff"
+      ]
+    }
+  },
+  {
+    "DataID": 9,
+    "title": "Reference Evapotranspiration (Global - Annual - ~30 km) - WaPOR v3",
+    "shortTitle": "Reference ETa",
+    "description": "Reference EvapoTranspiration (RET) is defined as the evapotranspiration from a hypothetical reference crop and it simulates the behaviour of a well-watered grass surface. The value of each pixel represents the total of the daily reference evapotranspiration for that specific year. The data is provided in near real time from January 2018 to present.",
+    "scale_factor": 0.1,
+    "collectionId": "gs://fao-gismgr-wapor-3-data/DATA/WAPOR-3/MAPSET/L1-RET-A/WAPOR-3.L1-RET-A.",
+    "unit": "mm/year",
+    "show_mosaic":false,
+    "available_year": [2018, 2019, 2020, 2021, 2022, 2023, 2024],
+    "spatial_extent": [[-180, -90, 180, 90]],
+    "source": "WaPOR",
+    "band": "",
+    "assetType": "cloud_bucket",
+    "thumbnail": "https://developers.google.com/earth-engine/datasets/images/FAO/FAO_WAPOR_2_L1_RET_E_sample.png",
+    "color_palette_type": "continuous",
+    "legend_heading": "Reference Evapotranspiration (mm/year)",
+    "vis_params": {
+      "min": 0,
+      "max": 1600,
+      "palette": [
+        "ca001b",
+        "ff7c3d",
+        "ffc469",
+        "fffbb1",
+        "c8ecf4",
+        "5ba8d2",
+        "345ead"
+      ]
+    }
+  },
+  {
+    "DataID": 10,
+    "title": "Total Biomass Production (Global - Annual - 300 m) - WaPOR v3",
+    "shortTitle": "TBP",
+    "description": "The annual Total Biomass Production expresses the total amount of dry matter produced over the year. It is calculated by dekad and summarized as annual total. Each pixel represents the annual amount of dry matter in kg per hectare. The data is provided in near real time from January 2018 to present.",
+    "scale_factor": 1,
+    "collectionId": "gs://fao-gismgr-wapor-3-data/DATA/WAPOR-3/MAPSET/L1-TBP-A/WAPOR-3.L1-TBP-A.",
+    "unit": "kg/ha/year",
+    "show_mosaic":false,
+    "band": "",
+    "available_year": [2018, 2019, 2020, 2021, 2022, 2023, 2024],
+    "spatial_extent": [[-180, -90, 180, 90]],
+    "source": "WaPOR",
+    "assetType": "cloud_bucket",
+    "thumbnail": "https://developers.google.com/earth-engine/datasets/images/FAO/FAO_WAPOR_2_L1_NPP_D_sample.png",
+    "color_palette_type": "continuous",
+    "legend_heading": "Total Biomass Production (kg/ha/year)",
+    "vis_params": {
+      "min": 0,
+      "max": 1600,
+      "palette": [
+        "F4FBF2",
+        "B1DFAA",
+        "7FC97F",
+        "4AAF61",
+        "28924A",
+        "0B7532",
+        "00441B"
+      ]
+    }
+  },
+  {
+    "DataID": 12,
+    "title": "Gross biomass water productivity (Global - Annual - 300 m) - WaPOR v3",
+    "shortTitle": "GBWP",
+    "description": "The annual Gross Biomass Water Productivity expresses the quantity of output (total biomass production) in relation to the total volume of water consumed in the year (actual evapotranspiration). By relating biomass production to total evapotranspiration (sum of soil evaporation, canopy transpiration and interception), this indicator provides insights on the impact of vegetation development on consumptive water use and thus on water balance in a given domain. When the focus is on monitoring performance of irrigated agriculture in relation to water consumption, it is more appropriate to use transpiration alone as a denominator, as a measure of water beneficially consumed by the plant. This latter indicator, for which we use the term net water productivity, provides useful information on how effectively vegetation (and particularly crops) uses water to develop its biomass (and thus yield). The data is provided in near real time from January 2018 to present.",
+    "scale_factor": 0.001,
+    "collectionId": "gs://fao-gismgr-wapor-3-data/DATA/WAPOR-3/MAPSET/L1-GBWP-A/WAPOR-3.L1-GBWP-A.",
+    "unit": "kg/m³",
+    "show_mosaic":false,
+    "band": "",
+    "available_year": [2018, 2019, 2020, 2021, 2022, 2023, 2024],
+    "spatial_extent": [[-180, -90, 180, 90]],
+    "source": "WaPOR",
+    "assetType": "cloud_bucket",
+    "thumbnail": "https://io.apps.fao.org/geoserver/wms/reflect?layers=WAPOR_2:l1_gbwp_a",
+    "color_palette_type": "continuous",
+    "legend_heading": "Gross biomass water productivity (kg/m³/year)",
+    "vis_params": {
+      "min": 0,
+      "max": 4,
+      "palette": [
+        "F4FBF2",
+        "B1DFAA",
+        "7FC97F",
+        "4AAF61",
+        "28924A",
+        "0B7532",
+        "00441B"
+      ]
+    }
+  },
+  {
+    "DataID": 13,
+    "title": "Net biomass water productivity (Global - Annual - 300 m) - WaPOR v3",
+    "shortTitle": "NBWP",
+    "description": "The annual Net Biomass Water Productivity expresses the quantity of output (total biomass production) in relation to the volume of water beneficially consumed (by canopy transpiration) in the year, and thus net of soil evaporation. Contrary to gross water productivity, net water productivity is particularly useful in monitoring how effectively vegetation (and, more importantly, crops) uses water to develop biomass (and thus yield). The data is provided in near real time from January 2018 to present.",
+    "scale_factor": 0.001,
+    "collectionId": "gs://fao-gismgr-wapor-3-data/DATA/WAPOR-3/MAPSET/L1-NBWP-A/WAPOR-3.L1-NBWP-A.",
+    "unit": "kg/m³",
+    "show_mosaic":false,
+    "band": "",
+    "available_year": [2018, 2019, 2020, 2021, 2022, 2023, 2024],
+    "spatial_extent": [[-180, -90, 180, 90]],
+    "source": "WaPOR",
+    "assetType": "cloud_bucket",
+    "thumbnail": "https://io.apps.fao.org/geoserver/wms/reflect?layers=WAPOR_2:l1_nbwp_a",
+    "color_palette_type": "continuous",
+    "legend_heading": "Net biomass water productivity (kg/m³/year)",
+    "vis_params": {
+      "min": 0,
+      "max": 4,
+      "palette": [
+        "F4FBF2",
+        "B1DFAA",
+        "7FC97F",
+        "4AAF61",
+        "28924A",
+        "0B7532",
+        "00441B"
+      ]
+    }
+  },
+  {
+    "DataID": 1,
+    "title": "ESA WorldCover 10m v200",
+    "shortTitle": "ESA LULC",
+    "description": "The European Space Agency (ESA) WorldCover 10 m 2021 product provides a global land cover map for 2021 at 10 m resolution based on Sentinel-1 and Sentinel-2 data. The WorldCover product comes with 11 land cover classes and has been generated in the framework of the ESA WorldCover project, part of the 5th Earth Observation Envelope Programme (EOEP-5) of the European Space Agency.",
+    "scale_factor": null,
+    "collectionId": "ESA/WorldCover/v200",
+    "band": "Map",
+    "unit": "",
+    "show_mosaic":false,
+    "available_year": [2021],
+    "spatial_extent": [[-180, -90, 180, 90]],
+    "source": "GEE",
+    "assetType": "image_collection",
+    "thumbnail": "https://developers.google.com/earth-engine/datasets/images/ESA/ESA_WorldCover_v200_sample.png",
+    "color_palette_type": "categorical",
+    "legend_heading": "ESA LULC",
+    "vis_params": {
+      "min": 10,
+      "max": 100,
+      "color_classes": [
+        {
+          "color": "006400",
+          "description": "Tree cover",
+          "value": 10
+        },
+        {
+          "color": "ffbb22",
+          "description": "Shrubland",
+          "value": 20
+        },
+        {
+          "color": "ffff4c",
+          "description": "Grassland",
+          "value": 30
+        },
+        {
+          "color": "f096ff",
+          "description": "Cropland",
+          "value": 40
+        },
+        {
+          "color": "fa0000",
+          "description": "Built-up",
+          "value": 50
+        },
+        {
+          "color": "b4b4b4",
+          "description": "Bare / sparse vegetation",
+          "value": 60
+        },
+        {
+          "color": "f0f0f0",
+          "description": "Snow and ice",
+          "value": 70
+        },
+        {
+          "color": "0064c8",
+          "description": "Permanent water bodies",
+          "value": 80
+        },
+        {
+          "color": "0096a0",
+          "description": "Herbaceous wetland",
+          "value": 90
+        },
+        {
+          "color": "00cf75",
+          "description": "Mangroves",
+          "value": 95
+        },
+        {
+          "color": "fae6a0",
+          "description": "Moss and lichen",
+          "value": 100
+        }
+      ]
+    }
+  },
+  {
+    "DataID": 2,
+    "title": "Copernicus Global Land Cover Layers: CGLS-LC100 Collection 3",
+    "shortTitle": "Copernicus LULC",
+    "description": "The Copernicus Global Land Service (CGLS) is earmarked as a component of the Land service to operate a multi-purpose service component that provides a series of bio-geophysical products on the status and evolution of land surface at global scale.  The Dynamic Land Cover map at 100 m resolution (CGLS-LC100) is a new product in the portfolio of the CGLS and delivers a global land cover map at 100 m spatial resolution. The CGLS Land Cover product provides a primary land cover scheme. Next to these discrete classes, the product also includes continuous field layers for all basic land cover classes that provide proportional estimates for vegetation/ground cover for the land cover types. This continuous classification scheme may depict areas of heterogeneous land cover better than the standard classification scheme and, as such, can be tailored for application use (e.g. forest monitoring, crop monitoring, biodiversity and conservation, monitoring environment and security in Africa, climate modelling, etc.).  These consistent Land Cover maps (v3.0.1) are provided for the period 2015-2019 over the entire Globe, derived from the PROBA-V 100 m time-series, a database of high quality land cover training sites and several ancillary datasets, reaching an accuracy of 80% at Level1 over all years.  It is planned to provide yearly updates from 2020 through the use of a Sentinel time-series.  See also:  * [Algorithm Theoretical Basis Document](https://doi.org/10.5281/zenodo.3938968)  * [Product User Manual](https://doi.org/10.5281/zenodo.3938963)  * [Validation Report](https://doi.org/10.5281/zenodo.3938974)",
+    "scale_factor": null,
+    "collectionId": "COPERNICUS/Landcover/100m/Proba-V-C3/Global",
+    "unit": "",
+    "show_mosaic":false,
+    "band": "discrete_classification",
+    "available_year": [2015, 2016, 2017, 2018, 2019],
+    "spatial_extent": [[-180, -90, 180, 90]],
+    "source": "GEE",
+    "assetType": "image_collection",
+    "thumbnail": "https://developers.google.com/earth-engine/datasets/images/COPERNICUS/COPERNICUS_Landcover_100m_Proba-V-C3_Global_sample.png",
+
+    "color_palette_type": "categorical",
+    "legend_heading": "Copernicus LULC",
+
+    "vis_params": {
+      "min": 10,
+      "max": 100,
+      "color_classes": [
+        {
+          "color": "ffbb22",
+          "description": "Shrubs",
+          "value": 20
+        },
+        {
+          "color": "ffff4c",
+          "description": "Herbaceous vegetation",
+          "value": 30
+        },
+        {
+          "color": "f096ff",
+          "description": "Cultivated and managed vegetation / agriculture",
+          "value": 40
+        },
+        {
+          "color": "fa0000",
+          "description": "Urban / built up",
+          "value": 50
+        },
+        {
+          "color": "b4b4b4",
+          "description": "Bare / sparse vegetation",
+          "value": 60
+        },
+        {
+          "color": "f0f0f0",
+          "description": "Snow and ice",
+          "value": 70
+        },
+        {
+          "color": "0032c8",
+          "description": "Permanent water bodies",
+          "value": 80
+        },
+        {
+          "color": "0096a0",
+          "description": "Herbaceous wetland",
+          "value": 90
+        },
+        {
+          "color": "fae6a0",
+          "description": "Moss and lichen",
+          "value": 100
+        },
+        {
+          "color": "58481f",
+          "description": "Closed forest, evergreen needle leaf",
+          "value": 111
+        },
+        {
+          "color": "009900",
+          "description": "Closed forest, evergreen broad leaf",
+          "value": 112
+        },
+        {
+          "color": "70663e",
+          "description": "Closed forest, deciduous needle leaf",
+          "value": 113
+        },
+        {
+          "color": "00cc00",
+          "description": "Closed forest, deciduous broad leaf",
+          "value": 114
+        },
+        {
+          "color": "4e751f",
+          "description": "Closed forest, mixed.",
+          "value": 115
+        },
+        {
+          "color": "007800",
+          "description": "Closed forest, not matching any of the other definitions.",
+          "value": 116
+        },
+        {
+          "color": "666000",
+          "description": "Open forest, evergreen needle leaf",
+          "value": 121
+        },
+        {
+          "color": "8db400",
+          "description": "Open forest, evergreen broad leaf",
+          "value": 122
+        },
+        {
+          "color": "8d7400",
+          "description": "Open forest, deciduous needle leaf",
+          "value": 123
+        },
+        {
+          "color": "a0dc00",
+          "description": "Open forest, deciduous broad leaf",
+          "value": 124
+        },
+        {
+          "color": "929900",
+          "description": "Open forest, mixed",
+          "value": 125
+        },
+        {
+          "color": "648c00",
+          "description": "Open forest, not matching any of the other definitions",
+          "value": 126
+        },
+        {
+          "color": "000080",
+          "description": "Oceans, seas. Can be either fresh or salt-water bodies",
+          "value": 200
+        },
+        {
+          "color": "282828",
+          "description": "Unknown",
+          "value": 0
+        }
+      ]
+    }
+  },
+  {
+    "DataID": 14,
+    "title": "GlobCover: Global Land Cover Map",
+    "shortTitle": "GlobCover: Global Land Cover Map",
+    "description": "GlobCover 2009 is a global land cover map based on ENVISAT's Medium Resolution Imaging Spectrometer (MERIS) Level 1B data acquired in full resolution mode with a spatial resolution of approximately 300 meters.",
+    "scale_factor": null,
+    "collectionId": "ESA/GLOBCOVER_L4_200901_200912_V2_3",
+    "band": "landcover",
+    "unit": "",
+    "show_mosaic":false,
+    "available_year": [2009],
+    "spatial_extent": [[-180, -90, 180, 90]],
+    "source": "GEE",
+    "assetType": "image_collection",
+    "thumbnail": "https://developers.google.com/earth-engine/datasets/images/ESA/ESA_GLOBCOVER_L4_200901_200912_V2_3_sample.png",
+    "color_palette_type": "categorical",
+    "legend_heading": "ESA GLOBCOVER",
+    "vis_params": {
+      "min": 11,
+      "max": 230,
+      "color_classes": [
+        {
+          "color": "aaefef",
+          "description": "Post-flooding or irrigated croplands",
+          "value": 11
+        },
+        {
+          "color": "ffff63",
+          "description": "Rainfed croplands",
+          "value": 14
+        },
+        {
+          "color": "dcef63",
+          "description": "Mosaic cropland (50-70%) / vegetation (grassland, shrubland, forest) (20-50%)",
+          "value": 20
+        },
+        {
+          "color": "cdcd64",
+          "description": "Mosaic vegetation (grassland, shrubland, forest) (50-70%) / cropland (20-50%)",
+          "value": 30
+        },
+        {
+          "color": "006300",
+          "description": "Closed to open (>15%) broadleaved evergreen and/or semi-deciduous forest (>5m)",
+          "value": 40
+        },
+        {
+          "color": "009f00",
+          "description": "Closed (>40%) broadleaved deciduous forest (>5m)",
+          "value": 50
+        },
+        {
+          "color": "aac700",
+          "description": "Open (15-40%) broadleaved deciduous forest (>5m)",
+          "value": 60
+        },
+        {
+          "color": "003b00",
+          "description": "Closed (>40%) needleleaved evergreen forest (>5m)",
+          "value": 70
+        },
+        {
+          "color": "286300",
+          "description": "Open (15-40%) needleleaved deciduous or evergreen forest (>5m)",
+          "value": 90
+        },
+        {
+          "color": "788300",
+          "description": "Closed to open (>15%) mixed broadleaved and needleleaved forest (>5m)",
+          "value": 100
+        },
+        {
+          "color": "8d9f00",
+          "description": "Mosaic forest-shrubland (50-70%) / grassland (20-50%)",
+          "value": 110
+        },
+        {
+          "color": "bd9500",
+          "description": "Mosaic grassland (50-70%) / forest-shrubland (20-50%)",
+          "value": 120
+        },
+        {
+          "color": "956300",
+          "description": "Closed to open (>15%) shrubland (<5m)",
+          "value": 130
+        },
+        {
+          "color": "ffb431",
+          "description": "Closed to open (>15%) grassland",
+          "value": 140
+        },
+        {
+          "color": "ffebae",
+          "description": "Sparse (>15%) vegetation (woody vegetation, shrubs, grassland)",
+          "value": 150
+        },
+        {
+          "color": "00785a",
+          "description": "Closed (>40%) broadleaved forest regularly flooded - Fresh water",
+          "value": 160
+        },
+        {
+          "color": "009578",
+          "description": "Closed (>40%) broadleaved semi-deciduous and/or evergreen forest regularly flooded - saline water",
+          "value": 170
+        },
+        {
+          "color": "00dc83",
+          "description": "Closed to open (>15%) vegetation (grassland, shrubland, woody vegetation) on regularly flooded or waterlogged soil - fresh, brackish or saline water\n",
+          "value": 180
+        },
+        {
+          "color": "c31300",
+          "description": "Artificial surfaces and associated areas (urban areas >50%) GLOBCOVER 2009",
+          "value": 190
+        },
+        {
+          "color": "fff5d6",
+          "description": "Bare areas",
+          "value": 200
+        },
+        {
+          "color": "0046c7",
+          "description": "Water bodies",
+          "value": 210
+        },
+        {
+          "color": "ffffff",
+          "description": "Permanent snow and ice",
+          "value": 220
+        },
+        {
+          "color": "743411",
+          "description": "Unclassified",
+          "value": 230
+        }
+      ]
+    }
+  },
+  {
+    "DataID": 15,
+    "title": "Landsat Collection 2 Tier 1 Level 2 8-Day NDVI Composite",
+    "shortTitle": "NDVI Composite",
+    "description": "Landsat datasets are federally created data\nand therefore reside in the public domain and may be used, transferred, or reproduced without copyright restriction.\n\nAcknowledgement or credit of the USGS as data source should be provided\nby including a line of text citation such as the example shown below.\n\n(Product, Image, Photograph, or Dataset Name) courtesy of\nthe U.S. Geological Survey\n\nExample: Landsat-7 image courtesy of the U.S. Geological Survey\n\nSee the\n[USGS Visual Identity System Guidance](https://www.usgs.gov/information-policies-and-instructions/usgs-visual-identity-system)\nfor further details on proper citation and acknowledgement of USGS products.\n",
+    "scale_factor": null,
+    "collectionId": "LANDSAT/COMPOSITES/C02/T1_L2_8DAY_NDVI",
+    "band": "NDVI",
+    "unit": "",
+    "show_mosaic":true,
+    "available_year": [2018, 2019, 2020, 2021, 2022, 2023, 2024],
+    "spatial_extent": [[-180, -90, 180, 90]],
+    "source": "GEE",
+    "assetType": "image_collection",
+    "thumbnail": "https://developers.google.com/earth-engine/datasets/images/LANDSAT/LANDSAT_COMPOSITES_C02_T1_L2_8DAY_NDVI_sample.png",
+    "color_palette_type": "continuous",
+    "legend_heading": "NDVI",
+    "vis_params": {
+      "max": 1,
+      "min": 0,
+      "palette": [
+        "ffffff",
+        "ce7e45",
+        "df923d",
+        "f1b555",
+        "fcd163",
+        "99b718",
+        "74a901",
+        "66a000",
+        "529400",
+        "3e8601",
+        "207401",
+        "056201",
+        "004c00",
+        "023b01",
+        "012e01",
+        "011d01",
+        "011301"
+      ]
+    }
+  },
+  {
+    "DataID": 16,
+    "title": "Landsat Collection 2 Tier 1 Level 2 8-Day NDWI Composite",
+    "shortTitle": "NDWI Composite",
+    "description": "Landsat datasets are federally created data\nand therefore reside in the public domain and may be used, transferred, or reproduced without copyright restriction.\n\nAcknowledgement or credit of the USGS as data source should be provided\nby including a line of text citation such as the example shown below.\n\n(Product, Image, Photograph, or Dataset Name) courtesy of\nthe U.S. Geological Survey\n\nExample: Landsat-7 image courtesy of the U.S. Geological Survey\n\nSee the\n[USGS Visual Identity System Guidance](https://www.usgs.gov/information-policies-and-instructions/usgs-visual-identity-system)\nfor further details on proper citation and acknowledgement of USGS products.\n",
+    "scale_factor": null,
+    "collectionId": "LANDSAT/COMPOSITES/C02/T1_L2_8DAY_NDWI",
+    "band": "NDWI",
+    "unit": "",
+    "show_mosaic":true,
+    "available_year": [2018, 2019, 2020, 2021, 2022, 2023, 2024],
+    "spatial_extent": [[-180, -90, 180, 90]],
+    "source": "GEE",
+    "assetType": "image_collection",
+    "thumbnail": "https://developers.google.com/earth-engine/datasets/images/LANDSAT/LANDSAT_COMPOSITES_C02_T1_L2_8DAY_NDWI_sample.png",
+    "color_palette_type": "continuous",
+    "legend_heading": "NDWI",
+    "vis_params": {
+      "max": 1,
+      "min": 0,
+      "palette": ["0000ff", "00ffff", "ffff00", "ff0000", "ffffff"]
+    }
+  },
+  {
+    "DataID": 17,
+    "title": "LGRIP30 Global Rainfed and Irrigated-Cropland",
+    "shortTitle": "LGRIP30 Global Rainfed and Irrigated-Cropland",
+    "description": "The Landsat-Derived Global Rainfed and Irrigated-Cropland Product (LGRIP) provides high resolution, global cropland data to assist and address food and water security issues of the twenty-first century. ",
+    "scale_factor": null,
+    "collectionId": "projects/sat-io/open-datasets/GFSAD/LGRIP30",
+    "band": null,
+    "unit": "",
+    "show_mosaic":true,
+    "available_year": [2015],
+    "spatial_extent": [[-180, -90, 180, 90]],
+    "source": "GEE",
+    "assetType": "image_collection",
+    "thumbnail": "",
+    "color_palette_type": "categorical",
+    "legend_heading": "Rainfed and Irrigated-Cropland",
+    "vis_params": {
+      "min": 0,
+      "max": 3,
+      "palette":["0050cb","d58855","c2d30c","379a4b"],
+      "color_classes": [
+        {
+          "color": "0050cb",
+          "description": "Ocean",
+          "value": 0
+        },
+        {
+          "color": "d58855",
+          "description": "Non-croplands",
+          "value": 1
+        },
+        {
+          "color": "c2d30c",
+          "description": "Irrigated croplands",
+          "value": 2
+        },
+        {
+          "color": "379a4b",
+          "description": "Rainfed croplands",
+          "value": 3
+        }]}
+
+  }
+]
