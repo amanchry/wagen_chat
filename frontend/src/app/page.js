@@ -43,14 +43,14 @@ function ProjectCard({ project, onView, onDelete }) {
       <div className="absolute right-2 bottom-2 flex space-x-2">
         <button
           onClick={() => onView(project)}
-          title="View project"
+          title="View chat"
           className="p-2 bg-gray-100 rounded-full hover:bg-gray-200 transition"
         >
           <SquarePen className="h-5 w-5 text-blue-600" />
         </button>
         <button
           onClick={() => onDelete(project)}
-          title="Delete project"
+          title="Delete chat"
           className="p-2 bg-gray-100 rounded-full hover:bg-gray-200 transition"
         >
           <Trash2 className="h-5 w-5 text-red-600" />
@@ -86,8 +86,8 @@ export default function HomePage() {
       );
       setProjects(res.data.projects || res.data.data || []); // 🔧 handle both
     } catch (err) {
-      console.error("Error fetching projects:", err);
-      showToast("Failed to fetch projects.");
+      console.error("Error fetching chats:", err);
+      showToast("Failed to fetch chats.");
     } finally {
       setLoading(false);
     }
@@ -106,7 +106,7 @@ export default function HomePage() {
 
   const handleCreate = async () => {
     if (!form.name.trim()) {
-      showToast("Please enter a project name.");
+      showToast("Please enter a title.");
       return;
     }
 
@@ -127,17 +127,17 @@ export default function HomePage() {
       );
 
       if (res.data.success || res.status === 200) {
-        showToast("Project created successfully!");
+        showToast("New Chat created successfully!");
         setProjects((prev) => [...prev, res.data.data]);
         setForm({ name: "" });
         setOpen(false);
         fetchProjects();
       } else {
-        showToast(res.data.message || "Failed to create project.");
+        showToast(res.data.message || "Failed to create chat.");
       }
     } catch (err) {
-      console.error("Error creating project:", err);
-      showToast("Error creating project.");
+      console.error("Error creating chat:", err);
+      showToast("Error creating chat.");
     } finally {
       setSubmitting(false);
     }
@@ -145,7 +145,7 @@ export default function HomePage() {
 
 
   const handleDelete = async (project) => {
-    confirmAlert(`Delete project "${project.project_name}"?`, async () => {
+    confirmAlert(`Delete chat "${project.project_name}"?`, async () => {
       setLoading(true);
       try {
         const res = await axios.delete(
@@ -153,14 +153,14 @@ export default function HomePage() {
           { headers: { Authorization: `Token ${token}` } }
         );
         if (res.status === 200 || res.data.success) {
-          showToast("Project deleted successfully!");
+          showToast("Chat deleted successfully!");
           setProjects((prev) => prev.filter((p) => p.id !== project.id));
         } else {
-          showToast(res.data.message || "Failed to delete project.");
+          showToast(res.data.message || "Failed to delete chat.");
         }
       } catch (err) {
-        console.error("Error deleting project:", err);
-        showToast("Error deleting project.");
+        console.error("Error deleting chat:", err);
+        showToast("Error deleting chat.");
       } finally {
         setLoading(false);
       }
@@ -194,13 +194,13 @@ export default function HomePage() {
         <Box className="flex-1 overflow-y-auto p-6 bg-gray-50">
           <div className="flex items-center justify-between mb-6">
             <h1 className="text-2xl font-semibold text-gray-800">
-              Projects {projects.length > 0 && `(${projects.length})`}
+              Chats {projects.length > 0 && `(${projects.length})`}
             </h1>
 
             <Dialog.Root open={open} onOpenChange={setOpen}>
               <Dialog.Trigger asChild>
                 <button className="flex items-center gap-2 rounded-lg bg-blue-600 text-white px-4 py-2 hover:bg-blue-700 transition">
-                  <PlusCircle className="h-5 w-5" /> Create Project
+                  <PlusCircle className="h-5 w-5" /> New Chat
                 </button>
               </Dialog.Trigger>
 
@@ -209,7 +209,7 @@ export default function HomePage() {
                 <Dialog.Content className="fixed top-1/2 left-1/2 w-[90vw] max-w-md -translate-x-1/2 -translate-y-1/2 rounded-xl bg-white p-6 shadow-xl">
                   <div className="flex items-center justify-between mb-3">
                     <Dialog.Title className="text-lg font-semibold">
-                      Create New Project
+                      Create New Chat
                     </Dialog.Title>
                     <Dialog.Close asChild>
                       <button>
@@ -221,7 +221,7 @@ export default function HomePage() {
                   <div className="space-y-3">
                     <div>
                       <label className="block text-sm font-medium text-gray-700">
-                        Project Name
+                       Chat Title
                       </label>
                       <input
                         type="text"
@@ -254,7 +254,7 @@ export default function HomePage() {
           </div>
 
           {loading ? (
-            <p className="text-gray-500">Loading projects...</p>
+            <p className="text-gray-500">Loading chats...</p>
           ) : projects.length > 0 ? (
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
               {[...projects].reverse().map((p) => (
@@ -267,7 +267,7 @@ export default function HomePage() {
               ))}
             </div>
           ) : (
-            <div className="text-gray-500">No projects yet.</div>
+            <div className="text-gray-500">No chat yet.</div>
           )}
         </Box>
       </Flex>

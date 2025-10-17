@@ -161,7 +161,7 @@ function ChatBox() {
 
         } catch (err) {
           console.error("Report error:", err);
-          etIsGenerating(false);
+          setIsGenerating(false);
           setMessages((prev) => [
             ...prev,
             { sender: "system", text: "⚠️ Failed to start report." },
@@ -189,14 +189,14 @@ function ChatBox() {
         } else if (data.state === "SUCCESS") {
           setProgress(100);
           setIsGenerating(false);
-          showToast("✅ Report completed successfully!");
+          showToast("Report completed successfully!");
           setMessages(prev => [
     ...prev,
     {
       sender: "system",
       text: (
         <div className="flex flex-col space-y-2">
-          <p>✅ Report generation completed!</p>
+          <p>Report generation completed!</p>
           <div className="flex gap-2">
             <a
               href={data.web_report}
@@ -204,15 +204,15 @@ function ChatBox() {
               rel="noopener noreferrer"
               className="px-3 py-1 bg-blue-600 text-white rounded-md text-sm hover:bg-blue-700"
             >
-              🌐 View Web Report
+              View Web Report
             </a>
             <a
               href={data.pdf_report}
               target="_blank"
               rel="noopener noreferrer"
-              className="px-3 py-1 bg-green-600 text-white rounded-md text-sm hover:bg-green-700"
+              className="px-3 py-1 bg-blue-600 text-white rounded-md text-sm blue:bg-green-700"
             >
-              📄 Download PDF
+            Download PDF
             </a>
           </div>
         </div>
@@ -270,18 +270,22 @@ function ChatBox() {
                     : "15px 15px 15px 0px",
               }}
             >
+
+
+
               {/* ✅ Progress bar message */}
               {msg.type === "progress" ? (
-                <div className="w-full">
+                <div className="w-50">
                   <p className="text-xs text-gray-500 mb-1">Generating report...</p>
 
-                  <div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden shadow-inner">
-                    <div
-                      className={`h-3 rounded-full transition-all duration-700 ease-in-out ${progress < 100 ? "bg-blue-600" : "bg-green-600"
-                        }`}
-                      style={{ width: `${progress}%` }}
-                    ></div>
-                  </div>
+                  <div className="w-full bg-gray-200 rounded-full h-3 shadow-inner">
+      <div
+        className={`h-3 rounded-full transition-all duration-700 ease-in-out ${
+          progress < 100 ? "bg-blue-600" : "bg-green-600"
+        }`}
+        style={{ width: `${progress}%` }}
+      ></div>
+    </div>
 
                   <p className="text-xs text-gray-500 mt-1">{progress.toFixed(0)}%</p>
                 </div>
