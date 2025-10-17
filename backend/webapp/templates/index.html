@@ -1,0 +1,2390 @@
+<!DOCTYPE html>
+
+{% load static %}
+{% load i18n %}
+{% get_current_language as LANGUAGE_CODE %}
+{% get_available_languages as LANGUAGES_CODE %}
+
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <!--<meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
+  <link rel="icon" type="image/x-icon" href="{% static 'imgs/favicon.png' %}">
+  <link rel="stylesheet" href="{% static 'css/introjs.css' %}">
+  <!-- Intro OL CSS -->
+  <link rel="stylesheet" href="{% static 'css/ol.css' %}" type="text/css">
+  <!-- Custom Style Link -->
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <!-- <link rel="stylesheet" href="./css/introjs-dark.css"> -->
+  <!-- Bootstrap CDN -->
+  <!--<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css"> -->
+  <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" type="text/css">
+  <!-- FontAwesome CDN -->
+  <link rel="stylesheet" href="{% static 'css/fontawesome.min.css' %}">
+  <!-- Intro JS CDN -->
+
+  <!-- Box Icon CDN -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
+  <!-- Bootstrap Icon CDN -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
+  <script src="{% static 'js/intro.min.js' %}"></script>
+  <script src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
+  <script src="{% static 'js/functions.js' %}"></script>
+
+
+  {% csrf_token %}
+  <title>Water Accounting Dashboard</title>
+</head>
+
+<body>
+  <div class="main_navbar">
+    <div class="navbar_text">
+      <h1>Water Accounting Dashboard</h1>
+    </div>
+    <div class="logo_container">
+      <img src="{% static 'imgs/logo_WI_trans.png' %}" alt="logo">
+    </div>
+  </div>
+
+  <div class="main_preloader" style="display: none;">
+    <span class="main_loader"></span>
+    <div class="loading_text">
+      <p>Loading...Please wait!</p>
+    </div>
+  </div>
+
+
+
+
+
+
+  <div class="main-content">
+
+    <!--Side Menu start-->
+    <div class="l-navbar" id="nav-bar">
+      <nav class="nav">
+        <div>
+          <div class="nav_list">
+
+            <a class="nav_link" data-toggle="collapse" role="button" aria-expanded="false"
+              aria-controls="collapseExample">
+              <i class='bx bxs-layer nav_icon step-1'></i>
+            </a>
+            <div class="submenu  collapse " id="collapseExample">
+              <div class="logo-name">
+                <h2>Base Layers</h2>
+
+              </div>
+              <div class="subsecstart">
+                <h4 class="heading">Base Layers</h4>
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="baselayer" value="otm"
+                    id="flexRadioDefault1">
+                  <label class="form-check-label" for="flexRadioDefault1">
+                    OpenTopoMap
+                  </label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="baselayer" value="osm" id="flexRadioDefault1">
+                  <label class="form-check-label" for="flexRadioDefault1">
+                    Street Map
+                  </label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="baselayer" value="googleSatellite"  checked="true"
+                    id="flexRadioDefault1">
+                  <label class="form-check-label" for="flexRadioDefault1">
+                    Google Satellite Map
+                  </label>
+                </div>
+
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="baselayer" value="esa" id="flexRadioDefault1">
+                  <label class="form-check-label" for="flexRadioDefault1">
+                    ESA Worldcover 10m: 2021
+                  </label>
+                </div>
+
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="baselayer" value="sen2" id="flexRadioDefault1">
+                  <label class="form-check-label" for="flexRadioDefault1">
+                    Sentinel-2 cloudless <select id="select_sentinel2Year">
+                      <option value="2018">2018</option>
+                      <option value="2019">2019</option>
+                      <option value="2020">2020</option>
+                      <option value="2021">2021</option>
+                      <option value="2022">2022</option>
+                      <option value="2023">2023</option>
+                      <option value="2024" selected>2024</option>
+                    </select>
+                  </label>
+                </div>
+
+              </div>
+              <div class="subsecstart">
+                <h4 class="heading">Overlay Layers</h4>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" name="overlay" value="boundaries">
+                  <label class="form-check-label" for="boundaries">
+                    Countries Boundaries
+                  </label>
+                </div>
+
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" name="overlay" value="wb_boundaries">
+                  <label class="form-check-label" for="wb_boundaries">
+                    WB Countries Boundaries
+                  </label>
+                </div>
+                
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" name="overlay" value="gaul_L1">
+                  <label class="form-check-label" for="gaul_L1">
+                    FAO GAUL 2024 L1
+                  </label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" name="overlay" value="gaul_L2">
+                  <label class="form-check-label" for="gaul_L2">
+                    FAO GAUL 2024 L2
+                  </label>
+                </div>
+
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" name="overlay" value="basins">
+                  <label class="form-check-label" for="basins">
+                    World Basins
+                  </label>
+                </div>
+
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" name="overlay" value="rivers">
+                  <label class="form-check-label" for="rivers">
+                    World Major Rivers
+                  </label>
+                </div>
+
+              </div>
+            </div>
+            <!-- LAYERS ENDS -->
+            {% if user.is_authenticated %}
+
+
+
+            <a class="nav_link " data-toggle="collapse" role="button" aria-expanded="false"
+              aria-controls="collapseExample">
+              <i class='bx bxs-map nav_icon step-4'></i>
+            </a>
+            <div class="submenu  collapse " id="collapseExample">
+              <div class="logo-name">
+                <h2>Select Area</h2>
+
+              </div>
+
+              <div class="subsecstart">
+                <h4 class="heading">Select Boundary Layer</h4>
+                <div class="input-group">
+                  <select class="form-select" id="selectBoundary">
+                    <option value="none">Select</option>
+                    <option value="countries">Countries</option>
+                    <option value="basins">Basins</option>
+                  </select>
+                </div>
+
+
+                <div id="selectBoundaryFile_section" style="display: none;">
+                  <h4 class="heading mt-4">Select Source</h4>
+                  <div class="input-group">
+                    <select class="form-select" id="selectBoundaryFile">
+                      <option value="worldbank" selected>World Bank</option>
+                      <option value="fao" >FAO</option>
+                    </select>
+                  </div>
+                  <br />
+                </div>
+
+
+                <h4 class="heading mt-4">Select Feature</h4>
+                <div class="input-group">
+                  <select class="form-select" id="selectFeature">
+                    <option value="noarea">Select</option>
+                  </select>
+                </div>
+                <br />
+                <button type="button" class="btn_general" style="width: 100%;" data-bs-toggle="button"
+                  autocomplete="off" title="Add feature to own areas" id="selectedFeature"
+                  onclick="addBB()">Add</button>
+
+              </div>
+
+
+
+
+
+
+
+
+
+              <div class="subsecstart">
+                <h4 class="heading">Select Your Added Area</h4>
+                <div class="input-group">
+                  <select class="form-select" id="addedAreaSelect">
+                    <option value="noarea" id="noarea">Choose..</option>
+                  </select>
+                </div>
+                <button class="btn btn-danger mt-2" id="showDeleteAreaBtn" style="display: none;width: 100%;"
+                  data-bs-toggle="modal" data-bs-target="#deleteArea-modal">
+                  Delete Selected Area
+                </button>
+
+
+
+              </div>
+            </div>
+
+            <!-- TIME RANGE ENDS -->
+            <a class="nav_link " data-toggle="collapse" role="button" aria-expanded="false"
+              aria-controls="collapseExample">
+              <i class='bx bxs-parking nav_icon step-6'></i>
+            </a>
+            <div class="submenu  collapse " id="collapseExample">
+              <div class="logo-name">
+                <h2>Data Products</h2>
+              </div>
+
+              <div class="subsecstart">
+                <h4 class="heading">Precipitation</h4>
+                <div class="input-group">
+                  <select class="form-select" name="precip" id="precip" aria-label="Example select with button addon">
+                    <option value="chirps">Chirps</option>
+                    <option value="gpm">GPM</option>
+                    <!-- <option value="persiann">Persiann</option> -->
+                    <option value="gsmap">GsMAP</option>
+                    <option value="era5">ERA5</option>
+                    <option value="ensemble">Ensemble</option>
+                  </select>
+                </div>
+                <br />
+
+
+                <h4 class="heading">Evapotranspiration</h4>
+                <div class="input-group">
+                  <select class="form-select" name="et" id="et" aria-label="Example select with button addon">
+                    <option value="ssebop" selected>SSebop</option>
+                    <option value="wapor2">WaPOR2</option>
+                    <option value="wapor3">WaPOR3</option>
+                    <option value="enset">Ensemble Africa</option>
+                    <option value="ensetglobal">Ensemble Global</option>
+                  </select>
+                </div>
+
+              </div>
+
+
+
+
+            </div>
+
+            <!-- EXISTING AREAS ENDS -->
+            <a class="nav_link  " data-toggle="collapse" role="button" aria-expanded="false"
+              aria-controls="collapseExample">
+              <i class='bx bxs-time nav_icon step-5'></i>
+            </a>
+            <div class="submenu  collapse" id="collapseExample">
+              <div class="logo-name">
+                <h2>Time Range</h2>
+
+              </div>
+              <div class="subsecstart">
+                <h4 class="heading">Start Year</h4>
+                <div class="input-group">
+                  <select class="form-select" name="startdate" id="startdate"></select>
+                </div>
+                <br />
+                <h4 class="heading">End Year</h4>
+                <div class="input-group">
+                  <select class="form-select" name="enddate" id="enddate"></select>
+                </div>
+
+                <br />
+
+                <button class="btn_general" onclick="getReport()">Get
+                  Report</button>
+
+
+
+                {% if user.is_staff %}
+                  <button class="btn_general" onclick="getReport(true)">
+                    Get Report with WRI Data
+                  </button>
+                  {% endif %}
+
+
+
+              </div>
+            </div>
+
+
+            <!-- PREVIOUS REPORTS ENDS -->
+            <a class="nav_link" data-toggle="collapse" role="button" aria-expanded="false"
+              aria-controls="collapseExample">
+              <i class='bx bxs-report nav_icon step-7'></i>
+            </a>
+            <div class="submenu  collapse " id="collapseExample">
+              <div class="logo-name">
+                <h2>Previous Reports</h2>
+
+              </div>
+
+
+
+              <div class="subsecstart">
+                <div class="input-group mb-3">
+                  <input type="text" class="form-control" id="reportSearch" onkeyup="searchReport()"
+                    placeholder="Search report...">
+                </div>
+
+                <!-- <h5>Previous Reports</h5> -->
+                <div style="overflow-y: auto; height:50vh; " class="w-100" id="previoustasks">
+                </div>
+                <button type="button" class="btn_general" onclick="getTasks()">Refresh
+                  <i class='bx bx-refresh'
+                    style="font-size: 24px; text-align: center; margin-left: 0.5rem;"></i></button>
+              </div>
+            </div>
+            {% endif %}
+            <!-- PREVIOUS REPORTS ENDS -->
+          </div>
+        </div>
+      </nav>
+    </div>
+    <!--Side Menu end-->
+
+    <!-- Menu Icon & Right Icons -->
+    <div class="wb-button-container print-none">
+
+      <div class="toogleBtn">
+        {% if user.is_authenticated %}
+
+        <form action="{% url 'logout' %}" method="post">
+          {% csrf_token %}
+
+          <button style="padding: 0px; border: none;" class="wb-button " type="submit" title="logout"
+            onclick="javascript:introJs().start()">
+            <i class="fas fa-sign-out-alt step-9"></i>
+          </button>
+        </form>
+
+
+        {% else %}
+        <a href="{% url 'login' %}">
+          <div class="wb-button " title="login" data-bs-toggle="modal">
+            <i class="fas fa-sign-in-alt"></i>
+          </div>
+        </a>
+        {% endif %}
+        <div class="wb-button " title="info" data-bs-toggle="modal" data-bs-target="#about-us-modal">
+          <i class="fas fa-info-circle step-8"></i>
+        </div>
+
+        {% if user.is_authenticated %}
+        <div class="wb-button" data-bs-toggle="modal" data-bs-target="#uploadLayerModal" title="Add new area from vector layer"
+          id="addlayerbtn">
+          <i class="fas fa-layer-group step-2"></i>
+        </div>
+        <div class="wb-button" title="Draw a new area" data-bs-toggle="button" autocomplete="off" id="addarea">
+          <i class="fas fa-map-marked step-3"></i>
+        </div>
+
+        <div class="wb-button" title="Check Task Progress" data-bs-toggle="modal" data-bs-target="#task_progress_modal">
+          <i class="fas fa-tasks step-3"></i>
+        </div>
+
+        {% endif %}
+
+
+
+      </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <!--Map Image Starts-->
+    <div id="map" style="margin-top: 60px;">
+
+      <!-- Counts -->
+      <div class="coordinates">
+        <span id="x">X: 0</span>,&nbsp;
+        <span id="y">Y: 0</span>
+      </div>
+
+      <div id="popup" class="ol-popup">
+        <a href="#" id="popup-closer" class="ol-popup-closer"></a>
+        <div id="popup-content"></div>
+      </div>
+
+      <div class="legend_img_container">
+        <img src="{% static 'imgs/legend/worldcover_Legend.png' %}" id="esa-legend"
+          style="display: none; border:1px solid #e5e5e5">
+      </div>
+
+    </div>
+
+
+    <!-- More Features -->
+    <div class="toogleBtn moreFeatures">
+      <div class="boxes" id="featuresBox">
+        <div class="moreIcons">
+          <button type="button" class="btn btn-primary fas fa-ruler d-flex justify-content-center"
+            title="Distance Measurement" data-bs-toggle="button" id="distance_measurement" geomType="LineString">
+          </button>
+          <button type="button" class="btn btn-primary fas fa-draw-polygon d-flex justify-content-center"
+            title="Area Measurement" data-bs-toggle="button" id="area_measurement" geomType="Polygon">
+          </button>
+          <button type="button" class="btn btn-primary fas fa-expand-arrows-alt d-flex justify-content-center"
+            title="Full Extent" id="full_extent">
+          </button>
+          <button type="button" class="btn btn-primary fas fa-eraser d-flex justify-content-center" title="Clear"
+            id="clear">
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+
+
+    <div class="modal fade" id="task_progress_modal" tabindex="-1">
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Water Accounting Dashboard</h5>
+          </div>
+          <div class="modal-body">
+            <h4>Task Progress</h4>
+            <div class="alert alert-info" role="alert">
+              No task running
+            </div>
+
+
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" id="closebtn" data-bs-dismiss="modal">
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Add New Area Modal -->
+    <div class="modal fade" id="uploadLayerModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="addModalLabel">Add new area</h5>
+          </div>
+          <div class="modal-body">
+            <label class="form-label" for="customFile">Upload Boundary (KML/GeoJSON/Shapefile)</label>
+            <input type="file" class="form-control" id="customFile" onchange="readFile(this)" /><br>
+            <label class="form-label" for="customName">Feature Name</label>
+            <input type="text" class="form-control" id="customName" placeholder="Feature Name" />
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary close" data-bs-dismiss="modal"
+              aria-label="Close">Close</button>
+            <button type="submit" class="btn btn-primary" onclick="addUploadedLayer()">Load data</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Add Digitizing Modal -->
+    <div class="modal fade" id="drawModal" tabindex="-1" role="dialog" aria-labelledby="drawModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="drawModalLabel">Digitized feature</h5>
+          </div>
+          <div class="modal-body">
+            <label class="form-label" for="featName">Feature's name</label>
+            <input type="text" class="form-control" id="featName" placeholder="Feature's name" />
+            <input type="hidden" class="form-control" id="featGeom" />
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary close" data-bs-dismiss="modal"
+              aria-label="Close">Close</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" aria-label="Cancel">Cancel
+              feature</button>
+            <button type="submit" class="btn btn-primary" aria-label="Add" onclick="addDrawFeature()">Add
+              feature</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- About us Modal -->
+    <div class="modal fade" id="about-us-modal" tabindex="-1">
+      <div class="modal-dialog modal-dialog-centered modal-lg ">
+        <div class="modal-content ">
+          <div class="modal-header ">
+            <h5 class="modal-title">Water Accounting Dashboard</h5>
+            <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
+          </div>
+          <div class="modal-body">
+            <p>Water Accounting Dashboard automatically generates a water balance report over any
+              selected area by the user. The tool make use of remotely sensed datasets to generate
+              various components of water balance laid over to a report in html and pdf format.</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" id="closebtn" data-bs-dismiss="modal"
+              id="about-modal-close">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="deleteReport-modal" tabindex="-1" role="dialog" aria-labelledby="deleteReportLabel"
+      aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="deleteReportLabel">Confirm Deletion</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            Are you sure you want to delete this report?
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Delete</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="deleteArea-modal" tabindex="-1" role="dialog" aria-labelledby="deleteAreaLabel"
+      aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="deleteAreaLabel">Confirm Deletion</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            Are you sure you want to delete this area?
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            <button type="button" class="btn btn-danger" id="confirmDeleteBtn" onclick="deleteAddedArea()">Delete</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--  Default Get Report Modal -->
+    <div class="modal fade" id="returnModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+      aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLongTitle">Water Accounting Dashboard</h5>
+            <button type="button" class="btn btn-light close" data-bs-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body py-3">
+            <div id="returnText"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- Introduction HTML -->
+
+    <!-- Footer -->
+    <!-- <footer class="page-footer font-small">
+      <div class="footer-copyright text-center">Water Accounting Dashboard © 2025</div>
+    </footer> -->
+
+    <!-- Footer -->
+    <script src="{% static 'js/mobile-detect.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.bundle.5.0.beta3.min.js' %}"></script>
+    <script src="{% static 'js/ol.js' %}" type="text/javascript"></script>
+    <script src="{% static 'js/proj4.js' %}" type="text/javascript"></script>
+    <script src="{% static 'js/turf.min.js' %}"></script>
+    <script src="{% static 'js/intro.js' %}"></script>
+    <script src="{% static 'js/index.js' %}"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/shpjs@latest/dist/shp.min.js"></script>
+
+    <!-- App code -->
+    <script>
+      var epsgsrc = 'EPSG:3857'
+      var espgdest = 'EPSG:4326'
+      var epsgmoll = 'ESRI:53009'
+      proj4.defs(
+        'ESRI:53009',
+        '+proj=moll +lon_0=0 +x_0=0 +y_0=0 +a=6371000 ' +
+        '+b=6371000 +units=m +no_defs'
+      );
+      var mainBondingBox = turf.polygon([[[-180, -70], [-180, 70], [180, 70], [180, -70], [-180, -70]]], { name: 'main bounding box' })
+      ol.proj.proj4.register(proj4);
+      var csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+      var file;
+      var addid;
+
+      var uploaded_file;
+      let convertedGeoJSON = null;
+      var geoJSONFormat = new ol.format.GeoJSON({});
+      const geojsonFormat = new ol.format.GeoJSON();
+
+      var wapor_source = [];
+
+      var newfeat = null;
+
+
+
+
+
+      function searchReport() {
+        var input, filter, reportsContainer, reports, report, i, txtValue;
+        input = document.getElementById("reportSearch");
+        filter = input.value.toUpperCase();
+        reportsContainer = document.getElementById("previoustasks");
+        reports = reportsContainer.getElementsByTagName("div");
+
+        for (i = 0; i < reports.length; i++) {
+          report = reports[i];
+          txtValue = report.textContent || report.innerText;
+          if (txtValue.toUpperCase().indexOf(filter) > -1) {
+            reports[i].style.display = "";
+          } else {
+            reports[i].style.display = "none";
+          }
+        }
+      }
+
+
+      //$('.input-daterange').datepicker({
+      //          format: 'yyyy-mm'
+      //        });
+      var container = document.getElementById('popup');
+      var content = document.getElementById('popup-content');
+      var closer = document.getElementById('popup-closer');
+      function sleep(milliseconds) {
+        var timeStart = new Date().getTime();
+        while (true) {
+          var elapsedTime = new Date().getTime() - timeStart;
+          if (elapsedTime > milliseconds) {
+            break;
+          }
+        }
+      }
+      var overlay = new ol.Overlay({
+        element: container,
+        autoPan: true,
+        autoPanAnimation: {
+          duration: 250,
+        },
+      });
+
+      closer.onclick = function () {
+        overlay.setPosition(undefined);
+        closer.blur();
+        bobasource.clear()
+        return false;
+      };
+      var drawModal = new bootstrap.Modal(document.getElementById('drawModal'), {
+        keyboard: false
+      })
+
+      var attribution = new ol.control.Attribution({
+        collapsible: false,
+      });
+
+      var otmlayer = new ol.layer.Tile({
+        visible: false,
+        source: new ol.source.OSM({
+          url: 'https://{a-c}.tile.opentopomap.org/{z}/{x}/{y}.png',
+          attributions: [' <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)']
+        })
+      })
+
+      var osmlayer = new ol.layer.Tile({
+        source: new ol.source.OSM({
+          url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}',
+          attributions: ["Tiles &copy; Esri, TomTom, Garmin, FAO, NOAA, USGS"]
+        }),
+        visible: false,
+      })
+
+      var googleMap = new ol.layer.Tile({
+        title: 'Google Map',
+        visible: false,
+        source: new ol.source.XYZ({
+          url: 'https://mt{0-3}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}&hl=en',
+          attributions: ['Map data &copy;2025 Google'],
+          maxZoom: 22
+        })
+      })
+
+
+
+      var googleSatelliteMap = new ol.layer.Tile({
+        title: 'Google Satellite',
+        visible: true,
+        source: new ol.source.XYZ({
+          url: 'https://mt{0-3}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}&hl=en',
+          attributions: ['Map data &copy;2025 Google'],
+          maxZoom: 22
+        })
+      })
+
+      var googleTerrain = new ol.layer.Tile({
+        title: 'Google Terrain',
+        visible: false,
+        source: new ol.source.XYZ({
+          url: 'https://mt{0-3}.google.com/vt/lyrs=p&x={x}&y={y}&z={z}&hl=en',
+          attributions: ['Map data &copy;2025 Google'],
+          maxZoom: 22
+        })
+      })
+
+
+
+      /*var sentinellayer = new ol.layer.Image({
+        source: new ol.source.ImageWMS({*/
+      var sentinel2Year = "2024"
+      var sentinellayer = new ol.layer.Tile({
+        source: new ol.source.TileWMS({
+          url: 'https://tiles.maps.eox.at/wms?',
+          params: { 'LAYERS': `s2cloudless-${sentinel2Year}_3857` },
+          version: '1.1.1',
+          format: 'image/png',
+          ratio: 1,
+          serverType: 'mapserver',
+          attributions: ['Sentinel-2 cloudless - <a href="https://s2maps.eu" target="_blank" title="Sentinel-2 cloudless">https://s2maps.eu</a> by <a href="https://eox.at/" target="_blank" title="Eox Company">EOX IT Services GmbH</a> (Contains modified Copernicus Sentinel data 2016 & 2017)']
+        }),
+        visible: false
+      })
+
+      $('#select_sentinel2Year').on('change', function () {
+        var selectedYear = $(this).val();
+
+        // Update the layer parameters
+        sentinellayer.getSource().updateParams({
+          'LAYERS': `s2cloudless-${selectedYear}_3857`
+        });
+
+        // Optional: force redraw
+        sentinellayer.getSource().refresh();
+      });
+
+
+
+      var worldcover = new ol.layer.Tile({
+        source: new ol.source.TileWMS({
+          url: 'https://services.terrascope.be/wms/v2?',
+          params: { 'LAYERS': 'WORLDCOVER_2021_MAP', "TILED": "true", "VERSION": "1.1.1" },
+          version: '1.1.1',
+          format: 'image/png',
+          attributions: ['ESA Worldcover 10m <a href="https://esa-worldcover.org/" target="_blank" title="ESA Worldcover 10m">https://esa-worldcover.org/</a>']
+        }),
+        visible: false
+      })
+
+      var polystyle = new ol.style.Style({
+        fill: new ol.style.Fill({
+          color: 'rgba(255, 0, 0, 0.05)',
+        }),
+        stroke: new ol.style.Stroke({
+          color: '#ff0000',
+          width: 3,
+        }),
+        image: new ol.style.Circle({
+          radius: 7,
+          fill: new ol.style.Fill({
+            color: '#ffcc33',
+          }),
+        }),
+      })
+
+      var polysource = new ol.source.Vector();
+      var polyvector = new ol.layer.Vector({
+        source: polysource,
+        style: polystyle,
+        name: 'selected,'
+      });
+
+
+      let uploadedFileSource = new ol.source.Vector();
+      let uploadedFileLayer = new ol.layer.Vector({
+        source: uploadedFileSource,
+        style: polystyle,
+      });
+
+
+      //Layer for storing measurement vectors
+      var measurevector = new ol.layer.Vector({
+        source: new ol.source.Vector(),
+        name: 'measure'
+      });
+
+      var bobastyle = new ol.style.Style({
+        fill: new ol.style.Fill({
+          color: 'rgba(102, 51, 153, 0.4)',
+        }),
+        stroke: new ol.style.Stroke({
+          color: '#663399',
+          width: 2,
+        }),
+        image: new ol.style.Circle({
+          radius: 7,
+          fill: new ol.style.Fill({
+            color: '#ffcc33',
+          }),
+        })
+      })
+
+      var bobasource = new ol.source.Vector();
+      var bobavector = new ol.layer.Vector({
+        source: bobasource,
+        style: bobastyle,
+        name: 'selected,'
+      });
+
+      var areastyle = new ol.style.Style({
+        fill: new ol.style.Fill({
+          color: 'rgba(255, 255, 0, 0.4)',
+        }),
+        stroke: new ol.style.Stroke({
+          color: '#ffff00',
+          width: 2,
+        }),
+        image: new ol.style.Circle({
+          radius: 7,
+          fill: new ol.style.Fill({
+            color: '#ffcc33',
+          }),
+        })
+      })
+
+      var areahighlight = new ol.style.Style({
+        fill: new ol.style.Fill({
+          color: 'rgba(0, 255, 0, 0.4)',
+        }),
+        stroke: new ol.style.Stroke({
+          color: '#00ff00',
+          width: 3,
+        }),
+        image: new ol.style.Circle({
+          radius: 7,
+          fill: new ol.style.Fill({
+            color: '#ffcc33',
+          }),
+        }),
+        text: new ol.style.Text({
+          font: '12px Calibri,sans-serif',
+          fill: new ol.style.Fill({
+            color: '#000',
+          }),
+          stroke: new ol.style.Stroke({
+            color: '#fff',
+            width: 3,
+          }),
+        }),
+      })
+
+      var areasource = new ol.source.Vector();
+      var areavector = new ol.layer.Vector({
+        source: areasource,
+        style: areastyle,
+        name: 'areas',
+      });
+      areavector.setVisible(false);
+
+      var basinstyle = new ol.style.Style({
+        fill: new ol.style.Fill({
+          color: 'rgba(0, 115, 207, 0.2)',
+        }),
+        stroke: new ol.style.Stroke({
+          color: '#0073cf',
+          width: 1,
+        }),
+      })
+      var basinhighlight = new ol.style.Style({
+        fill: new ol.style.Fill({
+          color: 'rgba(0, 115, 207, 0.4)',
+        }),
+        stroke: new ol.style.Stroke({
+          color: '#0073cf',
+          width: 3,
+        }),
+        text: new ol.style.Text({
+          font: '12px Calibri,sans-serif',
+          fill: new ol.style.Fill({
+            color: '#000',
+          }),
+          stroke: new ol.style.Stroke({
+            color: '#fff',
+            width: 3,
+          }),
+        }),
+      })
+
+
+
+
+      var contriesLayer = new ol.layer.Tile({
+        source: new ol.source.TileWMS({
+          url: `${'https://geoserver.waterinag.org/geoserver/Global/wms'}`,
+          params: {
+            'LAYERS': 'Global:World_Countries',
+            'TRANSPARENT': true,
+          },
+          format: 'image/png',
+          version: '1.1.0',
+          serverType: 'geoserver',
+          attributions: '',
+        }),
+        zIndex: 3,
+        visible: false
+      });
+
+      var wb_contriesLayer = new ol.layer.Tile({
+        source: new ol.source.TileWMS({
+          url: `${'https://geoserver.waterinag.org/geoserver/Global/wms'}`,
+          params: {
+            'LAYERS': 'Global:WB_WorldCountries',
+            'TRANSPARENT': true,
+          },
+          format: 'image/png',
+          version: '1.1.0',
+          serverType: 'geoserver',
+          attributions: '',
+        }),
+        zIndex: 3,
+        visible: false
+      });
+      var GAUL_2024_L1_Layer = new ol.layer.Tile({
+        source: new ol.source.TileWMS({
+          url: `${'https://geoserver.waterinag.org/geoserver/Global/wms'}`,
+          params: {
+            'LAYERS': 'Global:GAUL_2024_L1',
+            'TRANSPARENT': true,
+          },
+          format: 'image/png',
+          version: '1.1.0',
+          serverType: 'geoserver',
+          attributions: '',
+        }),
+        zIndex: 3,
+        visible: false
+      });
+      var GAUL_2024_L2_Layer = new ol.layer.Tile({
+        source: new ol.source.TileWMS({
+          url: `${'https://geoserver.waterinag.org/geoserver/Global/wms'}`,
+          params: {
+            'LAYERS': 'Global:GAUL_2024_L2',
+            'TRANSPARENT': true,
+          },
+          format: 'image/png',
+          version: '1.1.0',
+          serverType: 'geoserver',
+          attributions: '',
+        }),
+        zIndex: 3,
+        visible: false
+      });
+
+
+      var basinLayer = new ol.layer.Tile({
+        source: new ol.source.TileWMS({
+          url: `${'https://geoserver.waterinag.org/geoserver/Global/wms'}`,
+          params: {
+            'LAYERS': 'Global:World_Basin',
+            'TRANSPARENT': true,
+          },
+          format: 'image/png',
+          version: '1.1.0',
+          serverType: 'geoserver',
+          attributions: '',
+        }),
+        zIndex: 3,
+        visible: false
+      });
+
+
+      var riversLayers = new ol.layer.Tile({
+        source: new ol.source.TileWMS({
+          url: `${'https://geoserver.waterinag.org/geoserver/Global/wms'}`,
+          params: {
+            'LAYERS': 'Global:World_Rivers',
+            'TRANSPARENT': true,
+          },
+          format: 'image/png',
+          version: '1.1.0',
+          serverType: 'geoserver',
+          attributions: '',
+        }),
+        zIndex: 3,
+        visible: false
+      });
+
+
+
+
+
+
+
+      var boundstyle = new ol.style.Style({
+        fill: new ol.style.Fill({
+          color: 'rgba(100, 100, 100, 0.4)',
+        }),
+        stroke: new ol.style.Stroke({
+          color: '#000000',
+          width: 2,
+        }),
+        text: new ol.style.Text({
+          font: '12px Calibri,sans-serif',
+          fill: new ol.style.Fill({
+            color: '#000',
+          }),
+          stroke: new ol.style.Stroke({
+            color: '#fff',
+            width: 3,
+          }),
+        }),
+      })
+      var boundhighlight = new ol.style.Style({
+        fill: new ol.style.Fill({
+          color: 'rgba(100, 100, 100, 0.4)',
+        }),
+        stroke: new ol.style.Stroke({
+          color: '#000000',
+          width: 3,
+        }),
+      })
+
+
+      var boundsvector = new ol.layer.Vector({
+        source: new ol.source.Vector(),
+        name: 'vector boundary',
+        style: boundstyle
+      });
+      boundsvector.setVisible(false);
+
+
+
+
+
+
+
+
+      var map = new ol.Map({
+        controls: ol.control.defaults().extend(
+          [
+            new ol.control.ScaleLine({
+              bar: false,
+              steps: 4,
+              text: true,
+              minWidth: 100
+            })
+          ]),
+        target: 'map',
+        layers: [otmlayer, osmlayer, googleSatelliteMap, worldcover, sentinellayer, boundsvector,areavector, polyvector, basinLayer, riversLayers, uploadedFileLayer, wb_contriesLayer, GAUL_2024_L1_Layer, GAUL_2024_L2_Layer, contriesLayer, bobavector, measurevector],
+        view: new ol.View({
+          center: ol.proj.fromLonLat([20, 10]),
+          zoom: 2
+        }),
+        overlays: [overlay]
+        //controls: ol.control.defaults({attribution: false}).extend([attribution])
+      });
+      //Create overlay for measurement
+      function createMeasureOverlay() {
+        return new ol.Overlay({
+          element: document.getElementById("measure_popup"),
+          offset: [0, -15],
+          positioning: 'bottom-center',
+          className: 'ol-tooltip-measure ol-tooltip .ol-tooltip-static'
+        });
+      }
+
+      //Meaure Area and Distance
+      var measuredraw, measureOverlayArrays = [];
+
+      function calArea(measure_overlay, overlayPosition, area) {
+        var measure_label;
+        measure_overlay.setPosition(overlayPosition);
+        if (area > 10000) {
+          measure_label = Math.round((area / 1000000) * 100) / 100 + ' KM\xB2';
+        } else {
+          measure_label = Math.round(area * 100) / 100 + ' M\xB2';
+        }
+        measure_overlay.element.innerHTML = '<b>' + measure_label + '</b>';
+      }
+
+      function calDistance(measure_overlay, overlayPosition, length) {
+        var measure_label;
+        if (parseInt(length) == 0) {
+          measure_overlay.setPosition([0, 0]);
+        }
+        else {
+          measure_overlay.setPosition(overlayPosition);
+          if (length > 100) {
+            measure_label = Math.round((length / 1000) * 100) / 100 + ' KM';
+          } else {
+            measure_label = Math.round(length * 100) / 100 + ' M';
+          }
+          measure_overlay.element.innerHTML = '<b>' + measure_label + '</b>';
+        }
+      }
+
+      function addMeasureInteractions(geomType) {
+        if (measuredraw) {
+          map.removeInteraction(measuredraw);
+        }
+        measuredraw = new ol.interaction.Draw({
+          source: measurevector.getSource(),
+          type: geomType,
+        });
+        measuredraw.on('drawstart', function (event) {
+          var that = this;
+          var measure_overlay = createMeasureOverlay()
+          that.coordinates_length = 0;
+          measureOverlayArrays.push(measure_overlay);
+          measure_overlay.setPosition([0, 0]);
+          measure_overlay.element.style.display = 'block';
+          map.addOverlay(measure_overlay);
+
+          event.feature.getGeometry().on('change', function (e) {
+            if (e.target.getType() == "Polygon") {
+              var geom = e.target.clone();
+              area = geom.transform(epsgsrc, epsgmoll).getArea();
+              calArea(measure_overlay, e.target.getInteriorPoint().getCoordinates().slice(0, 2), area);
+            } else {
+              var coordinates = e.target.getCoordinates();
+              if (coordinates.length > that.coordinates_length) {
+                that.coordinates_length = coordinates.length;
+                partOverLay = createMeasureOverlay();
+                map.addOverlay(partOverLay);
+                measureOverlayArrays.push(partOverLay);
+              }
+              else {
+                that.coordinates_length = coordinates.length;
+              }
+
+              var partLine = new ol.geom.LineString([coordinates[that.coordinates_length - 2], coordinates[that.coordinates_length - 1]]);
+              var p1 = partLine.getCoordinates()[0];
+              var p2 = partLine.getCoordinates()[1];
+              var midPoint = [(p1[0] + p2[0]) / 2, (p1[1] + p2[1]) / 2];
+
+              var partGeom = partLine.clone();
+              calDistance(partOverLay, midPoint, partGeom.transform(epsgsrc, epsgmoll).getLength());
+
+              if (that.coordinates_length > 2 && e.target.getLength() > new ol.geom.LineString([coordinates[0], coordinates[1]]).getLength()) {
+                var geom = e.target.clone();
+                length = geom.transform(epsgsrc, epsgmoll).getLength();
+                calDistance(measure_overlay, e.target.getLastCoordinate(), length);
+              }
+            }
+          });
+        });
+        map.addInteraction(measuredraw);
+      }
+
+
+      //Handles Distance Measurement
+      $("#distance_measurement").click(function (e) {
+        $("#area_measurement").removeClass('active');
+        if ($(this).hasClass('active')) {
+          var geomType = e.target.getAttribute('geomType');
+          addMeasureInteractions(geomType);
+        } else {
+          map.removeInteraction(measuredraw);
+          // for(var i = 0; i < measureOverlayArrays.length; i++) {
+          //   map.removeOverlay(measureOverlayArrays[i]);
+          // }
+          // measureOverlayArrays = [];
+          // measurevector.getSource().clear();
+        }
+      });
+
+      //Handles Area Measurement
+      $("#area_measurement").click(function (e) {
+        $("#distance_measurement").removeClass('active');
+        if ($(this).hasClass('active')) {
+          var geomType = e.target.getAttribute('geomType');
+          addMeasureInteractions(geomType);
+        } else {
+          map.removeInteraction(measuredraw);
+          // for(var i = 0; i < measureOverlayArrays.length; i++) {
+          //   map.removeOverlay(measureOverlayArrays[i]);
+          // }
+          // measureOverlayArrays = [];
+          // measurevector.getSource().clear();
+        }
+      });
+
+      // Switch to full extent
+      $("#full_extent").click(function () {
+        map.setView(
+          new ol.View({
+            center: ol.proj.fromLonLat([20, 10]),
+            zoom: 2
+          })
+        )
+      });
+
+
+
+
+function fetchAndDisplayFeaturesList() {
+  const selectedBoundry = $('#selectBoundary').val();
+  const boundaryFile = $('#selectBoundaryFile').val();
+
+  if (selectedBoundry !== '' && selectedBoundry !== 'none') {
+    $('.main_preloader').css('display', 'flex');
+
+    $.ajax({
+      type: "POST",
+      url: "/getFeaturesList",
+      data: { featureType: selectedBoundry, boundaryFile: boundaryFile }
+    }).done(function (geojson) {
+      // Clear old features
+      boundsvector.getSource().clear();
+
+      // Convert GeoJSON to OL features
+      const features = geojsonFormat.readFeatures(geojson, {
+        dataProjection: 'EPSG:4326',
+        featureProjection: 'EPSG:3857'
+      });
+
+      // Add to vector source
+      boundsvector.getSource().addFeatures(features);
+      boundsvector.setVisible(true);
+
+
+
+      // Populate dropdown
+      $('#selectFeature').empty().append('<option value="noarea">Select</option>');
+
+      // Collect names
+      let names = features
+        .map(feat => feat.get('name'))
+        .filter(name => name); // remove null/undefined
+
+      // Sort alphabetically (case-insensitive)
+      names.sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()));
+
+      // Append sorted
+      names.forEach(function (name) {
+        $('#selectFeature').append('<option value="' + name + '">' + name + '</option>');
+      });
+
+
+      // Toggle source selection visibility
+      if (selectedBoundry === 'countries') {
+        $('#selectBoundaryFile_section').css('display', 'block');
+      } else {
+        $('#selectBoundaryFile_section').css('display', 'none');
+      }
+      selectFeatureByName()
+
+      $('.main_preloader').css('display', 'none');
+    }).fail(function () {
+      boundsvector.getSource().clear();
+      boundsvector.setVisible(false);
+      $('#selectFeature').empty().append('<option value="noarea">Select</option>');
+      $('.main_preloader').css('display', 'none');
+    });
+  } else {
+    boundsvector.getSource().clear();
+    boundsvector.setVisible(false);
+    $('#selectFeature').empty().append('<option value="noarea">Select</option>');
+  }
+}
+
+
+
+
+
+
+      $('#selectBoundary').change(function () {
+        fetchAndDisplayFeaturesList();
+      });
+
+      $('#selectBoundaryFile').change(function () {
+        fetchAndDisplayFeaturesList();
+      });
+
+
+
+
+
+      // $('#selectFeature').change(function () {
+      //   var selectFeature = $('#selectFeature').val();
+      //   const selectedBoundry = $('#selectBoundary').val();
+      //   const boundaryFile = $('#selectBoundaryFile').val();
+
+
+
+      //   if (selectFeature !== 'noarea') {
+
+      //     $('.main_preloader').css('display', 'flex');
+      //     $('#addedAreaSelect').val('noarea');
+
+
+      //     $.ajax({
+      //       type: "POST",
+      //       url: `/getFeatureGeometry`,
+      //       data: { featureName: selectFeature, featureType: selectedBoundry, boundaryFile: boundaryFile },
+      //       success: function (selectedFeature) {
+
+      //         polysource.clear(); // Remove all previous features
+      //         var geom = selectedFeature.geometry; // Ensure geometry is properly parsed
+      //         var olGeom;
+
+      //         if (geom.type === 'Polygon') {
+      //           olGeom = new ol.geom.Polygon(geom.coordinates);
+      //         } else if (geom.type === 'MultiPolygon') {
+      //           olGeom = new ol.geom.MultiPolygon(geom.coordinates);
+      //         }
+
+      //         if (olGeom) {
+      //           newfeat = new ol.Feature({
+      //             geometry: olGeom.transform(espgdest, epsgsrc),
+      //             name: selectedFeature.properties.name,
+      //             properties: selectedFeature.properties
+      //           });
+
+      //           polysource.addFeature(newfeat);
+
+      //           var ext = newfeat.getGeometry().getExtent();
+      //           if (!ol.extent.isEmpty(ext)) {
+      //             map.getView().fit(ext, map.getSize());
+      //           } else {
+      //             console.log('Empty extent for selected boundary:');
+      //           }
+      //           $('.main_preloader').css('display', 'none');
+
+      //           checkDataConstraint(); // Assuming this is a function that handles further checks
+      //         } else {
+      //           $('.main_preloader').css('display', 'none');
+      //         }
+      //       },
+      //       error: function () {
+      //         console.error('Failed to fetch boundary geometry.');
+      //         $('.main_preloader').css('display', 'none');
+      //       }
+      //     });
+      //   } else {
+      //     polysource.clear();
+      //   }
+      // });
+
+
+
+      function selectFeatureByName(name) {
+        if (!name || name === 'noarea') {
+          polysource.clear();
+          return;
+        }
+
+        // Find the feature in boundsvector
+        const features = boundsvector.getSource().getFeatures();
+        const match = features.find(f => f.get('name') === name);
+
+        if (match) {
+          polysource.clear();
+
+          // Clone + highlight the feature
+          const selectedFeature = match.clone();
+          // selectedFeature.setStyle(boundhighlight);
+
+          polysource.addFeature(selectedFeature);
+
+          // Zoom to its extent
+          const ext = selectedFeature.getGeometry().getExtent();
+          if (!ol.extent.isEmpty(ext)) {
+            map.getView().fit(ext, { padding: [50, 50, 50, 50] });
+          }
+
+          newfeat = selectedFeature; // keep reference for later use
+          checkDataConstraint();
+        }
+      }
+
+
+      $('#selectFeature').change(function () {
+        const name = $(this).val();
+        selectFeatureByName(name);
+      });
+
+      map.on('singleclick', function (evt) {
+        map.forEachFeatureAtPixel(evt.pixel, function (feature, layer) {
+          if (layer === boundsvector) {
+            const name = feature.get('name');
+            if (name) {
+              $('#selectFeature').val(name);
+              selectFeatureByName(name);
+            }
+          }
+        });
+      });
+
+
+
+
+
+
+
+
+
+
+      // Clear measure interaction, measure features and measure overlays
+      $("#clear").click(function () {
+        $("#area_measurement").removeClass('active');
+        $("#distance_measurement").removeClass('active');
+        if (measuredraw) {
+          map.removeInteraction(measuredraw);
+        }
+        if (draw) {
+          // map.removeInteraction(draw);
+          event.target.abortDrawing();
+        }
+        for (var i = 0; i < measureOverlayArrays.length; i++) {
+          map.removeOverlay(measureOverlayArrays[i]);
+        }
+        measureOverlayArrays = [];
+        measurevector.getSource().clear();
+      });
+
+      //Show X,Y coordinates
+      map.on('pointermove', function (e) {
+        var x = ol.proj.toLonLat(e.coordinate)[0];
+        $("#x")[0].innerHTML = x.toFixed(4);
+        var y = ol.proj.toLonLat(e.coordinate)[1];
+        $("#y")[0].innerHTML = y.toFixed(4);
+      });
+
+      $('input[type="radio"]').click(function () {
+        if ($(this).prop("checked")) {
+          var layername = $(this).val()
+        }
+        if (layername == 'otm') {
+          $("#esa-legend").css("display", "none");
+          worldcover.setVisible(false);
+          sentinellayer.setVisible(false);
+          osmlayer.setVisible(false);
+          otmlayer.setVisible(true);
+          googleSatelliteMap.setVisible(false);
+        } else if (layername == 'osm') {
+          $("#esa-legend").css("display", "none");
+          worldcover.setVisible(false);
+          sentinellayer.setVisible(false);
+          osmlayer.setVisible(true);
+          otmlayer.setVisible(false);
+          googleSatelliteMap.setVisible(false);
+        } else if (layername == 'googleSatellite') {
+          $("#esa-legend").css("display", "none");
+          worldcover.setVisible(false);
+          sentinellayer.setVisible(false);
+          osmlayer.setVisible(false);
+          googleSatelliteMap.setVisible(true);
+          otmlayer.setVisible(false);
+        } else if (layername == 'sen2') {
+          $("#esa-legend").css("display", "none");
+          worldcover.setVisible(false);
+          sentinellayer.setVisible(true);
+          osmlayer.setVisible(false);
+          otmlayer.setVisible(false);
+          googleSatelliteMap.setVisible(false);
+        } else if (layername == 'esa') {
+          $("#esa-legend").css("display", "block");
+          worldcover.setVisible(true);
+          sentinellayer.setVisible(false);
+          osmlayer.setVisible(false);
+          otmlayer.setVisible(false);
+          googleSatelliteMap.setVisible(false);
+        }
+      })
+
+
+
+      $('input[type="checkbox"][name="overlay"]').change(function () {
+        var layername = $(this).val();
+
+        // Handle layer visibility based on the checkbox state
+        if ($(this).prop("checked")) {
+          if (layername === 'myareas') {
+            areavector.setVisible(true);
+          } else if (layername === 'boundaries') {
+            contriesLayer.setVisible(true);
+          } else if (layername === 'wb_boundaries') {
+            wb_contriesLayer.setVisible(true);
+          } else if (layername === 'basins') {
+            basinLayer.setVisible(true);
+          } else if (layername === 'rivers') {
+            riversLayers.setVisible(true);
+          }
+          else if (layername === 'gaul_L1') {
+            GAUL_2024_L1_Layer.setVisible(true);
+          }
+          else if (layername === 'gaul_L2') {
+            GAUL_2024_L2_Layer.setVisible(true);
+          }
+
+
+        } else {
+          // Hide the layer if the checkbox is unchecked
+          if (layername === 'myareas') {
+            areavector.setVisible(false);
+          } else if (layername === 'boundaries') {
+            contriesLayer.setVisible(false);
+          } else if (layername === 'wb_boundaries') {
+            wb_contriesLayer.setVisible(false);
+          } else if (layername === 'basins') {
+            basinLayer.setVisible(false);
+          } else if (layername === 'rivers') {
+            riversLayers.setVisible(false);
+          }
+          else if (layername === 'gaul_L1') {
+            GAUL_2024_L1_Layer.setVisible(false);
+          }
+          else if (layername === 'gaul_L2') {
+            GAUL_2024_L2_Layer.setVisible(false);
+          }
+        }
+      });
+
+
+
+      //var modify = new ol.interaction.Modify({source: polysource});
+      //map.addInteraction(modify);
+
+      var draw, snap; // global so we can remove them later
+      var typeSelect = document.getElementById('type');
+      function addInteractions() {
+        polysource.clear()
+        $('#addedAreaSelect').val('noarea')
+        draw = new ol.interaction.Draw({
+          source: polysource,
+          type: 'Polygon',
+        });
+        draw.on('drawstart', function (event) {
+          event.feature.getGeometry().on('change', function (e) {
+            window.event = event;
+          });
+        });
+        draw.on('drawend', function (event) {
+          var feat = event.feature;
+          areafeat = feat.clone()
+          areafeat.getGeometry().transform(epsgsrc, epsgmoll);
+          if (feat.getGeometry().getArea() < 20000000) {
+            $("#returnText").text("The area is too small, please draw a bigger area");
+            $("#returnModal").modal('show');
+            polysource.clear();
+            //} else if (feat.getGeometry().getArea() > 100000000) {
+            //            	$("#returnText").text("The area is to big, please draw a bigger area");
+            //              $("#returnModal").modal('show');
+            //              polysource.clear();
+          } else {
+            feat.getGeometry().transform(epsgsrc, espgdest)
+            var geoJsonStr = geoJSONFormat.writeGeometry(feat.getGeometry());
+            $("#featGeom").val(geoJsonStr);
+            drawModal.show()
+          }
+
+        });
+        map.addInteraction(draw);
+        snap = new ol.interaction.Snap({ source: polysource });
+        map.addInteraction(snap);
+      }
+
+      $('#addarea').click(function () {
+        if ($(this).hasClass('active')) {
+          addInteractions();
+        } else {
+          map.removeInteraction(draw);
+          map.removeInteraction(snap);
+        }
+      })
+      $('#uploadLayerbtn').click(function () {
+        if ($(this).hasClass('active')) {
+          map.removeInteraction(draw);
+          map.removeInteraction(snap);
+        }
+      })
+      $('#infobtn').click(function () {
+        console.log('active');
+        $("#returnText").text("");
+        $("#returnText").text("Water Accounting Dashboard automatically generates a water balance report over any selected area by the user. The tool make use of remotely sensed datasets to generate various components of water balance laid over to a report in html and pdf format.")
+      })
+
+
+
+
+      function checkDataConstraint() {
+        var element = $("#addedAreaSelect").find(':selected')
+        if (element.data('geom') === undefined) {
+          $("#getReport").prop("disabled", true);
+          return
+        }
+        var jsongeom = element.data('geom')
+        var multipolys = new ol.geom.MultiPolygon(jsongeom['coordinates']).getPolygons()
+        //var olgeom = geoJSONFormat.writeGeometryObject(new ol.geom.MultiPolygon(jsongeom['coordinates']))
+        //console.log(olgeom)
+        for (let poly in multipolys) {
+          var geom = geoJSONFormat.writeGeometryObject(multipolys[poly])
+          var maincheck = turf.booleanContains(mainBondingBox['geometry'], geom)
+          if (maincheck == false) {
+            $("#returnText").text("");
+            $("#returnText").text("The selected area exceed from general bounding box (-180,-70,180,70) ")
+            $("#returnModal").modal('show');
+            $("#getReport").prop("disabled", true);
+            return
+          }
+        }
+
+        var precip = $('#precip').val();
+        if (precip == "chirps") {
+          var precipBoundingBox = turf.polygon([[[-180, -50], [-180, 50], [180, 50], [180, -50], [-180, -50]]], { name: 'precip bounding box' })
+          for (let poly in multipolys) {
+            var geom = geoJSONFormat.writeGeometryObject(multipolys[poly])
+            var precipcheck = turf.booleanContains(precipBoundingBox['geometry'], geom)
+            if (precipcheck == false) {
+              $("#returnText").text("");
+              $("#returnText").text("The selected area exceed from CHIRPS bounding box (-180, -50, 180, 50) ")
+              $("#returnModal").modal('show');
+              $("#getReport").prop("disabled", true);
+              return
+            }
+          }
+        } else if (precip == "persiann") {
+          var precipBoundingBox = turf.polygon([[[-180, -60], [-180, 60], [180, 60], [180, -60], [-180, -60]]], { name: 'precip bounding box' })
+          for (let poly in multipolys) {
+            var geom = geoJSONFormat.writeGeometryObject(multipolys[poly])
+            var precipcheck = turf.booleanContains(precipBoundingBox['geometry'], geom)
+            if (precipcheck == false) {
+              $("#returnText").text("");
+              $("#returnText").text("The selected area exceed from PERSIANN bounding box (-180, -60, 180, 60) ")
+              $("#returnModal").modal('show');
+              $("#getReport").prop("disabled", true);
+              return
+            }
+          }
+        } else if (precip == "enspcp") {
+          var precipBoundingBox = turf.polygon([[[-180, -50], [-180, 50], [180, 50], [180, -50], [-180, -50]]], { name: 'precip bounding box' })
+          for (let poly in multipolys) {
+            var geom = geoJSONFormat.writeGeometryObject(multipolys[poly])
+            var precipcheck = turf.booleanContains(precipBoundingBox['geometry'], geom)
+            if (precipcheck == false) {
+              $("#returnText").text("");
+              $("#returnText").text("The selected area exceed from Ensemble bounding box (-180, -60, 180, 60) ")
+              $("#returnModal").modal('show');
+              $("#getReport").prop("disabled", true);
+              $("#et").val("ssebop");
+              return
+            }
+          }
+        }
+
+        var et = $('#et').val();
+
+
+        if (et == "wapor2") {
+          for (let poly in multipolys) {
+            var geom = geoJSONFormat.writeGeometryObject(multipolys[poly])
+            for (let wapor in wapor_source) {
+              var waporcheck = turf.booleanContains(wapor_source[wapor], geom)
+              if (waporcheck == false) {
+                $("#returnText").text("");
+                $("#returnText").text("The selected area exceed from WaPOR2 bounding box (cover only Africa) ")
+                $("#returnModal").modal('show');
+                $("#getReport").prop("disabled", true);
+                $("#et").val("ssebop");
+                return
+              }
+            }
+          }
+        } else if (et == "enset") {
+          for (let poly in multipolys) {
+            var geom = geoJSONFormat.writeGeometryObject(multipolys[poly])
+            for (let enset in wapor_source) {
+              var waporcheck = turf.booleanContains(wapor_source[enset], geom)
+              if (waporcheck == false) {
+                $("#returnText").text("");
+                $("#returnText").text("The selected area exceed from Ensemble bounding box (cover only Africa) ")
+                $("#returnModal").modal('show');
+                $("#getReport").prop("disabled", true);
+                $("#et").val("ssebop");
+                return
+              }
+            }
+          }
+        }
+        $("#getReport").prop("disabled", false);
+      }
+
+      function addBB() {
+
+        if (newfeat) {
+
+          var geom = newfeat.getGeometry()
+          var newgeom = geom.transform(epsgsrc, espgdest)
+          var geoJsonStr = geoJSONFormat.writeGeometry(newgeom);
+
+          var newgeom = geom.transform(espgdest, epsgsrc)
+
+          var featName = newfeat.get('name')
+          var featGeom = geoJsonStr
+
+          addFeature(featName, featGeom)
+          $("#selectFeature").val('noarea')
+          // $("#featGeom").val()
+
+        } else {
+          $("#returnText").text("No boundary has been selected.");
+          $("#returnModal").modal('show');
+
+        }
+
+      }
+
+      function deleteAddedArea() {
+        var areaid = $('#addedAreaSelect').val();
+
+        if(areaid !=="noarea"){
+          $.ajax({
+          type: "GET",
+          url: "/deleteAddedArea/" + areaid
+        }).done(function (msg) {
+          getAddedAreasList(); // Refresh the task list after deletion
+          $("#returnText").text(""); // Clear any previous message
+          $("#returnText").text(msg['result']); // Set the success message from server
+          $("#returnModal").modal('show'); // Show the modal with the result
+          $('#deleteArea-modal').modal('hide'); // Hide the delete confirmation modal
+          $('#showDeleteAreaBtn').hide();
+          polysource.clear();
+          $('#addedAreaSelect').val('noarea');
+
+        }).fail(function (msg) {
+          $("#returnText").text(""); // Clear any previous message
+          $("#returnText").text(msg['result']); // Set the error message from server
+          $("#returnModal").modal('show'); // Show the modal with the error
+        });
+
+        }else{
+        $("#returnText").text("No area has been selected.");
+          $("#returnModal").modal('show');
+        }
+
+        
+      }
+
+
+
+
+      function isFeatureAdded(featureName) {
+        var isAdded = false;
+        $('#addedAreaSelect option').each(function () {
+          if ($(this).text() === featureName) {
+            isAdded = true;
+            return false; // Break the loop
+          }
+        });
+        return isAdded;
+      }
+
+
+
+
+      function getReport(withWRI) {
+        var area = $('#addedAreaSelect').val();
+        var start = $('#startdate').val();
+        var end = $('#enddate').val();
+        var precip = $('#precip').val();
+        var et = $('#et').val();
+        var wri_data = withWRI ? true :false;
+
+
+        if (area == 'noarea') {
+          $("#returnText").text("");
+          $("#returnText").text("Please select an area to get the report")
+          $("#returnModal").modal('show');
+          return
+        }
+        $('.main_preloader').css('display', 'flex');
+
+
+        $.ajax({
+          type: "POST",
+          url: "/getreport",
+          data: { id: area, start: start, end: end, precip: precip, et: et,wri_data:wri_data }
+        }).done(function (msg) {
+          $('.main_preloader').css('display', 'none');
+          var taskId = msg.task_id;
+          console.log("taskId", taskId)
+          trackTaskProgress(taskId);
+
+        }).fail(function (msg) {
+          $("#returnText").text("");
+          $("#returnText").text(msg['result'])
+          $('.main_preloader').css('display', 'none');
+          $("#returnModal").modal('show');
+        })
+      }
+
+
+      function trackTaskProgress(taskId) {
+        // Show the modal
+        $('#task_progress_modal').modal('show');
+
+        function checkProgress() {
+          $.get("/get-task-status/" + taskId + "/", function (data) {
+
+
+            // Check if the task is in progress
+            if (data.state === "PROGRESS") {
+              var progress = data.progress;
+
+              // Dynamically update the modal content with the progress bar
+              $('#task_progress_modal .modal-body').html(
+                '<h4>Task Progress</h4>' +
+                '<div class="progress" style="height: 30px;">' +
+                '<div class="progress-bar progress-bar-striped bg-success" role="progressbar" ' +
+                'id="task-progress-bar" style="width: ' + progress + '%" aria-valuenow="' + progress + '" ' +
+                'aria-valuemin="0" aria-valuemax="100">' + progress + '%</div>' +
+                '</div>'
+              );
+
+
+              if (progress < 100) {
+                setTimeout(checkProgress, 10000);
+              }
+            } else if (data.state === "SUCCESS") {
+              $('#task-progress-bar').css("width", "100%");
+              $('#task-progress-bar').attr("aria-valuenow", "100");
+              $('#task-progress-bar').text("100%");
+              getTasks()
+              $('#task_progress_modal .modal-body').html(
+                '<h4>Task Progress</h4>' +
+                '<div class="alert alert-success" role="alert">' +
+                'Task Completed: Report generated successfully!' +
+                '</div>'
+              );
+            } else if (data.state === "FAILURE") {
+              // Handle failure case
+              var errorMessage = data.status || "An error occurred while processing the task.";
+              $('#task_progress_modal .modal-body').html(
+                '<h4>Task Progress</h4>' +
+                '<div class="alert alert-danger" role="alert">' +
+                'Task Failed: ' + errorMessage +
+                '</div>'
+              );
+            }
+          });
+        }
+
+        checkProgress();
+      }
+
+
+      $('#et').change(function () {
+        checkDataConstraint();
+      })
+
+      $('#precip').change(function () {
+        checkDataConstraint();
+      })
+
+
+
+
+
+
+
+      /********************************************************
+      Parse GeoJSON
+      ********************************************************/
+      function parseGeoJSON(text) {
+        try {
+          const features = geojsonFormat.readFeatures(text, {
+            dataProjection: 'EPSG:4326',      // If your data is indeed in 4326
+            featureProjection: 'EPSG:3857'    // This is how it's displayed on the map
+          });
+
+          // Show on the map
+          addFeaturesToMap(features);
+          // Convert features back to a plain GeoJSON string in EPSG:4326
+          convertedGeoJSON = geojsonFormat.writeFeatures(features, {
+            dataProjection: 'EPSG:4326',
+            featureProjection: 'EPSG:3857'    // If the map is 3857
+          });
+        } catch (err) {
+          console.error('Error parsing GeoJSON:', err);
+          alert('Failed to parse GeoJSON file.');
+        }
+      }
+
+      /********************************************************
+       * Parse KML
+       ********************************************************/
+
+      function parseKML(text) {
+        try {
+          const kmlFormat = new ol.format.KML();
+          const features = kmlFormat.readFeatures(text, {
+            dataProjection: 'EPSG:4326',    // KML is typically 4326
+            featureProjection: 'EPSG:3857'
+          });
+          addFeaturesToMap(features);
+          // Convert to GeoJSON (EPSG:4326)
+          convertedGeoJSON = geojsonFormat.writeFeatures(features, {
+            dataProjection: 'EPSG:4326',
+            featureProjection: 'EPSG:3857'
+          });
+        } catch (err) {
+          console.error('Error parsing KML:', err);
+          alert('Failed to parse KML file.');
+        }
+      }
+
+
+      /********************************************************
+       * Parse KMZ (zip) using JSZip
+       ********************************************************/
+      async function parseKMZ(file) {
+        try {
+          const arrayBuffer = await file.arrayBuffer();
+          const zip = await JSZip.loadAsync(arrayBuffer);
+          const kmlFileName = Object.keys(zip.files).find((n) =>
+            n.toLowerCase().endsWith('.kml')
+          );
+          if (!kmlFileName) {
+            alert('No .kml found inside the KMZ.');
+            return;
+          }
+          const kmlText = await zip.file(kmlFileName).async('string');
+          parseKML(kmlText);
+        } catch (err) {
+          console.error('Error parsing KMZ:', err);
+          alert('Failed to parse KMZ file.');
+        }
+      }
+
+      /********************************************************
+      * parseShapefile
+      ********************************************************/
+
+      async function parseShapefile(file) {
+        try {
+          const arrayBuffer = await file.arrayBuffer();
+          // You need shp.js or a similar library to parse Shapefiles in the browser
+          // For example, see: https://github.com/calvinmetcalf/shapefile-js
+          const result = await shp(arrayBuffer);
+          // 'result' might be a single FeatureCollection or an object of multiple layers.
+
+          // Convert that FeatureCollection to an OL feature array
+          // Easiest is to convert it to a string, then read with OL's GeoJSON format
+          let out = null;
+          if (result.type === 'FeatureCollection') {
+            out = JSON.stringify(result);
+          } else {
+            // if it's multiple layers, pick one or merge them
+            // For simplicity, pick first valid FC
+            for (const key in result) {
+              if (result[key].type === 'FeatureCollection') {
+                out = JSON.stringify(result[key]);
+                break;
+              }
+            }
+          }
+          if (!out) {
+            alert('No valid FeatureCollection found in Shapefile.');
+            return;
+          }
+          // Now parse as if it's GeoJSON
+          parseGeoJSON(out);
+        } catch (err) {
+          console.error('Error parsing Shapefile:', err);
+          alert('Failed to parse Shapefile ZIP. Make sure .shp, .dbf, .prj, etc. are included.');
+        }
+      }
+
+      function addFeaturesToMap(features) {
+        // Clear old features
+        uploadedFileSource.clear();
+
+        // Add the new features
+        uploadedFileSource.addFeatures(features);
+
+        // Fit the map view to these features, if any
+        if (features && features.length > 0) {
+          const extent = uploadedFileSource.getExtent();
+          map.getView().fit(extent, { padding: [50, 50, 50, 50] });
+        }
+      }
+
+
+
+      function readFile(input) {
+        uploaded_file = input.files[0];
+        convertedGeoJSON = null; // reset on each new upload
+
+        if (!uploaded_file) return;
+
+        const fileName = uploaded_file.name.toLowerCase();
+
+        if (fileName.endsWith('.geojson') || fileName.endsWith('.json')) {
+          const reader = new FileReader();
+          reader.onload = (e) => parseGeoJSON(e.target.result);
+          reader.readAsText(uploaded_file);
+        }
+        else if (fileName.endsWith('.kml')) {
+          const reader = new FileReader();
+          reader.onload = (e) => parseKML(e.target.result);
+          reader.readAsText(uploaded_file);
+        }
+        else if (fileName.endsWith('.kmz')) {
+          parseKMZ(uploaded_file);
+        }
+        else if (fileName.endsWith('.zip')) {
+          parseShapefile(uploaded_file);
+        }
+        else {
+          alert('Unsupported file format. Please upload .geojson, .kml, .kmz, or .zip (Shapefile).');
+        }
+      }
+
+
+
+
+
+      function addUploadedLayer() {
+
+        if (!convertedGeoJSON) {
+          $("#uploadLayerModal").modal('hide');
+          $("#returnText").text("No valid GeoJSON found. Please upload a file first!");
+          $("#returnModal").modal('show');
+          return;
+        }
+
+        $('.main_preloader').css('display', 'flex');
+
+        $.ajax({
+          type: "POST",
+          url: "/addUploadedLayer",
+          data: { customName: $("#customName").val(), file: convertedGeoJSON }
+
+        }).done(function (msg) {
+          $("#uploadLayerModal").modal('hide');
+          $("#returnText").text("")
+          $('.main_preloader').css('display', 'none');
+          $("#returnText").text(msg['result']);
+          $("#returnModal").modal('show');
+
+
+          $("#customFile").val("");
+          $("#customName").val("");
+
+          
+          uploadedFileSource.clear();
+          uploaded_file = null;
+          convertedGeoJSON = null;
+
+          getAddedAreasList();
+        }).fail(function (msg) {
+          $("#uploadLayerModal").modal('hide');
+          $('.main_preloader').css('display', 'none');
+          $("#returnText").text("");
+          $("#returnText").text(msg.responseJSON['result']);
+          $("#returnModal").modal('show');
+          getAddedAreasList();
+        });
+
+      }
+
+
+
+
+
+      function addyear() {
+
+        var precip = $('#precip').val();
+        var et = $('#et').val();
+
+        var startYear;
+        var endyear;
+        var selectedStartYear;
+
+
+        if (et === 'wapor3' || et === 'ensetglobal') {
+          startYear = 2018
+          endyear = 2023
+          selectedStartYear = 2018
+        } else if (et === 'wapor2'|| et === 'enset') {
+          startYear = 2009;
+          endYear = 2023;
+          selectedStartYear = 2009;
+        }else {
+            startYear = 2009
+            endyear = 2023
+            selectedStartYear = 2010
+          }
+        $('#startdate').empty();
+        $('#enddate').empty();
+
+
+        for (i = startYear; i <= endyear; i++) {
+          if (i == selectedStartYear) {
+            $('#startdate').append('<option value="' + i + '" selected>' + i + '</option>')
+          } else {
+            $('#startdate').append('<option value="' + i + '">' + i + '</option>')
+          }
+          if (i == endyear) {
+            $('#enddate').append('<option value="' + i + '" selected>' + i + '</option>')
+          } else {
+            $('#enddate').append('<option value="' + i + '">' + i + '</option>')
+          }
+        }
+      }
+
+      window.addEventListener('resize', checkSize);
+
+
+
+      function addDrawFeature(areaId) {
+        var name = $("#featName").val()
+        var geom = $("#featGeom").val()
+
+        if (geom && name) {
+          addFeature(name, geom)
+        }
+
+
+      }
+
+
+      function addFeature(featName, featGeom) {
+
+        $.ajax({
+          type: "POST",
+          url: "/addFeature",
+          data: { name: featName, geom: featGeom }
+        }).done(function (msg) {
+          $("#drawModal").modal('hide');
+          $("#returnText").text("");
+          $("#returnText").text(msg['result'])
+          $("#returnModal").modal('show');
+          addid = msg['featid'];
+          getAddedAreasList(addid);
+          $("#featName").val('');
+          polysource.clear();
+          $('#selectFeature').val('noarea');
+          $('#selectBoundary').val('none');
+
+        }).fail(function (msg) {
+          $("#drawModal").modal('hide');
+          $("#returnText").text("");
+          $("#returnText").text(msg.responseJSON['result']);
+          $("#returnModal").modal('show');
+          getAddedAreasList();
+          $("#featName").val('');
+          polysource.clear();
+          $('#selectFeature').val('noarea');
+          $('#selectBoundary').val('none');
+        });
+      }
+
+      function getAddedAreasList() {
+        $.ajax({
+          type: "GET",
+          url: "/getAddedAreasList"
+        }).done(function (areas) {
+          // Populate the dropdown with area names and IDs without geometries
+          $('#addedAreaSelect').empty().append('<option value="noarea" id="noarea">Select an area</option>');
+          if (Array.isArray(areas)) {
+            areas.forEach(function (area) {
+              $('#addedAreaSelect').append(`<option value="${area.id}">${area.name}</option>`);
+            });
+          } else {
+            console.warn("No valid area list found.");
+          }
+        }).fail(function () {
+          console.error("Failed to fetch areas.");
+        });
+      };
+
+
+
+      $(document).ready(function () {
+
+
+
+
+        $('#addedAreaSelect').change(function () {
+          const selectedAreaId = $(this).val();
+
+          if (selectedAreaId !== 'noarea') {
+
+            $('#showDeleteAreaBtn').show();
+            $('#showDeleteAreaBtn').data('areaid', selectedAreaId);
+          } else {
+            $('#showDeleteAreaBtn').hide();
+          }
+
+
+          // Check if a valid area is selected
+          if (selectedAreaId !== 'noarea') {
+            fetchAreaGeometry(selectedAreaId);
+          } else {
+            areasource.clear(); // Clear the map if no valid area is selected
+          }
+        });
+
+
+
+        function fetchAreaGeometry(areaId) {
+          $('.main_preloader').css('display', 'flex');
+
+          $.ajax({
+            type: "GET",
+            url: `/getarea-geometry/${areaId}/`
+          }).done(function (area) {
+            // console.log(area)
+            var geom = JSON.parse(area.geometry)
+            var myname = area.name
+            var myid = area.id
+            newfeat = new ol.Feature({ geometry: new ol.geom.MultiPolygon(geom['coordinates']).transform(espgdest, epsgsrc), name: myname, myid })
+            newfeat.setId(myid)
+            var ext = newfeat.getGeometry().getExtent();
+            polysource.clear();
+
+            polysource.addFeature(newfeat);
+            var center = ol.extent.getCenter(ext);
+            map.getView().fit(ext, map.getSize());
+            $('#selectFeature').val('noarea');
+            $('#selectBoundary').val('none');
+            checkDataConstraint();
+            $('.main_preloader').css('display', 'none');
+
+          }).fail(function () {
+            console.error("Failed to fetch area geometry.");
+            $('.main_preloader').css('display', 'none');
+          });
+        }
+
+        // Script to pass taskid to the modal
+        $('#deleteReport-modal').on('show.bs.modal', function (event) {
+          var button = $(event.relatedTarget) // Button that triggered the modal
+          var taskid = button.data('taskid') // Extract info from data-* attributes
+          var modal = $(this)
+          modal.find('#confirmDeleteBtn').data('taskid', taskid) // Set taskid to the confirm button for later use
+        });
+
+        // Script to handle the actual deletion
+        $('#confirmDeleteBtn').click(function () {
+          var taskid = $(this).data('taskid');
+          deleteTaskHistory(taskid); // Call your function to delete the task
+        });
+
+        function deleteTaskHistory(taskid) {
+          $.ajax({
+            type: "GET",
+            url: "/deletetaskhistory/" + taskid
+          }).done(function (msg) {
+            getTasks(); // Refresh the task list after deletion
+            $("#returnText").text(""); // Clear any previous message
+            $("#returnText").text(msg['result']); // Set the success message from server
+            $("#returnModal").modal('show'); // Show the modal with the result
+            $('#deleteReport-modal').modal('hide'); // Hide the delete confirmation modal
+
+          }).fail(function (msg) {
+            $("#returnText").text(""); // Clear any previous message
+            $("#returnText").text(msg['result']); // Set the error message from server
+            $("#returnModal").modal('show'); // Show the modal with the error
+          });
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        window.getTasks = function () {
+          $.ajax({
+            type: "GET",
+            url: "/gettasks"
+          }).done(function (msg) {
+            if (msg && msg['data'] && Array.isArray(msg['data']) && msg['data'].length > 0) {
+              $("#previoustasks").text("");
+              var tasks = '<h5 class="card-title text-center"></h5>'
+              for (i = 0; i < msg['data'].length; i++) {
+                tasks += '<div>' + msg['data'][i]['fields']['area'] + "<br>" + msg['data'][i]['fields']['data'].replace('T', ' ').split('.', 1) + "<br>" +
+                  '<a href="/media/' + msg['data'][i]['fields']['task'] + '/index.html" target="_blank" class="btn m-1"  style="background-color: #00636c; color: white;">View</a>' +
+                  '<a href="/media/' + msg['data'][i]['fields']['task'] + '/report.pdf" target="_blank" class="btn m-1"  style="background-color: #00636c; color: white;">PDF</a>' +
+                  // '<a onclick="deleteTaskhistory(' + msg['data'][i]['id'] + ')" class="btn btn-danger me-1">Delete</a></div> <hr>'
+                  '<a data-bs-toggle="modal" data-bs-target="#deleteReport-modal" data-taskid="' + msg['data'][i]['id'] + '" class="btn btn-danger me-1">Delete</a></div> <hr>'
+
+                // if (i != msg['data'].length - 1) {
+                //   tasks += '<hr>';
+                // }
+              }
+              $("#previoustasks").append(tasks);
+            } else {
+              console.log("No valid 'data' found in response.");
+            }
+          })
+        }
+        checkSize();
+        getAddedAreasList();
+        addyear();
+
+        $('#et').change(function () {
+          addyear();
+        });
+
+        $('#precip').change(function () {
+          addyear();
+        });
+
+        getTasks();
+        $.getJSON('/static/data/wapor_bound.geojson', function (data) {
+          features = data.features;
+          for (var i = 0, len = features.length; i < len; i++) {
+            wapor_source.push(features[i]);
+          }
+        })
+      })
+    </script>
+</body>
+
+</html>

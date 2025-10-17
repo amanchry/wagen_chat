@@ -183,7 +183,7 @@ TESTING
 
 *run this to access on other device too
 
-  `python manage.py runserver 0.0.0.0:8006`
+  `python manage.py runserver 0.0.0.0:8005`
 
 * After running this you can access the dashboard on otherdevice too at "http://10.37.129.2:8001/"
 
