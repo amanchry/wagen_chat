@@ -330,7 +330,7 @@ def upload_area_geom(geoJson_str, featureName, user):
     )
     area.save()
 
-    return area if area else None
+    return area.id if area else None
 
 
 
@@ -387,11 +387,12 @@ def generate_report(request):
         print('wri_data',wri_data)
         print('featureName',featureName)
 
-        area=upload_area_geom(area_geom,featureName,user)
-        print('areaid',area.id)
+        areaid=upload_area_geom(area_geom,featureName,user)
+        area = WIArea.objects.get(id=areaid)
+        print('areaid',areaid)
         
         current_user = user.email
-        tsk = wagen_report.delay(area.id, start, end, precip, et,wri_data, current_user)
+        tsk = wagen_report.delay(areaid, start, end, precip, et,wri_data, current_user)
         tskhist = ReportHistory(user=user, area=area, task=tsk.id)
         tskhist.save()
         #"job id {}".format(tsk.id)
