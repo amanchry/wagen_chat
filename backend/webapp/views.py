@@ -40,7 +40,7 @@ from .functions import validate_jwt_request
 import uuid
 import hashlib
 from celery.result import AsyncResult
-# from .tasks import wagen_report
+from .tasks import wagen_report
 
 load_dotenv()
 
@@ -535,9 +535,9 @@ def getReport(request):
         
         myarea = WagenArea.objects.get(id__exact=areaid)
         current_user = user.email
-        # tsk = wagen_report.delay(myarea, start, end, precip, et,wri_data, current_user)
-        # tskhist = TaskHistory(user=user, area=myarea, task=tsk.id)
-        # tskhist.save()
+        tsk = wagen_report.delay(myarea, start, end, precip, et,wri_data, current_user)
+        tskhist = TaskHistory(user=user, area=myarea, task=tsk.id)
+        tskhist.save()
         #"job id {}".format(tsk.id)
         return JsonResponse({"result": "Generating Report", "task_id": 'tsk.id'}, status=200)
     else:

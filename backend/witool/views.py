@@ -36,7 +36,7 @@ from celery.result import AsyncResult
 from django_celery_results.models import TaskResult
 from django.core.serializers import serialize
 from itertools import chain
-
+from webapp.tasks import wagen_report
 load_dotenv()
 
 base_url = settings.BASE_URL
@@ -353,7 +353,7 @@ def upload_area_geom(geoJson_str, featureName, user):
     )
     area.save()
 
-    return area.id if area else None
+    return area if area else None
 
 
 
@@ -410,15 +410,15 @@ def generate_report(request):
         print('wri_data',wri_data)
         print('featureName',featureName)
 
-        areaid=upload_area_geom(area_geom,featureName,user)
-        print('areaid',areaid)
+        area=upload_area_geom(area_geom,featureName,user)
+        print('areaid',area.id)
         
         current_user = user.email
-        # tsk = wagen_report.delay(areaid, start, end, precip, et,wri_data, current_user)
-        # tskhist = TaskHistory(user=user, area=myarea, task=tsk.id)
-        # tskhist.save()
+        tsk = wagen_report.delay(area, start, end, precip, et,wri_data, current_user)
+        tskhist = ReportHistory(user=user, area=area, task=tsk.id)
+        tskhist.save()
         #"job id {}".format(tsk.id)
-        return JsonResponse({"result": "Generating Report", "task_id": 'tsk.id'}, status=200)
+        return JsonResponse({"result": "Generating Report", "task_id": tsk.id}, status=200)
     else:
         return JsonResponse({"result": "Wrong request method"}, status=400)
 
