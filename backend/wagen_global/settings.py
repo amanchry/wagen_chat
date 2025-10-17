@@ -29,7 +29,7 @@ DEBUG = True
 ALLOWED_HOSTS = ["*"]
 CSRF_TRUSTED_ORIGINS = ['http://127.0.0.1:8000/','https://wagen.waterinag.org','http://65.108.77.67:3007']
 # BASE_URL = "http://127.0.0.1:8000/"
-BASE_URL = "https://wagen.waterinag.org/wagenApi/"
+BASE_URL = "https://wagen.waterinag.org/"
 
 
 CORS_ALLOWED_ORIGINS = [
