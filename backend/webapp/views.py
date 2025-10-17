@@ -491,7 +491,9 @@ def get_task_status(request, task_id):
         response = {
             'state': task.state,
             'progress': 100,
-            'status': 'Task completed!'
+            'status': 'Task completed!',
+            'web_report': f"{base_url}/media/{task_id}/index.html",
+            'pdf_report': f"{base_url}/media/{task_id}/report.pdf",
         }
     else:
         response = {

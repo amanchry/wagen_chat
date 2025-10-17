@@ -69,7 +69,7 @@ cd frontend
 npm install
 npm start
 npm run build
-
+npm run dev --port 3007
 
 =============
 BACKEND

@@ -89,8 +89,8 @@ function ChatBox() {
   const [answers, setAnswers] = useState({});
   const messagesEndRef = useRef(null);
   const [progress, setProgress] = useState(null);
-    const [isGenerating, setIsGenerating] = useState(false);
-    const [taskId, setTaskId] = useState(null);
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [taskId, setTaskId] = useState(null);
   const { selectedArea } = useGlobal();
   const { showToast } = useToast();
   const { data: session, status } = useSession()
@@ -152,7 +152,7 @@ function ChatBox() {
           );
 
 
-setTaskId(res.data.task_id);
+          setTaskId(res.data.task_id);
           setMessages((prev) => [
             ...prev,
             { sender: "system", text: "Report generation started! You’ll be notified when it’s ready..." },
@@ -162,56 +162,81 @@ setTaskId(res.data.task_id);
         } catch (err) {
           console.error("Report error:", err);
           etIsGenerating(false);
-        setMessages((prev) => [
-          ...prev,
-          { sender: "system", text: "⚠️ Failed to start report." },
-        ]);
+          setMessages((prev) => [
+            ...prev,
+            { sender: "system", text: "⚠️ Failed to start report." },
+          ]);
           // showToast("Error generating report.");
         }
       }
     }
   };
 
-useEffect(() => {
-  if (!taskId || !isGenerating) return;
+  useEffect(() => {
+    if (!taskId || !isGenerating) return;
 
-  const checkStatus = async () => {
-    try {
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/get-task-status/${taskId}`,
-        { headers: { Authorization: `Token ${token}` } }
-      );
-      const data = await res.json();
-      console.log("data",data)
+    const checkStatus = async () => {
+      try {
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/get-task-status/${taskId}`,
+          { headers: { Authorization: `Token ${token}` } }
+        );
+        const data = await res.json();
+        console.log("data", data)
 
-      if (data.state === "PROGRESS") {
-        setProgress(data.progress || 0);
-      } else if (data.state === "SUCCESS") {
-        setProgress(100);
-        setIsGenerating(false);
-        showToast("✅ Report completed successfully!");
-        setMessages((prev) => [
-          ...prev,
-          { sender: "system", text: "✅ Report completed successfully!" },
-        ]);
-      } else if (data.state === "FAILURE") {
-        setProgress(0);
-        setIsGenerating(false);
-        showToast("⚠️ Report failed");
-        setMessages((prev) => [
-          ...prev,
-          { sender: "system", text: "⚠️ Report failed. Please retry." },
-        ]);
+        if (data.state === "PROGRESS") {
+          setProgress(data.progress || 0);
+        } else if (data.state === "SUCCESS") {
+          setProgress(100);
+          setIsGenerating(false);
+          showToast("✅ Report completed successfully!");
+          setMessages(prev => [
+    ...prev,
+    {
+      sender: "system",
+      text: (
+        <div className="flex flex-col space-y-2">
+          <p>✅ Report generation completed!</p>
+          <div className="flex gap-2">
+            <a
+              href={data.web_report}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-3 py-1 bg-blue-600 text-white rounded-md text-sm hover:bg-blue-700"
+            >
+              🌐 View Web Report
+            </a>
+            <a
+              href={data.pdf_report}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-3 py-1 bg-green-600 text-white rounded-md text-sm hover:bg-green-700"
+            >
+              📄 Download PDF
+            </a>
+          </div>
+        </div>
+      ),
+    },
+  ]);
+        } else if (data.state === "FAILURE") {
+          setProgress(0);
+          setIsGenerating(false);
+          showToast("⚠️ Report failed");
+          setMessages((prev) => [
+            ...prev,
+            { sender: "system", text: "⚠️ Report failed. Please retry." },
+          ]);
+        }
+      } catch (err) {
+        console.error("Status check error:", err);
       }
-    } catch (err) {
-      console.error("Status check error:", err);
-    }
-  };
+    };
 
-  checkStatus(); // immediate first call
-  const interval = setInterval(checkStatus, 10000); // every 10 s
-  return () => clearInterval(interval);
-}, [taskId, isGenerating]);
+    checkStatus(); // immediate first call
+    const interval = setInterval(checkStatus, 10000); // every 10 s
+    return () => clearInterval(interval);
+  }, [taskId, isGenerating]);
 
 
 
@@ -228,38 +253,46 @@ useEffect(() => {
     <Flex direction="column" className="w-full h-full rounded-lg p-4 ">
       {/* Chat messages */}
       <Box className="flex-1 overflow-y-auto space-y-3 mb-3">
+
+        
         {messages.map((msg, idx) => (
-  <Flex key={idx} justify={msg.sender === "user" ? "end" : "start"}>
-    <Box
-      className={`px-3 py-2 rounded-2xl max-w-[70%] ${
-        msg.sender === "user"
-          ? "bg-blue-500 text-white"
-          : "bg-gray-100 text-black border border-gray-200"
-      }`}
-    >
-      {/* ✅ Progress bar message */}
-      {msg.type === "progress" ? (
-        <div className="flex flex-col items-start">
-          <p className="text-xs text-gray-500 mb-1">Generating report...</p>
+          <Flex key={idx} justify={msg.sender === "user" ? "end" : "start"}>
+            <Box
+              className={`px-3 py-2 rounded-2xl max-w-[70%] ${msg.sender === "user"
+                ? "bg-blue-500 text-white"
+                : "bg-gray-100 text-black"
 
-          <div className="w-48 bg-gray-200 rounded-full h-3 overflow-hidden shadow-inner">
-            <div
-              className={`h-3 rounded-full transition-all duration-700 ease-in-out ${
-                progress < 100 ? "bg-blue-600" : "bg-green-600"
-              }`}
-              style={{ width: `${progress}%` }}
-            ></div>
-          </div>
+                }`}
+              style={{
+                borderRadius:
+                  msg.sender === "user"
+                    ? "15px 15px 0px 15px"
+                    : "15px 15px 15px 0px",
+              }}
+            >
+              {/* ✅ Progress bar message */}
+              {msg.type === "progress" ? (
+                <div className="w-full">
+                  <p className="text-xs text-gray-500 mb-1">Generating report...</p>
 
-          <p className="text-xs text-gray-500 mt-1">{progress.toFixed(0)}%</p>
-        </div>
-      ) : (
-        // ✅ Normal text message
-        <span>{msg.text}</span>
-      )}
-    </Box>
-  </Flex>
-))}
+                  <div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden shadow-inner">
+                    <div
+                      className={`h-3 rounded-full transition-all duration-700 ease-in-out ${progress < 100 ? "bg-blue-600" : "bg-green-600"
+                        }`}
+                      style={{ width: `${progress}%` }}
+                    ></div>
+                  </div>
+
+                  <p className="text-xs text-gray-500 mt-1">{progress.toFixed(0)}%</p>
+                </div>
+              ) : (
+                <span>{msg.text}</span>
+              )}
+
+            </Box>
+          </Flex>
+        ))}
+
 
         <div ref={messagesEndRef} />
       </Box>
