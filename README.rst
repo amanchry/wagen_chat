@@ -98,7 +98,7 @@ Open a terminal and use following commands to install required libraries.
 
 
 * Create an empty PostgreSQL database with PostGIS extension
-`sudo -u postgres createuser geochat`
+`sudo -u postgres createuser wagen_chat`
 
 Open psql in the terminal using following command
 `sudo -u postgres psql`
@@ -106,20 +106,23 @@ Open psql in the terminal using following command
 In the psql command:
 
 | *# Change password of postgres user*
-| `ALTER USER postgres PASSWORD 'geochat';``
-| `ALTER USER geochat PASSWORD 'geochat123';``
-| *# Give more privileges to user geochat*
-| `ALTER USER geochat WITH SUPERUSER;`
+| `ALTER USER postgres PASSWORD 'wagen_chat';``
+| `ALTER USER wagen_chat PASSWORD 'wagen_chat123';``
+| *# Give more privileges to user wagen_chat*
+| `ALTER USER wagen_chat WITH SUPERUSER;`
 | *# quit psql*
 | `\q`
 
 
-Create a new DB named "geochat":
+Create a new DB named "wagen_chat":
 
-| `createdb -U YOURUSER -h YOURHOST geochat`
+| `createdb -U YOURUSER -h YOURHOST wagen_chat`
+| `psql -U YOURUSER -h YOURHOST wagen_chat -c "CREATE EXTENSION postgis"`
 
-.. createdb -U geochat -h localhost geochat
-.. pass: geochat123
+.. createdb -U wagen_chat -h localhost wagen_chat
+.. pass: wagen_chat123
+.. psql -U wagen_chat -h localhost wagen_chat -c "CREATE EXTENSION postgis"
+.. 
 
 
 .. Create database in sqlite in django
