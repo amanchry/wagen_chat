@@ -229,23 +229,38 @@ useEffect(() => {
       {/* Chat messages */}
       <Box className="flex-1 overflow-y-auto space-y-3 mb-3">
         {messages.map((msg, idx) => (
-          <Flex key={idx} justify={msg.sender === "user" ? "end" : "start"}>
-            <Box
-              className={`px-3 py-2 rounded-2xl max-w-[70%] ${msg.sender === "user"
-                ? "bg-blue-500 text-white"
-                : "bg-gray-200 text-black"
-                }`}
-              style={{
-                borderRadius:
-                  msg.sender === "user"
-                    ? "15px 15px 0px 15px"
-                    : "15px 15px 15px 0px",
-              }}
-            >
-              {msg.text}
-            </Box>
-          </Flex>
-        ))}
+  <Flex key={idx} justify={msg.sender === "user" ? "end" : "start"}>
+    <Box
+      className={`px-3 py-2 rounded-2xl max-w-[70%] ${
+        msg.sender === "user"
+          ? "bg-blue-500 text-white"
+          : "bg-gray-100 text-black border border-gray-200"
+      }`}
+    >
+      {/* ✅ Progress bar message */}
+      {msg.type === "progress" ? (
+        <div className="flex flex-col items-start">
+          <p className="text-xs text-gray-500 mb-1">Generating report...</p>
+
+          <div className="w-48 bg-gray-200 rounded-full h-3 overflow-hidden shadow-inner">
+            <div
+              className={`h-3 rounded-full transition-all duration-700 ease-in-out ${
+                progress < 100 ? "bg-blue-600" : "bg-green-600"
+              }`}
+              style={{ width: `${progress}%` }}
+            ></div>
+          </div>
+
+          <p className="text-xs text-gray-500 mt-1">{progress.toFixed(0)}%</p>
+        </div>
+      ) : (
+        // ✅ Normal text message
+        <span>{msg.text}</span>
+      )}
+    </Box>
+  </Flex>
+))}
+
         <div ref={messagesEndRef} />
       </Box>
 
