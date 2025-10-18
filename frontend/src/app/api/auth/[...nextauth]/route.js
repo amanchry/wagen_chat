@@ -18,6 +18,7 @@ export const authOptions = {
             {
               email: credentials.email,
               password: credentials.password,
+              tool: 'wagen_chat',
             },
             { withCredentials: true }
           );

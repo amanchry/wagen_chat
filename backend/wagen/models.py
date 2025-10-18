@@ -22,8 +22,10 @@ def _delete(path):
 
 class WagenUser(models.Model):  # ✅ renamed
     id = models.AutoField(primary_key=True)
+    username = models.CharField(max_length=255,unique=True)
     name = models.CharField(max_length=255)
     email = models.EmailField(unique=True)
+    tool = models.CharField(max_length=255)
     password = models.CharField(max_length=255)
     is_active = models.BooleanField(default=False)
 
@@ -100,29 +102,6 @@ class WagenArea(models.Model):
         super(WagenArea, self).save(*args, **kwargs)
 
 
-class Reports(models.Model):
-
-    user = models.ForeignKey(WagenUser, on_delete=models.CASCADE)
-    project_name = models.CharField(max_length=255)
-    project_thumbnail = models.JSONField(default=list)
-    registration_time = models.DateTimeField(default=timezone.now)
-
-
-    class Meta:
-        unique_together = ('user', 'project_name')
-
-
-    def clean(self):
-        if Reports.objects.filter(
-            project_name__iexact=self.project_name.strip(),
-            user=self.user
-        ).exclude(pk=self.pk).exists():
-            raise ValidationError("A project with this name already exists for this user.")
-            
-   
-
-    def __str__(self):
-        return self.project_name
 
 
 class TaskHistory(models.Model):

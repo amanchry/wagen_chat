@@ -69,6 +69,7 @@ def UserRegisterView(request):
             name = data.get("name")
             password = data.get("password")
             isActive = data.get("isActive")
+            tool = data.get("tool")
 
             if not email or not password or not name:
                 return JsonResponse({"success": False, "message": "Email, Name and Password are required"}, status=400)
@@ -80,10 +81,12 @@ def UserRegisterView(request):
             hashed_password = make_password(password)
 
             user = WagenUser.objects.create(
+                username= f"{email.split('@')[0]}_{tool}",
                 name=name,
                 email=email,
                 password=hashed_password,
-                is_active=True if isActive else False
+                is_active=True if isActive else False,
+                tool=tool
             )
 
             user.save()
@@ -141,11 +144,13 @@ def loginView(request):
             email = data.get("email")
             password = data.get("password")
 
+            username = f"{email.split('@')[0]}_{tool}"
+
             if not email or not password:
                 return JsonResponse({"success": False, "message": "Email and password are required"})
 
             try:
-                user = WagenUser.objects.get(email=email)
+                user = WagenUser.objects.get(username=username)
             except WagenUser.DoesNotExist:
                 return JsonResponse({"success": False, "message": "Invalid login credentials"})
 
