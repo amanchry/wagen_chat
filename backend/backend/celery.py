@@ -11,9 +11,9 @@ import sys
 from celery import Celery
 
 # set the default Django settings module for the 'celery' program.
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'wagen_global.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'backend.settings')
 
-app = Celery('wagen_global')
+app = Celery('backend')
 
 # Using a string here means the worker doesn't have to serialize
 # the configuration object to child processes.

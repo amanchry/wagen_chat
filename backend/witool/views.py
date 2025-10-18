@@ -19,7 +19,7 @@ from django.http import StreamingHttpResponse
 import jwt
 from django.contrib.auth.hashers import make_password
 from .models import WIUser, WIArea, ReportHistory
-from webapp.functions import send_otp,send_contact_email
+from wagen.functions import send_otp,send_contact_email
 from .functions import validate_jwt_request
 
 import geopandas as gpd

@@ -27,7 +27,7 @@ def backend_status(request):
     return JsonResponse({
         "status": "✅ Backend is running",
         "apps": [
-            {"name": "webapp", "url": "/djangoApi/wagen/"},
+            {"name": "wagen", "url": "/djangoApi/wagen/"},
             {"name": "wittool", "url": "/djangoApi/witool/"}
         ],
         "admin": "/djangoApi/admin/"
@@ -37,7 +37,7 @@ def backend_status(request):
 urlpatterns = [
     path("djangoApi/", backend_status, name="backend-status"),
     path("djangoApi/admin/", admin.site.urls, name='admin'),
-    path('djangoApi/wagen/', include('webapp.urls')),
+    path('djangoApi/wagen/', include('wagen.urls')),
     path('djangoApi/witool/', include('witool.urls')),
     path('djangoApi/accounts/logout/', LogoutView.as_view(next_page='login'), name='logout'),
 

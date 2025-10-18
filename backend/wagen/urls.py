@@ -1,5 +1,5 @@
 from django.urls import path
-from webapp import views
+from wagen import views
 
 from django.contrib.auth import views as auth_views
 from django.urls import path, include

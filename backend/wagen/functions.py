@@ -184,7 +184,7 @@ def send_contact_email(username, user_email, usermessage):
 
 def render_prod_html(jobid, area, stats):
     """Render html page using jinja"""
-    template_loader = jinja2.FileSystemLoader(searchpath=os.path.join(settings.BASE_DIR, 'webapp', "templates"))
+    template_loader = jinja2.FileSystemLoader(searchpath=os.path.join(settings.BASE_DIR, 'wagen', "templates"))
     template_env = jinja2.Environment(loader=template_loader)
     template_file = "report_custom_wb.html"
     template = template_env.get_template(template_file)
@@ -197,7 +197,7 @@ def render_prod_html(jobid, area, stats):
 
 def render_pdf_html(jobid, area, stats,wri_data):
     """Render HTML page using Django templates"""
-    template_loader = jinja2.FileSystemLoader(searchpath=os.path.join(settings.BASE_DIR, 'webapp', "templates"))
+    template_loader = jinja2.FileSystemLoader(searchpath=os.path.join(settings.BASE_DIR, 'wagen', "templates"))
     template_env = jinja2.Environment(loader=template_loader)
     if wri_data=='true':
         template_file = "report_custom_wri_pdf.html"
