@@ -13,8 +13,8 @@ admin.site.index_title = "Welcome to the WAGen Admin Dashboard"
 
 @admin.register(WagenUser)
 class CustomUserAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'email','is_active')
-    search_fields = ('name', 'email')
+    list_display = ('id', 'name', 'email','tool','username','is_active')
+    search_fields = ('name', 'tool','email')
     ordering = ('id',)
 
 

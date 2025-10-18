@@ -24,7 +24,7 @@ class WagenUser(models.Model):  # ✅ renamed
     id = models.AutoField(primary_key=True)
     username = models.CharField(max_length=255,unique=True)
     name = models.CharField(max_length=255)
-    email = models.EmailField(unique=True)
+    email = models.EmailField()
     tool = models.CharField(max_length=255)
     password = models.CharField(max_length=255)
     is_active = models.BooleanField(default=False)

@@ -38,7 +38,7 @@ urlpatterns = [
     path("getreport", views.getReport),
     # path("gettasks", views.getTasks),
     path("get-task-status/<str:task_id>/", views.get_task_status, name='get-task-status'),
-
+    path("get-reports-list", views.get_reports_list),
 
 
     # path('chats/<int:project_id>/', views.get_project_chats, name='get_project_chats'),

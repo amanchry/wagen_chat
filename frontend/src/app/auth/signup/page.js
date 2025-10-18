@@ -158,6 +158,7 @@ function Signup() {
           email: data.email,
           password: data.password,
           isActive: true,
+          tool: 'wagen_chat',
         }
       );
 

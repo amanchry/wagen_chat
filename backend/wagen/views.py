@@ -41,6 +41,8 @@ import uuid
 import hashlib
 from celery.result import AsyncResult
 from .tasks import wagen_report
+from django_celery_results.models import TaskResult
+from itertools import chain
 
 load_dotenv()
 
@@ -70,18 +72,20 @@ def UserRegisterView(request):
             password = data.get("password")
             isActive = data.get("isActive")
             tool = data.get("tool")
+            username= f"{email.split('@')[0]}_{tool}"
+
 
             if not email or not password or not name:
                 return JsonResponse({"success": False, "message": "Email, Name and Password are required"}, status=400)
             
-            if WagenUser.objects.filter(email=email).exists():
+            if WagenUser.objects.filter(username=username).exists():
                 return JsonResponse({"success": False, "message": "User with this email already exists."}, status=400)
             
             
             hashed_password = make_password(password)
 
             user = WagenUser.objects.create(
-                username= f"{email.split('@')[0]}_{tool}",
+                username= username,
                 name=name,
                 email=email,
                 password=hashed_password,
@@ -143,6 +147,7 @@ def loginView(request):
             data = json.loads(request.body)
             email = data.get("email")
             password = data.get("password")
+            tool = data.get("tool")
 
             username = f"{email.split('@')[0]}_{tool}"
 
@@ -550,6 +555,32 @@ def getReport(request):
 
 
 
+
+@csrf_exempt
+def get_reports_list(request):
+    user, error = validate_jwt_request(request)
+    if error:
+        return error
+    
+    
+    tasks = TaskHistory.objects.filter(user__exact=user)
+    succeeded = TaskResult.objects.filter(
+        status="SUCCESS",
+        task_id__in=chain.from_iterable(tasks.values_list("task"))
+    )
+
+    success_task_ids = list(succeeded.values_list("task_id", flat=True))
+    successful_reports = tasks.filter(task__in=success_task_ids)
+
+    serialized = serialize(
+        "json",
+        successful_reports,
+        use_natural_primary_keys=True,
+        use_natural_foreign_keys=True
+    )
+    data = json.loads(serialized)
+
+    return JsonResponse({"data": data}, status=200)
 
 
 
