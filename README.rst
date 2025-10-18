@@ -49,7 +49,7 @@ Open a terminal and use following commands to install required libraries.
 
 * Create an empty PostgreSQL database with PostGIS extension
 
-`sudo -u postgres createuser wagen_global`
+`sudo -u postgres createuser wagen_chat`
 
 Open psql in the terminal using following command
 
@@ -60,23 +60,23 @@ In the psql command:
 | *# Change password of postgres user
 
 | `ALTER USER postgres PASSWORD '*******';`
-| `ALTER USER wagen_global PASSWORD '********';`
-| *# Give more privileges to user wagen_global*
-| `ALTER USER wagen_global WITH SUPERUSER;`
+| `ALTER USER wagen_chat PASSWORD '********';`
+| *# Give more privileges to user wagen_chat*
+| `ALTER USER wagen_chat WITH SUPERUSER;`
 | *# quit psql*
 | `\q`
 
-Create a new DB named "wagen_global":
+Create a new DB named "wagen_chat":
 
-| `createdb -U YOURUSER -h YOURHOST wagen_global`
-| `psql -U YOURUSER -h YOURHOST wagen_global -c "CREATE EXTENSION postgis"`
+| `createdb -U YOURUSER -h YOURHOST wagen_chat`
+| `psql -U YOURUSER -h YOURHOST wagen_chat -c "CREATE EXTENSION postgis"`
 
 .. createdb -U wagen_chat -h localhost wagen_chat
 .. pass: wagen_chat123
 .. psql -U wagen_chat -h localhost wagen_chat -c "CREATE EXTENSION postgis"
 .. 
 
-* Download this source code and enter in directory wagen_global/webapp
+* Download this source code and enter in directory wagen_chat/webapp
 
 
 
@@ -115,10 +115,8 @@ npm run dev --port 3007
 
 * Set connection to the database and create its structure
 
-  ```bash
-  cd wagen_global
-  cp wagen_global/template_settings.py wagen_global/settings.py
-  # add user, password and grass settings in wagen_global/settings.py
+
+  # add user, password and grass settings in wagen_chat/settings.py
 
   `python manage.py makemigrations webapp`
   `python manage.py migrate`
@@ -146,7 +144,7 @@ TESTING
 
 * Start celery worker to use asynchronous requests
 
-  `celery -A wagen_global worker -l INFO`
+  `celery -A backend worker -l INFO`
 
 * At this point you could run the app
 
@@ -167,20 +165,20 @@ TESTING
 SCREEN
 =============
 To attach a screen : 
-`screen -r 392898.wagen_global_server`
-`screen -r 393313.wagen_global_celery`
+`screen -r 392898.wagen_chat_server`
+`screen -r 393313.wagen_chat_celery`
 
 Then control+ C:
 
 Detach a screen
-`screen -d 404581.wagen_global_server`
+`screen -d 404581.wagen_chat_server`
 
 To delete a screen 
-`screen -S 356415.wagen_global_server -X quit`
+`screen -S 356415.wagen_chat_server -X quit`
 
 Start a new screen
-`screen -S wagen_global_server`
-`screen -S wagen_global_celery`
+`screen -S wagen_chat_server`
+`screen -S wagen_chat_celery`
 
 
 
@@ -196,17 +194,17 @@ DEPLOYMENT
   `sudo chown -R aman:aman /var/run/celery/`
 
   # copy the systemd configuration file
-  `ln -s /home/aman/wagen_global/webapp/wagen_global/celery_wagen_global.service /etc/systemd/system`
-  .. sudo ln -s /home/aman/wagen_global/webapp/wagen_global/celery_wagen_global.service /etc/systemd/system
+  `ln -s /home/aman/wagen_chat/webapp/wagen_chat/celery_wagen_chat.service /etc/systemd/system`
+  .. sudo ln -s /home/aman/wagen_chat/webapp/wagen_chat/celery_wagen_chat.service /etc/systemd/system
 
 
-.. EnvironmentFile=-/home/aman/wagen_global/webapp/wagen_global/celery.conf
-.. WorkingDirectory=/home/aman/wagen_global/webapp/wagen_global/
+.. EnvironmentFile=-/home/aman/wagen_chat/webapp/wagen_chat/celery.conf
+.. WorkingDirectory=/home/aman/wagen_chat/webapp/wagen_chat/
 
   # modify the environment file if needed 
   # (for example the timeout for a single job set to 3000 seconds or number of concurrency set to 8)
 
-  # reload the systemd files (this has been done everytime celery_wagen_global.service is changed)
+  # reload the systemd files (this has been done everytime celery_wagen_chat.service is changed)
   `sudo systemctl daemon-reload`
   # enable the service to be automatically start on boot
   `sudo systemctl enable celery_wagen_global.service`
@@ -380,8 +378,8 @@ sudo chmod -R 755 /home/aman/wagen_chat/frontend
 =============
 Database
 =============
-psql -U wagen_global -d wagen_global -h localhost -W
-pass: wagen_global123
+psql -U wagen_chat -d wagen_chat -h localhost -W
+pass: wagen_chat123
 \dt
 
 \d area
