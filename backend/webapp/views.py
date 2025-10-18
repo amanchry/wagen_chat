@@ -539,7 +539,7 @@ def getReport(request):
         tskhist = TaskHistory(user=user, area=myarea, task=tsk.id)
         tskhist.save()
         #"job id {}".format(tsk.id)
-        return JsonResponse({"result": "Generating Report", "task_id": 'tsk.id'}, status=200)
+        return JsonResponse({"result": "Generating Report", "task_id": tsk.id}, status=200)
     else:
         return JsonResponse({"result": "Wrong request method"}, status=400)
 

@@ -126,7 +126,7 @@ function ChatBox() {
 
       // ✅ Use the *local* updatedAnswers instead of stale state
       if (steps[nextStepIndex]?.id === "done") {
-        console.log("✅ final answers", updatedAnswers);
+
         setIsGenerating(true);
         setProgress(0);
 
