@@ -219,7 +219,7 @@ def render_pdf(htmlfile2, jobid):
     table1path = os.path.join(settings.MEDIA_ROOT, jobid, 'Table1.csv')
     table2path = os.path.join(settings.MEDIA_ROOT, jobid, 'Table2.csv')
     table3path = os.path.join(settings.MEDIA_ROOT, jobid, 'Table3.csv')
-    table4path = os.path.join(settings.BASE_DIR, 'webapp/static/data', 'datasource.csv')
+    table4path = os.path.join(settings.BASE_DIR, 'wagen/static/data', 'datasource.csv')
     df_table_1 = pd.read_csv(table1path)
     df_table_2 = pd.read_csv(table2path)
     df_table_3 = pd.read_csv(table3path)

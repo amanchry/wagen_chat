@@ -59,8 +59,8 @@ In the psql command:
 
 | *# Change password of postgres user
 
-| `ALTER USER postgres PASSWORD '*******';`
-| `ALTER USER wagen_chat PASSWORD '********';`
+| `ALTER USER postgres PASSWORD 'wagen_chat123';`
+| `ALTER USER wagen_chat PASSWORD 'wagen_chat123';`
 | *# Give more privileges to user wagen_chat*
 | `ALTER USER wagen_chat WITH SUPERUSER;`
 | *# quit psql*
@@ -425,6 +425,34 @@ ORDER BY
 
 
 
+
+
+.. Delete Database
+* Terminate 
+sudo -u postgres psql
+
+* Terminate connections to the database:
+SELECT pg_terminate_backend(pid)
+FROM pg_stat_activity
+WHERE datname = 'wagen_chat';
+
+* Drop the database: 
+DROP DATABASE IF EXISTS wagen_chat;
+
+
+* Drop the user:
+DROP USER IF EXISTS wagen_chat;
+
+* Exit 
+\q
+
+
+* Confirm Everything is Gone 
+# List all databases
+sudo -u postgres psql -c "\l"
+
+# List all users
+sudo -u postgres psql -c "\du"
 
 
 
