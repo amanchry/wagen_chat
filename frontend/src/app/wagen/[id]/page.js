@@ -205,6 +205,10 @@ function HomePage() {
         showToast(data.message || "⚠️ Failed to load area list.");
       }
     } catch (error) {
+            if (error.response && error.response.status === 401) {
+        console.warn("⚠️ Unauthorized — logging out...");
+        await signOut({ callbackUrl: "/auth/login" });
+      }
       console.error("Error loading area list:", error);
       showToast("⚠️ Error fetching area list.");
     }

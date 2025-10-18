@@ -44,7 +44,7 @@ JWT_SECRET = os.environ.get("JWT_SECRET", "super-secret")
 ENVIRONMENT = config("DJANGO_ENV", default="development")
 
 INSTALLED_APPS = [
-    'witool',
+    # 'witool',
     'wagen',
     'django.contrib.admin',
     'django.contrib.auth',
