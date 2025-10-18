@@ -35,7 +35,10 @@ urlpatterns = [
 
     path('delete-area-geom/<int:id>', views.deleteAreaGeom, name='delete-area-geom'),
 
-    path("getreport", views.getReport),
+    path("generate-report", views.generate_report, name='generate-report'),
+    path("generate-geom-report", views.generate_report_with_geom, name='generate-geom-report'),
+
+    
     # path("gettasks", views.getTasks),
     path("get-task-status/<str:task_id>/", views.get_task_status, name='get-task-status'),
     path("get-reports-list", views.get_reports_list),

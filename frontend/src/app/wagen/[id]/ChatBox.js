@@ -141,7 +141,7 @@ function ChatBox() {
           formData.append("wri_data", false);
 
           const res = await axios.post(
-            `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/getreport`,
+            `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/generate-report`,
             formData,
             {
               headers: {

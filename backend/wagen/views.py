@@ -523,7 +523,7 @@ def get_task_status(request, task_id):
 
 
 @csrf_exempt
-def getReport(request):
+def generate_report(request):
     if request.method == "POST":
         user, error = validate_jwt_request(request)
         if error:
@@ -552,6 +552,115 @@ def getReport(request):
         return JsonResponse({"result": "Generating Report", "task_id": tsk.id}, status=200)
     else:
         return JsonResponse({"result": "Wrong request method"}, status=400)
+
+
+
+
+
+def upload_area_geom(geoJson_str, featureName, user):
+    """
+    Given a geometry (WKT, GeoJSON, or GEOSGeometry), return
+    the WagenArea.id that spatially matches or contains it.
+    Returns None if no match is found.
+    """
+    # Normalize input type
+    geojson = json.loads(geoJson_str)
+
+    existing = WagenArea.objects.filter(user=user, name__iexact=featureName).first()
+    if existing:
+        return existing.id
+    
+
+    # ✅ Normalize into list of features
+    if geojson.get("type") == "FeatureCollection":
+        features = geojson["features"]
+    elif geojson.get("type") == "Feature":
+        features = [geojson]
+    elif geojson.get("type") in [
+        "Polygon", "MultiPolygon", "LineString", "MultiLineString", "Point", "MultiPoint"
+    ]:
+        # Raw geometry — wrap as Feature
+        features = [{
+            "type": "Feature",
+            "properties": {},
+            "geometry": geojson
+        }]
+    else:
+        raise ValueError(f"Unsupported GeoJSON type: {geojson.get('type')}")
+
+    # ✅ Convert to GeoDataFrame
+    gdf = gpd.GeoDataFrame.from_features(features)
+
+    if gdf.crs and gdf.crs != 'EPSG:4326':
+        gdf = gdf.to_crs('EPSG:4326')
+    else:
+        gdf.set_crs('EPSG:4326', inplace=True)
+    
+    merged_geometry = gdf.unary_union
+    if merged_geometry.is_empty:
+        return JsonResponse({"result": "Empty geometry after merge"}, status=400)
+    
+    
+    geom = GEOSGeometry(merged_geometry.wkt)
+    if isinstance(geom, Polygon):
+        geom = MultiPolygon([geom])
+    elif isinstance(geom, LineString):
+        geom = MultiLineString([geom])
+    elif isinstance(geom, Point):
+        geom = MultiPoint([geom])
+
+    if not isinstance(geom, (MultiPolygon, MultiLineString, MultiPoint)):
+        return JsonResponse({"result": "Unsupported geometry type"}, status=400)
+
+
+    # Search for the WagenArea that contains or overlaps it
+    area = WagenArea(
+        name=featureName,
+        geom=geom,
+        user=user,
+    )
+    area.save()
+
+    return area.id if area else None
+
+
+
+@csrf_exempt
+def generate_report_with_geom(request):
+    if request.method == "POST":
+        user, error = validate_jwt_request(request)
+        if error:
+            return error
+        print("user",user.email)
+        area_geom = request.POST.get('areaGeom')
+        featureName = request.POST.get('featureName')
+        start = request.POST.get('start')
+        end = request.POST.get('end')
+        precip = request.POST.get('precip')
+        et = request.POST.get('et')
+        wri_data = request.POST.get('wri_data')
+
+        # print('area_geom',area_geom)
+        print('start',start)
+        print('end',end)
+        print('precip',precip)
+        print('et',et)
+        print('wri_data',wri_data)
+        print('featureName',featureName)
+
+        areaid=upload_area_geom(area_geom,featureName,user)
+        area = WagenArea.objects.get(id=areaid)
+        print('areaid',areaid)
+        
+        current_user = user.email
+        tsk = wagen_report.delay(areaid, start, end, precip, et,wri_data, current_user)
+        tskhist = TaskHistory(user=user, area=area, task=tsk.id)
+        tskhist.save()
+        #"job id {}".format(tsk.id)
+        return JsonResponse({"result": "Generating Report", "task_id": tsk.id}, status=200)
+    else:
+        return JsonResponse({"result": "Wrong request method"}, status=400)
+    
 
 
 
