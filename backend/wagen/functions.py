@@ -34,7 +34,7 @@ def validate_jwt_request(request):
         try:
             user = WagenUser.objects.get(id=user_id, is_active=True)
         except WagenUser.DoesNotExist:
-            return None, JsonResponse({"success": False, "message": "User not found"}, status=401)
+            return None, JsonResponse({"success": False, "message": "Unauthorized or User not found"}, status=401)
 
         return user, None
 

@@ -28,7 +28,7 @@ import AccordionContent from "@/components/ui/accordion/AccordionContent";
 import LayerListAccorduinsContainer from "@/components/mapping/LayerListAccorduinsContainer";
 import * as Dialog from "@radix-ui/react-dialog";
 import { useToast } from "@/provider/ToastContext";
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import { useParams } from "next/navigation";
 import WMSTileLayer from "@/components/mapping/WMSTileLayer";
 
@@ -193,6 +193,12 @@ function HomePage() {
       );
 
       const data = await res.json();
+
+      if (res.status === 401) {
+        console.warn("⚠️ Unauthorized — logging out...");
+        await signOut({ callbackUrl: "/auth/login" });
+      }
+      console.log('data', data)
       if (res.ok) {
         const areaOptions = data.map((area) => ({
           label: area.name,
@@ -205,7 +211,8 @@ function HomePage() {
         showToast(data.message || "⚠️ Failed to load area list.");
       }
     } catch (error) {
-            if (error.response && error.response.status === 401) {
+      console.log(error)
+      if (error.response && error.response.status === 401) {
         console.warn("⚠️ Unauthorized — logging out...");
         await signOut({ callbackUrl: "/auth/login" });
       }
@@ -216,7 +223,7 @@ function HomePage() {
 
 
 
-  
+
 
 
 
@@ -226,36 +233,36 @@ function HomePage() {
   }, [token]);
 
 
-const handleAreaSelect = async (val) => {
-  const selectedObj = addedAreas.find((item) => item.value === val);
-  const areaId = parseInt(selectedObj.value);
-  setSelectedArea(selectedObj || null);
+  const handleAreaSelect = async (val) => {
+    const selectedObj = addedAreas.find((item) => item.value === val);
+    const areaId = parseInt(selectedObj.value);
+    setSelectedArea(selectedObj || null);
 
-  if (!selectedObj) return;
+    if (!selectedObj) return;
 
-  try {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/get-area-geom/${areaId}`,
-      {
-        method: "GET",
-        headers: {
-          Authorization: `Token ${token}`,
-        },
+    try {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/get-area-geom/${areaId}`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Token ${token}`,
+          },
+        }
+      );
+
+      const data = await res.json();
+
+      if (res.ok && data.geometry) {
+        setFilteredData({ type: "Feature", geometry: data.geometry });
+      } else {
+        showToast("⚠️ Failed to fetch area geometry.");
       }
-    );
-
-    const data = await res.json();
-
-    if (res.ok && data.geometry) {
-      setFilteredData({ type: "Feature", geometry: data.geometry });
-    } else {
-      showToast("⚠️ Failed to fetch area geometry.");
+    } catch (error) {
+      console.error("Error fetching area geometry:", error);
+      showToast("⚠️ Error fetching area geometry.");
     }
-  } catch (error) {
-    console.error("Error fetching area geometry:", error);
-    showToast("⚠️ Error fetching area geometry.");
-  }
-};
+  };
 
 
 
