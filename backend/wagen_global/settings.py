@@ -186,10 +186,6 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 
 
-# GRASS_BIN = '/usr/bin/grass'
-# GRASS_DB = '/mnt/mapdata/grassdata'
-# GRASS_LOCATION = 'wagen'
-
 
 
 SESSION_COOKIE_SECURE = True
@@ -218,9 +214,9 @@ CELERY_TIMEZONE = 'UTC'
 CELERY_TASK_TRACK_STARTED = True
 
 # GRASS settings
-GRASS_BIN = '/usr/bin/grass'
-GRASS_DB = '/mnt/mapdata/grassdata'
-GRASS_LOCATION = 'wagen'
+GRASS_BIN = config('GRASS_BIN')
+GRASS_DB =  config('GRASS_DB')
+GRASS_LOCATION =  config('GRASS_LOCATION')
 GRASS_MAPSET = ''
 
 
@@ -229,12 +225,12 @@ HTTP_TYPE = 'https'
 
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-ADMIN_EMAIL = 'chaudharymac2604@gmail.com'
+ADMIN_EMAIL =  config('ADMIN_EMAIL')
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = '587'
 
-EMAIL_HOST_USER = 'waterinfo.app@gmail.com'
-EMAIL_HOST_PASSWORD = 'jepasbxepvogfmbi'
+EMAIL_HOST_USER = config('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 
 EMAIL_USE_TLS = True
 
