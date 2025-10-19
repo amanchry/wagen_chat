@@ -177,6 +177,13 @@ USE_I18N = True
 USE_TZ = True
 
 
+
+SERIALIZATION_MODULES = {
+        "geojsonid": "wagen_global.geojson_serializer",
+        "jsonid": "wagen_global.jsonid_serializer",
+}
+
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
