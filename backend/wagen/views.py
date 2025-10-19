@@ -658,13 +658,24 @@ def get_reports_list(request):
         return error
     
     
-    tasks = TaskHistory.objects.filter(user__exact=request.user)
-    succededtasks = TaskResult.objects.filter(status="SUCCESS",
-                              task_id__in=chain.from_iterable(tasks.values_list('task')))
-    data = serialize('jsonid', tasks.filter(task__in=chain.from_iterable(succededtasks.values_list('task_id'))),
-                     use_natural_primary_keys=True,
-                     use_natural_foreign_keys=True)
-    return JsonResponse({"data": json.loads(data)})
+    tasks = TaskHistory.objects.filter(user__exact=user)
+    succeeded = TaskResult.objects.filter(
+        status="SUCCESS",
+        task_id__in=chain.from_iterable(tasks.values_list("task"))
+    )
+
+    success_task_ids = list(succeeded.values_list("task_id", flat=True))
+    successful_reports = tasks.filter(task__in=success_task_ids)
+
+    serialized = serialize(
+        "json",
+        successful_reports,
+        use_natural_primary_keys=True,
+        use_natural_foreign_keys=True
+    )
+    data = json.loads(serialized)
+
+    return JsonResponse({"data": data}, status=200)
 
 
 
