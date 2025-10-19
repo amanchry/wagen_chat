@@ -179,8 +179,8 @@ USE_TZ = True
 
 
 SERIALIZATION_MODULES = {
-        "geojsonid": "wagen_global.geojson_serializer",
-        "jsonid": "wagen_global.jsonid_serializer",
+        "geojsonid": "backend.geojson_serializer",
+        "jsonid": "backend.jsonid_serializer",
 }
 
 
