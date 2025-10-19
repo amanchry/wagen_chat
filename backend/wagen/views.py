@@ -536,12 +536,6 @@ def generate_report(request):
         et = request.POST.get('et')
         wri_data = request.POST.get('wri_data')
 
-        print('areaid',areaid)
-        print('start',start)
-        print('end',end)
-        print('precip',precip)
-        print('et',et)
-        print('wri_data',wri_data)
         
         myarea = WagenArea.objects.get(id__exact=areaid)
         current_user = user.email
@@ -588,7 +582,6 @@ def upload_area_geom(geoJson_str, featureName, user):
     else:
         raise ValueError(f"Unsupported GeoJSON type: {geojson.get('type')}")
 
-    # ✅ Convert to GeoDataFrame
     gdf = gpd.GeoDataFrame.from_features(features)
 
     if gdf.crs and gdf.crs != 'EPSG:4326':
@@ -640,13 +633,6 @@ def generate_report_with_geom(request):
         et = request.POST.get('et')
         wri_data = request.POST.get('wri_data')
 
-        # print('area_geom',area_geom)
-        print('start',start)
-        print('end',end)
-        print('precip',precip)
-        print('et',et)
-        print('wri_data',wri_data)
-        print('featureName',featureName)
 
         areaid=upload_area_geom(area_geom,featureName,user)
         area = WagenArea.objects.get(id=areaid)
