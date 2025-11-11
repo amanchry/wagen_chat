@@ -20,6 +20,7 @@ urlpatterns = [
     path('register/', views.UserRegisterView, name='register'),
     path('logout/', views.logoutView, name='logout'),
     path('send-otp/', views.send_email_otp, name='send-otp'),
+    path('forgot-password/', views.forgot_password, name='forgot-password'),
 
 
     path("add-project/", views.RegisterProject, name='add-project'),
@@ -42,7 +43,9 @@ urlpatterns = [
     # path("gettasks", views.getTasks),
     path("get-task-status/<str:task_id>/", views.get_task_status, name='get-task-status'),
     path("get-reports-list", views.get_reports_list),
-        path("delete-report/<int:idd>", views.deleteTaskHistory, name='delete-repor'),
+    path("delete-report/<int:idd>", views.deleteTaskHistory, name='delete-repor'),
+
+    path("data-download", views.raster_data_download, name='data-download'),
 
 
     # path('chats/<int:project_id>/', views.get_project_chats, name='get_project_chats'),

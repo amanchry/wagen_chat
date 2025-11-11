@@ -20,12 +20,7 @@ function WaterAccountingReport() {
         justify="between"
         direction={{ sm: "row", initial: "column-reverse" }}
       >
-        {/* ========== LEFT NAV ========== */}
-        <Box>
-          <LeftNav />
-        </Box>
 
-        {/* ========== MAIN CONTENT ========== */}
         <Box
           className="flex-1 overflow-y-auto p-8 bg-gray-50"
         >

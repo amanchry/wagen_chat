@@ -234,6 +234,7 @@ function HomePage() {
 
 
   const handleAreaSelect = async (val) => {
+
     const selectedObj = addedAreas.find((item) => item.value === val);
     const areaId = parseInt(selectedObj.value);
     setSelectedArea(selectedObj || null);
@@ -352,9 +353,7 @@ function HomePage() {
     <>
       <AppHeader />
       <Flex height="100vh" pt="49px" align="stretch">
-        <Box>
-          <LeftNav />
-        </Box>
+
         <Separator orientation="vertical" size="4" />
         <CollapsibleLeftDrawer>
           <ChatBox />
@@ -385,6 +384,7 @@ function HomePage() {
                       showHoverPopup={true}
                       onFeatureClick={featureName => {
                         setSelectedFeatureName(featureName);
+                        setAreaName(featureName)
                       }}
                       style={
                         new Style({

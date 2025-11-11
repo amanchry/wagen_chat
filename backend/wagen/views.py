@@ -138,6 +138,59 @@ def send_email_otp(request):
 
 
 
+@csrf_exempt
+def forgot_password(request):
+    if request.method == "POST":
+        try:
+            # Parse JSON request body
+            data = json.loads(request.body)
+            email = data.get("email")
+            password = data.get("password")
+            tool = data.get("tool")
+            username= f"{email.split('@')[0]}_{tool}"
+
+
+            if not email or not password:
+                return JsonResponse({
+                    "success": False,
+                    "message": "Email and new password are required."
+                }, status=400)
+            
+
+            try:
+                user = WagenUser.objects.get(username=username)
+            except WagenUser.DoesNotExist:
+                return JsonResponse({
+                    "success": False,
+                    "message": "No user found with this email."
+                }, status=404)
+
+            user.password = make_password(password)
+            user.save()
+
+            return JsonResponse({
+                "success": True,
+                "message": "Password reset successful."
+            }, status=200)
+
+        except json.JSONDecodeError:
+            return JsonResponse({
+                "success": False,
+                "message": "Invalid JSON format."
+            }, status=400)
+
+        except Exception as e:
+            return JsonResponse({
+                "success": False,
+                "message": f"Error: {str(e)}"
+            }, status=500)
+
+    return JsonResponse({
+        "success": False,
+        "message": "Invalid request method."
+    }, status=405)
+
+
 
 
 @csrf_exempt
@@ -693,3 +746,30 @@ def deleteTaskHistory(request, idd):
 
 
 
+
+
+
+
+
+@csrf_exempt
+def raster_data_download(request):
+    if request.method == "POST":
+        user, error = validate_jwt_request(request)
+        if error:
+            return error
+
+        data_layer = request.POST.get('data_layer')
+        first_year = request.POST.get('first_year')
+        last_year = request.POST.get('last_year')
+        area_geom = request.POST.get('areaGeom')
+        featureName = request.POST.get('featureName')
+
+
+
+
+
+
+        #"job id {}".format(tsk.id)
+        return JsonResponse({"result": "Generating Report",}, status=200)
+    else:
+        return JsonResponse({"result": "Wrong request method"}, status=400)

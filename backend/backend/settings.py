@@ -28,14 +28,14 @@ DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
 CSRF_TRUSTED_ORIGINS = ['http://127.0.0.1:8000/','https://wagen.waterinag.org','http://65.108.77.67:3007',
-                        'https://zambia.waterinformatics.org']
+                        'https://zambia.waterinformatics.org','https://kenya.waterinformatics.org','https://mashreq.waterinformatics.org']
 # BASE_URL = "http://127.0.0.1:8000/"
 BASE_URL = "https://wagen.waterinag.org/"
 
 
 CORS_ALLOWED_ORIGINS = [
      'http://localhost:3000','http://localhost:3001','https://wagen.waterinag.org','http://65.108.77.67:3007',
-     'https://zambia.waterinformatics.org'
+     'https://zambia.waterinformatics.org','https://kenya.waterinformatics.org','https://mashreq.waterinformatics.org'
 ]
 
 JWT_SECRET = os.environ.get("JWT_SECRET", "super-secret")

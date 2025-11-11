@@ -4,7 +4,7 @@ import { useEffect, useState, useCallback } from "react";
 import axios from "axios";
 import Image from "next/image";
 import { Box, Flex, Separator } from "@radix-ui/themes";
-import { useSession } from "next-auth/react"; // ✅ get user info from NextAuth
+import { useSession } from "next-auth/react"; 
 import LeftNav from "@/components/common/LeftNav";
 import AppHeader from "@/components/common/AppHeader";
 import * as Dialog from "@radix-ui/react-dialog";
@@ -70,7 +70,7 @@ export default function HomePage() {
   const router = useRouter();
   const token = session?.user?.token; // your NextAuth provider should expose token
 
-
+console.log("token",token)
 
   const { showToast } = useToast();
   const { confirmAlert } = useAlert();
@@ -84,6 +84,7 @@ export default function HomePage() {
           headers: { Authorization: `Token ${token}` },
         }
       );
+      console.log("res",res)
       setProjects(res.data.projects || res.data.data || []); // 🔧 handle both
     } catch (err) {
       console.error("Error fetching chats:", err);
@@ -185,9 +186,7 @@ export default function HomePage() {
     <>
       <AppHeader />
       <Flex height="100vh" pt="49px" align="stretch">
-        <Box>
-          <LeftNav />
-        </Box>
+
         <Separator orientation="vertical" size="4" />
 
         {/* ===== Main Content ===== */}
