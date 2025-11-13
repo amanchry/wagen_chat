@@ -41,7 +41,7 @@ urlpatterns = [
 
     
     # path("gettasks", views.getTasks),
-    path("get-task-status", views.get_task_status, name='get-task-status'),
+    path("get-task-status/<str:task_id>/", views.get_task_status, name='get-task-status'),
     path("get-reports-list", views.get_reports_list),
     path("delete-report/<int:idd>", views.deleteTaskHistory, name='delete-repor'),
 

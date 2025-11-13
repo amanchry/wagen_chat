@@ -522,26 +522,13 @@ def getAddedAreasList(request):
 
 
 @csrf_exempt
-def get_task_status(request):
+def get_task_status(request, task_id):
     user, error = validate_jwt_request(request)
     if error:
         return error
     
-    # print("task_id",task_id)
-    # task = AsyncResult(task_id)
-
-    last_task_entry = TaskHistory.objects.filter(user=user).order_by("-date").first()
-
-    if not last_task_entry:
-        return JsonResponse({
-            "state": "NO_TASK",
-            "status": "No tasks found for this user."
-        })
-
-    task_id = last_task_entry.task
+    print("task_id",task_id)
     task = AsyncResult(task_id)
-
-
 
     # if task.state in ['SUCCESS', 'FAILURE']:
     #     mapset_name = f"job_{task_id}"
