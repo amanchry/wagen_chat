@@ -45,7 +45,7 @@ urlpatterns = [
     path("get-reports-list", views.get_reports_list),
     path("delete-report/<int:idd>", views.deleteTaskHistory, name='delete-repor'),
 
-    path("data-download", views.raster_data_download, name='data-download'),
+    path("download-raster", views.raster_data_download, name='download-raster'),
 
 
     # path('chats/<int:project_id>/', views.get_project_chats, name='get_project_chats'),

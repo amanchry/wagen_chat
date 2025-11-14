@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ValidationError
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib import messages
-from django.http import JsonResponse, Http404, HttpResponse
+from django.http import JsonResponse, Http404, HttpResponse,FileResponse
 from django.http import StreamingHttpResponse
 from django.contrib.auth.hashers import make_password
 import json
@@ -758,18 +758,46 @@ def raster_data_download(request):
         if error:
             return error
 
-        data_layer = request.POST.get('data_layer')
-        first_year = request.POST.get('first_year')
-        last_year = request.POST.get('last_year')
-        area_geom = request.POST.get('areaGeom')
-        featureName = request.POST.get('featureName')
+        selectedData = request.POST.get('selectedData')
+        selectedTime = request.POST.get('selectedTime')
+
+        BASE_PATH = "/usr/share/geoserver/data_dir/Mashreq_Data"
+
+        DATASET_MAP = {
+            "AETI": "AETI_WaPORv3_L1_Annual",
+            "RET": "RET_WaPORv3_L1_Annual",
+            "TBP": "TBP_WaPORv3_L1_Annual",
+            "ETb": "ETb_WaPORv3_L1_Annual",
+            "ETg": "ETg_WaPORv3_L1_Annual",
+            "GBWP": "GBWP_WaPORv3_L1_Annual",
+            "PCP": "PCP_CHIRPSv3_Annual",
+            "Aridity_Index": "Aridity_Index",
+        }
+
+        if not selectedData or not selectedTime:
+            return JsonResponse({"error": "Missing required parameters"}, status=400)
+
+        # Validate dataset name
+        if selectedData not in DATASET_MAP:
+            return JsonResponse({"error": "Invalid dataset selected"}, status=400)
+        
+        folder = DATASET_MAP[selectedData]
+        folder_path = os.path.join(BASE_PATH, folder)
+
+        file_name = f"{selectedData}_{selectedTime}0101.tif"
+        file_path = os.path.join(folder_path, file_name)
+
+        if not os.path.exists(file_path):
+            return JsonResponse({
+                "error": f"File not found for dataset {selectedData} and year {selectedTime}",
+                "path": file_path
+            }, status=404)
+
+        # Return direct file download
+        response = FileResponse(open(file_path, "rb"), as_attachment=True, filename=file_name)
+        return response
+
+        
 
 
 
-
-
-
-        #"job id {}".format(tsk.id)
-        return JsonResponse({"result": "Generating Report",}, status=200)
-    else:
-        return JsonResponse({"result": "Wrong request method"}, status=400)
