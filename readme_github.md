@@ -1,19 +1,3 @@
-1. Generate a new SSH key on your server:
-ssh-keygen -t ed25519 -C "your-email@example.com"
-
-2. Copy your public key:
-cat ~/.ssh/id_ed25519.pub
-
-3. Add this key to GitHub:
-Go to GitHub → Settings → SSH and GPG keys
-Click New SSH key → paste the public key.
-
-4. Test connection:
-ssh -T git@github.com
-
-5. Clone using SSH instead of HTTPS:
-git clone git@github.com:amanchry/wagen_chat.git
-
 
 
 
@@ -28,6 +12,11 @@ npm install
 
 - Start Next JS Project using PM2 process
 PORT=3007 pm2 start npm --name "wagen_chat" -- start
+HOST=127.0.0.1 PORT=3007 pm2 start npm --name "wagen_chat" -- start
+
+Or if ecosystem.config.js exist
+pm2 start ecosystem.config.js
+
 
 
 - Check status:

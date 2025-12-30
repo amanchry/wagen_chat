@@ -152,9 +152,8 @@ TESTING
 
 *run this to access on other device too
 
-  `python manage.py runserver 0.0.0.0:8005`
+  `python manage.py runserver 127.0.0.1:8005`
 
-* After running this you can access the dashboard on otherdevice too at "http://10.37.129.2:8000/"
 
 
 * Open web browser at http://127.0.0.1:8000/

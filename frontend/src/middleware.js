@@ -4,7 +4,6 @@ import { NextResponse } from "next/server";
 
 export async function middleware(req) {
 
-   
   // List of public routes that don't require authentication
   const publicPaths = ["/auth/login", "/auth/signup", "/auth/forgot-password", "/api", "/_next", "/favicon.ico", "/images", "/public"];
   const { pathname } = req.nextUrl;
@@ -13,9 +12,6 @@ export async function middleware(req) {
   if (publicPaths.some((path) => pathname.startsWith(path))) {
     return NextResponse.next();
   }
-
-
-
 
   const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
 
@@ -37,9 +33,6 @@ export async function middleware(req) {
     response.cookies.set("next-auth.callback-url", "", { maxAge: 0 });
     return response;
   }
-
-  
-
 
   // Otherwise, allow the request
   return NextResponse.next();
