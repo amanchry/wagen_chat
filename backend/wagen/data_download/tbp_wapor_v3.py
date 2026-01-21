@@ -47,12 +47,17 @@ def download_wapor_v3_L1_tbp_data(
         raise ValueError("temporal_resolution must be 'Annual' or 'Monthly'")
 
 
-    # Convert GeoJSON -> OGR Geometry -> WKT
-    geom = ogr.CreateGeometryFromJson(json.dumps(
-        geojson_obj["features"][0]["geometry"]
-        if "features" in geojson_obj else geojson_obj["geometry"] if "geometry" in geojson_obj else geojson_obj
-    ))
-    wkt = geom.ExportToWkt()
+    # (Optional) cleaner errors/logs
+    try:
+        gdal.UseExceptions()
+    except Exception:
+        pass
+
+    # ✅ Put GeoJSON into GDAL in-memory file
+    cutline_path = "/vsimem/cutline.geojson"
+    gdal.FileFromMemBuffer(cutline_path, json.dumps(geojson_obj).encode("utf-8"))
+
+        
 
     # -------------------
     # Process loop
@@ -68,7 +73,7 @@ def download_wapor_v3_L1_tbp_data(
     
         try:
             warp_options = gdal.WarpOptions(
-                cutlineWKT=wkt,
+                cutlineDSName=cutline_path,
                 cropToCutline=True,
                 dstNodata=-9999,
             )
