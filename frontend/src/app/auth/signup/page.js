@@ -158,7 +158,7 @@ function Signup() {
           email: data.email,
           password: data.password,
           isActive: true,
-          tool: 'wagen_chat',
+          tool: `${process.env.NEXT_PUBLIC_TOOL_NAME}`
         }
       );
 

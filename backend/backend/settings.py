@@ -126,24 +126,6 @@ else:
     }
 
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.contrib.gis.db.backends.spatialite',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
-
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.contrib.gis.db.backends.postgis',
-#         'NAME': 'geochat',                      # Or path to database file if using sqlite3.
-#         'USER': 'geochat',                      # Not used with sqlite3.
-#         'PASSWORD': 'geochat123',                  # Not used with sqlite3.
-#         'HOST': 'localhost',                      # Set to empty string for localhost. Not used with sqlite3.
-#         'PORT': '5432',                      # Set to empty string for default. Not used with sqlite3.
-#     }
-# }
 
 
 # Password validation

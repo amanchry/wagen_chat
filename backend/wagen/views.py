@@ -747,7 +747,11 @@ def deleteTaskHistory(request, idd):
 
 
 
-
+from wagen.data_download.eta_wapor_v3 import download_wapor_v3_L1_eta_data
+from wagen.data_download.gbwp_wapor_v3 import download_wapor_gbwp_data
+from wagen.data_download.pcp_chirps_v3 import download_chirps_pcp_data
+from wagen.data_download.ret_wapor_v3 import download_wapor_ret_data
+from wagen.data_download.tbp_wapor_v3 import download_wapor_v3_L1_tbp_data
 
 
 
@@ -759,45 +763,80 @@ def raster_data_download(request):
             return error
 
         selectedData = request.POST.get('selectedData')
-        selectedTime = request.POST.get('selectedTime')
+        selectedYear = request.POST.get('selectedYear')
+        areaGeom = request.POST.get('areaGeom')
 
-        BASE_PATH = "/usr/share/geoserver/data_dir/Mashreq_Data"
 
-        DATASET_MAP = {
-            "AETI": "AETI_WaPORv3_L1_Annual",
-            "RET": "RET_WaPORv3_L1_Annual",
-            "TBP": "TBP_WaPORv3_L1_Annual",
-            "ETb": "ETb_WaPORv3_L1_Annual",
-            "ETg": "ETg_WaPORv3_L1_Annual",
-            "GBWP": "GBWP_WaPORv3_L1_Annual",
-            "PCP": "PCP_CHIRPSv3_Annual",
-            "Aridity_Index": "Aridity_Index",
-        }
+        print("selectedData",selectedData)
+        print("selectedYear",selectedYear)
 
-        if not selectedData or not selectedTime:
+
+        if not selectedData or not selectedYear or not areaGeom:
             return JsonResponse({"error": "Missing required parameters"}, status=400)
-
-        # Validate dataset name
-        if selectedData not in DATASET_MAP:
-            return JsonResponse({"error": "Invalid dataset selected"}, status=400)
         
-        folder = DATASET_MAP[selectedData]
-        folder_path = os.path.join(BASE_PATH, folder)
+        try:
+            selectedYear = int(selectedYear)  # ✅ must be int for your downloader loops
+        except ValueError:
+            return JsonResponse({"error": "selectedYear must be an integer"}, status=400)
 
-        file_name = f"{selectedData}_{selectedTime}0101.tif"
-        file_path = os.path.join(folder_path, file_name)
+            
+        folder_path = os.path.join(settings.MEDIA_ROOT, "rasters")
+        os.makedirs(folder_path, exist_ok=True)
 
-        if not os.path.exists(file_path):
-            return JsonResponse({
-                "error": f"File not found for dataset {selectedData} and year {selectedTime}",
-                "path": file_path
-            }, status=404)
+        DOWNLOADERS = {
+        "AETI": download_wapor_v3_L1_eta_data,
+        "RET": download_wapor_ret_data,
+        "TBP": download_wapor_v3_L1_tbp_data,
+        "GBWP": download_wapor_gbwp_data,
+        "PCP": download_chirps_pcp_data,
+        # "Aridity_Index": download_wapor_v3_L1_eta_data,
 
-        # Return direct file download
-        response = FileResponse(open(file_path, "rb"), as_attachment=True, filename=file_name)
-        return response
+        }
+        if selectedData not in DOWNLOADERS:
+            return JsonResponse({"error": f"Invalid dataset selected: {selectedData}"}, status=400)
+    
 
         
+        # try:
+        geojson_obj = json.loads(areaGeom)
+        # except Exception:
+        #     return JsonResponse({"error": "areaGeom must be valid GeoJSON"}, status=400)
 
+        # Run downloader (returns list)
+        downloader = DOWNLOADERS[selectedData]
+        # try:
+        outputs = downloader(
+            first_year=selectedYear,
+            last_year=selectedYear,
+            output_folder=folder_path,
+            geojson_obj=geojson_obj,
+            temporal_resolution="Annual",
+        )
+        # except Exception as e:
+        #     return JsonResponse({"error": f"Download failed: {str(e)}"}, status=500)
 
+        # Validate outputs
+        # outputs like [(url, "TBP_20180101.tif", "annual"), ...]
+        paths = [os.path.join(folder_path, item[1]) for item in outputs]
+        existing = [p for p in paths if os.path.exists(p)]
 
+        if not existing:
+            return JsonResponse(
+                {"error": "Requested files could not be generated", "expected_outputs": outputs},
+                status=500,
+            )
+
+        # ✅ Convert absolute path → MEDIA relative url path
+        media_urls = []
+        for abs_path in existing:
+            rel_path = os.path.relpath(abs_path, settings.MEDIA_ROOT)   # e.g. rasters/12/TBP/TBP_20180101.tif
+            media_urls.append(settings.MEDIA_URL + rel_path.replace("\\", "/"))
+
+        # Return list (you can later use another endpoint to download one)
+        return JsonResponse({
+            "dataset": selectedData,
+            "year": selectedYear,
+            "count": len(existing),
+            "files": [os.path.basename(p) for p in existing],
+            "paths": media_urls,   # ✅ returns /media/rasters/...
+        })

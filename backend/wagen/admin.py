@@ -42,13 +42,40 @@ class ProjectAdmin(admin.ModelAdmin):
 
 @admin.register(WagenArea)
 class AreaAdmin(admin.ModelAdmin):
-    list_display = ('name', 'user')
+    list_display = (
+        'name',
+        'user_name',
+        'user_tool',
+        'project',
+
+        'user_email',
+    )
+
+    search_fields = ('user__name', 'user__email', 'user__tool')
+    list_filter = ('user__tool',  'project')
 
     def get_queryset(self, request):
-        qs = super().get_queryset(request)
+        qs = super().get_queryset(request).select_related('user', 'project')
         if request.user.is_superuser:
             return qs
         return qs.filter(user=request.user)
+
+    # --- user columns ---
+    def user_name(self, obj):
+        return obj.user.name
+
+
+    def user_email(self, obj):
+        return obj.user.email
+
+    def user_tool(self, obj):
+        return obj.user.tool
+
+
+    user_email.short_description = "Email"
+    user_tool.short_description = "Tool"
+
+
     
 
 

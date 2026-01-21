@@ -18,7 +18,7 @@ export const authOptions = {
             {
               email: credentials.email,
               password: credentials.password,
-              tool: 'wagen_chat',
+              tool: `${process.env.NEXT_PUBLIC_TOOL_NAME}`
             },
             { withCredentials: true }
           );
