@@ -76,15 +76,15 @@ def download_wapor_v3_L1_eta_data(
         
 
 
-        try:
-            warp_options = gdal.WarpOptions(
-                cutlineWKT=wkt,
-                cropToCutline=True,
-                dstNodata=-9999
-            )
-            gdal.Warp(destNameOrDestDS=temp_clip, srcDSOrSrcDSTab=vsicurl_url, options=warp_options)
-        except Exception as e:
-            continue
+        # try:
+        warp_options = gdal.WarpOptions(
+            cutlineWKT=wkt,
+            cropToCutline=True,
+            dstNodata=-9999
+        )
+        gdal.Warp(destNameOrDestDS=temp_clip, srcDSOrSrcDSTab=vsicurl_url, options=warp_options)
+        # except Exception as e:
+        #     continue
 
         try:
             with rasterio.open(temp_clip) as src:
