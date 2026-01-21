@@ -60,7 +60,7 @@ def download_wapor_gbwp_data(
         try:
             # 2. Resample and clip the downloaded raster
             warp_options = gdal.WarpOptions(
-                cutlineDSName=wkt,
+                cutlineWKT=wkt,
                 cropToCutline=True,
                 dstNodata=-9999,
                 

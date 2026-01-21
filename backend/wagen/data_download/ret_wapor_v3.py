@@ -82,7 +82,7 @@ def download_wapor_ret_data(
             
             # 2. Resample and clip the downloaded raster
             warp_options = gdal.WarpOptions(
-                cutlineDSName=wkt,
+                cutlineWKT=wkt,
                 cropToCutline=True,
                 dstNodata=-9999,
                 

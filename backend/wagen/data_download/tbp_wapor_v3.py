@@ -68,7 +68,7 @@ def download_wapor_v3_L1_tbp_data(
     
         try:
             warp_options = gdal.WarpOptions(
-                cutlineDSName=wkt,
+                cutlineWKT=wkt,
                 cropToCutline=True,
                 dstNodata=-9999,
             )
