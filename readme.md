@@ -41,7 +41,7 @@ grass -c EPSG:4326 -e /path/to/grassdata/wagen_global
 ```
 
 
-**Database Setup***
+**Database Setup**
 
 ```
 # Create an empty PostgreSQL database with PostGIS extension

@@ -29,7 +29,7 @@ MarkupSafe
 matplotlib
 matplotlib-scalebar
 munch
-numpy==1.24.0
+numpy
 pandas
 Pillow
 prompt-toolkit
