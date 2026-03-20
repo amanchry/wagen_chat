@@ -247,9 +247,9 @@ uwsgi --ini /home/aman/wagen_global/webapp/wagen_global/wagen_global.ini
 ```
 
 
-=================================================================
-Restart the celery and uWSGI in development after updates
-=================================================================
+
+**Restart the celery and uWSGI in development after updates**
+
 
 ```
 #Stop Celery Service
@@ -294,9 +294,9 @@ uwsgi --ini wagen_global.ini
 
 ```
 
-=================================================================
-Restart the uWSGI in development after updates
-=================================================================
+
+**Restart the uWSGI in development after updates**
+
 ```
 ** check all the running uWSGI workers
 ps aux | grep uwsgi
@@ -312,9 +312,9 @@ uwsgi --ini geochat.ini
 
 
 
-=============
-Apache commands
-=============
+
+**Apache commands**
+
 
 ```
 * Enable the proxy-pass
