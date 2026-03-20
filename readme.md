@@ -54,12 +54,14 @@ In the psql command:
 
 # Change password of postgres user
 
-| `ALTER USER postgres PASSWORD 'wagen_chat123';`
-| `ALTER USER wagen_chat PASSWORD 'wagen_chat123';`
-| *# Give more privileges to user wagen_chat*
-| `ALTER USER wagen_chat WITH SUPERUSER;`
-| *# quit psql*
-| `\q`
+ALTER USER postgres PASSWORD 'wagen_chat123';
+ALTER USER wagen_chat PASSWORD 'wagen_chat123';
+
+# Give more privileges to user wagen_chat*
+ALTER USER wagen_chat WITH SUPERUSER;
+
+#quit psql
+\q
 
 Create a new DB named "wagen_chat":
 
@@ -135,18 +137,13 @@ python manage.py help
 
 ```
 * Start celery worker to use asynchronous requests
-
-  `celery -A backend worker -l INFO`
+celery -A backend worker -l INFO
 
 * At this point you could run the app
+python3 manage.py runserver
 
-  `python3 manage.py runserver`
-
-*run this to access on other device too
-
-  `python manage.py runserver 127.0.0.1:8005`
-
-
+* run this to access on other device too
+python manage.py runserver 127.0.0.1:8005
 
 * Open web browser at http://127.0.0.1:8000/
 ```
@@ -328,7 +325,7 @@ sudo nano wagen.waterinag.org.conf
 sudo a2ensite wagen.waterinag.org.conf
 
 * To disable site**
-(here wagen.waterinag.org.conf is apache conf file for global.waterinag.org website)
+(here wagen.waterinag.org.conf is apache conf file for wagen.waterinag.org website)
 sudo a2dissite wagen.waterinag.org.conf
 
 
@@ -347,7 +344,7 @@ sudo apachectl configtest
 sudo apt install certbot python3-certbot-apache
 
 * Set SSL and enable https**
-sudo certbot --apache -d global.waterinag.org
+sudo certbot --apache -d wagen.waterinag.org
 
 
 * Apache error log
