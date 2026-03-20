@@ -16,6 +16,6 @@ backend/.DS_Store
 backend/media
 backend/static
 backend/db.sqlite3
-
+wagen_chat.dump
 
 
