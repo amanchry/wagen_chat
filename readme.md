@@ -321,12 +321,15 @@ uwsgi --ini geochat.ini
 sudo a2enmod proxy
 sudo a2enmod proxy_http
 
+* Create Apache Conf
+sudo nano wagen.waterinag.org.conf
+
 * Enable the virtual host with the following command:**
-sudo a2ensite global.waterinag.org.conf
+sudo a2ensite wagen.waterinag.org.conf
 
 * To disable site**
-(here global.waterinag.org.conf is apache conf file for global.waterinag.org website)
-sudo a2dissite global.waterinag.org.conf
+(here wagen.waterinag.org.conf is apache conf file for global.waterinag.org website)
+sudo a2dissite wagen.waterinag.org.conf
 
 
 * Restart the Apache webserver to apply the changes:
