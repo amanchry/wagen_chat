@@ -33,9 +33,9 @@ sudo apt install certbot python3-certbot-apache
 sudo add-apt-repository ppa:ubuntugis/ubuntugis-unstable
 sudo apt-get install grass grass-dev
 
-# Create a new grass location for wagen_global app
+# Create a new grass location for wagen_chat app
 
-grass -c EPSG:4326 -e /path/to/grassdata/wagen_global
+grass -c EPSG:4326 -e /path/to/grassdata/wagen_chat
 
 (Note that, in settings.py file "GRASS_DB" should be set as "/path/to/grassdata")
 ```
@@ -73,7 +73,50 @@ psql -U YOURUSER -h YOURHOST wagen_chat -c "CREATE EXTENSION postgis"`
 .. psql -U wagen_chat -h localhost wagen_chat -c "CREATE EXTENSION postgis"
 
 
-* Download this source code and enter in directory wagen_chat/webapp
+* Download this source code and enter in directory wagen_chat
+
+```
+
+
+**Database Dump**
+
+```
+1) On the old server, export the database
+pg_dump -U wagen_chat -h localhost -d wagen_chat -Fc -f wagen_chat.dump
+
+enter password of wagen_chat DB
+
+2) Copy the dump to the new server
+scp wagen_chat.dump wb_server2026:/home/aman/wagen_chat
+
+3)  On the new server, make sure PostgreSQL + PostGIS exist
+sudo apt update
+sudo apt install -y postgresql postgis postgresql-16-postgis-3
+
+Check version:
+psql --version
+
+
+4) Create the database and extension on the new server
+
+sudo -u postgres psql
+
+Inside psql:
+
+CREATE USER wagen_chat WITH PASSWORD 'wagen_chat123';
+ALTER USER wagen_chat WITH SUPERUSER;
+CREATE DATABASE wagen_chat OWNER wagen_chat;
+\c wagen_chat
+CREATE EXTENSION postgis;
+\q
+
+5) Restore the old database into the new one
+pg_restore -U wagen_chat -h localhost -d wagen_chat -c /home/aman/wagen_chat/wagen_chat.dump
+
+enter password of wagen_chat DB
+
+6) Verify data restored
+psql -U wagen_chat -h localhost -d wagen_chat
 
 ```
 
@@ -87,10 +130,77 @@ npm install
 npm start
 npm run build
 npm run dev --port 3007
+
+
+
+Show all listening ports
+sudo lsof -i -P -n | grep LISTEN
+
+
+
+- Install dependencies
+npm install
+
+
+- Start Next JS Project using PM2 process
+PORT=3007 pm2 start npm --name "wagen_chat" -- start
+HOST=127.0.0.1 PORT=3007 pm2 start npm --name "wagen_chat" -- start
+
+Or if ecosystem.config.js exist
+pm2 start ecosystem.config.js
+
+
+
+- Check status:
+pm2 status
+pm2 logs wagen_chat
+
+
+
+
+- Update code from GitHub
+git pull origin main
+git pull --no-rebase --no-autostash origin main
+ 
+- Reinstall dependencies (if needed)
+npm install
+
+- Rebuild Next.js
+npm run build
+
+- Stop PM2 process
+pm2 stop wagen_chat
+
+
+
+- Restart PM2 process
+pm2 restart wagen_chat
+
+
+Check all PM2 processes:
+pm2 list
+
+
+Delete the errored one:
+pm2 delete 0
+
+
+(or use the name if needed)
+pm2 delete wagen_chat
+
+
+Then restart the good one if needed:
+pm2 restart wagen_chat
+
+If you’re unsure which is which
+Run:
+pm2 logs 0
+pm2 logs 1
+
 ```
 
 ```
-* Create a Python 3 virtual environment in the webapp directory
+* Create a Python 3 virtual environment in the backend directory
 python3 -m venv venv
 
 * Activate the virtual environment
@@ -112,7 +222,7 @@ pip install --no-binary=:all: GDAL==3.8.4
 
 # add user, password and grass settings in wagen_chat/settings.py
 
-python manage.py makemigrations webapp
+python manage.py makemigrations wagen
 python manage.py migrate
 
 .. Now collectstatic is important because now these will be served through custom "django_static" folder
@@ -181,12 +291,12 @@ sudo mkdir /var/run/celery/
 sudo chown -R aman:aman /var/run/celery/
 
 # copy the systemd configuration file
-ln -s /home/aman/wagen_chat/webapp/wagen_chat/celery_wagen_chat.service /etc/systemd/system
-.. sudo ln -s /home/aman/wagen_chat/webapp/wagen_chat/celery_wagen_chat.service /etc/systemd/system
+ln -s /home/aman/wagen_chat/backend/celery_wagen_chat.service /etc/systemd/system
+.. sudo ln -s /home/aman/wagen_chat/backend/celery_wagen_chat.service /etc/systemd/system
 
 
-.. EnvironmentFile=-/home/aman/wagen_chat/webapp/wagen_chat/celery.conf
-.. WorkingDirectory=/home/aman/wagen_chat/webapp/wagen_chat/
+.. EnvironmentFile=-/home/aman/wagen_chat/backend/celery.conf
+.. WorkingDirectory=/home/aman/wagen_chat/backend/
 
 # modify the environment file if needed 
 # (for example the timeout for a single job set to 3000 seconds or number of concurrency set to 8)
@@ -195,26 +305,26 @@ ln -s /home/aman/wagen_chat/webapp/wagen_chat/celery_wagen_chat.service /etc/sys
 sudo systemctl daemon-reload
 
 # enable the service to be automatically start on boot
-sudo systemctl enable celery_wagen_global.service
+sudo systemctl enable celery_wagen_chat.service
 
 
 * Start the celery app
-sudo systemctl start celery_wagen_global.service
+sudo systemctl start celery_wagen_chat.service
 
 # to look if everything is working properly you can
-sudo systemctl status celery_wagen_global.service
+sudo systemctl status celery_wagen_chat.service
 
-.. ls -lh /home/aman/wagen_global/webapp/wagen_global/log/celery/
-.. tail -f /home/aman/wagen_global/webapp/wagen_global/log/celery/worker1.log
+.. ls -lh /home/aman/wagen_chat/backend/log/celery/
+.. tail -f /home/aman/wagen_chat/backend/log/celery/worker1.log
 
   
 
 * Copy the template `ini` file and modify the paths
-cp wagen_global/template_wagen.ini wagen_global/wagen_global.ini
+cp wagen_chat/template_wagen.ini wagen_chat/wagen_chat.ini
 
 
 * Copy the template Apache configuration file and modify it, specially the path
-sudo cp wagen_global/template_apache.conf /etc/apache2/sites-available/wagen_global.conf
+sudo cp wagen_chat/template_apache.conf /etc/apache2/sites-available/wagen_chat.conf
 
 
 * Install uwsgi python package in the venv
@@ -229,17 +339,17 @@ sudo a2enmod ssl
 
 * Run the Django app using `uwsgi`
 (first, enable virtualenv environment)
-uwsgi --ini wagen_global.ini
+uwsgi --ini wagen_chat.ini
 
 
 * Activate the Apache configuration file
-sudo a2ensite wagen_global.conf
+sudo a2ensite wagen_chat.conf
 sudo systemctl restart apache2
 
 
 
-sudo systemctl start celery_wagen_global.service
-uwsgi --ini /home/aman/wagen_global/webapp/wagen_global/wagen_global.ini
+sudo systemctl start celery_wagen_chat.service
+uwsgi --ini /home/aman/wagen_chat/backend/wagen_chat.ini
 
 ```
 
@@ -250,7 +360,7 @@ uwsgi --ini /home/aman/wagen_global/webapp/wagen_global/wagen_global.ini
 
 ```
 #Stop Celery Service
-sudo systemctl stop celery_wagen_global.service
+sudo systemctl stop celery_wagen_chat.service
 
 #Kill Remaining Celery Processes
 sudo pkill -9 -f 'celery worker'
@@ -258,25 +368,25 @@ sudo pkill -9 -f 'celery worker'
 #Ensure All Processes Are Stoppedps aux | grep celery
 `ps aux | grep celery
 
-# reload the systemd files (this has been done everytime celery_wagen_global.service is changed)
+# reload the systemd files (this has been done everytime celery_wagen_chat.service is changed)
 sudo systemctl daemon-reload
 
 
 #Start Celery Service
-sudo systemctl start celery_wagen_global.service
+sudo systemctl start celery_wagen_chat.service
 
 #Verify Celery is Running Correctly
-sudo systemctl status celery_wagen_global.service
+sudo systemctl status celery_wagen_chat.service
 
 
 #Monitoring Logs
-tail -f 100 /home/aman/wagen_global/log/celery/worker1-7.log
-tail -f 100 /home/aman/wagen_global/log/celery/worker1-6.log
-tail -f 100 /home/aman/wagen_global/log/celery/worker1.log
+tail -f 100 /home/aman/wagen_chat/log/celery/worker1-7.log
+tail -f 100 /home/aman/wagen_chat/log/celery/worker1-6.log
+tail -f 100 /home/aman/wagen_chat/log/celery/worker1.log
 
-tail -f /home/aman/wagen_global/log/celery/worker1-7.log
+tail -f /home/aman/wagen_chat/log/celery/worker1-7.log
 
-for file in /home/aman/wagen_global/log/celery/*.log; do
+for file in /home/aman/wagen_chat/log/celery/*.log; do
     echo "Checking $file"
     tail -n 20 $file
 done
@@ -287,7 +397,7 @@ done
 killall uwsgi
 
 #Restart uWSGI (first activate the venv)
-uwsgi --ini wagen_global.ini
+uwsgi --ini wagen_chat.ini
 
 ```
 
@@ -374,16 +484,16 @@ SELECT * FROM area LIMIT 10;
 * To delete the row where the column name has the value feature_3
 DELETE FROM area WHERE name = 'feature_3';
 error: 
-wagen_global=# DELETE FROM area WHERE name = 'feature_3';
+wagen_chat=# DELETE FROM area WHERE name = 'feature_3';
 ERROR:  update or delete on table "area" violates foreign key constraint "taskhistory_area_id_d4e4656e_fk_area_id" on table "taskhistory"
 DETAIL:  Key (id)=(6) is still referenced from table "taskhistory".
-wagen_global=# 
+wagen_chat=# 
 
 
 * Delete related rows in taskhistory
 DELETE FROM taskhistory WHERE area_id = 21;
 
-DELETE FROM area WHERE name = 'wagen_wagen_global_4D4C2';
+DELETE FROM area WHERE name = 'wagen_wagen_chat_4D4C2';
 
 
 * length of table area
@@ -392,10 +502,10 @@ SELECT COUNT(*) FROM area;
 * size of table
 SELECT pg_size_pretty(pg_total_relation_size('area'));
 
-* Get the size of the entire wagen_global database
-SELECT pg_size_pretty(pg_database_size('wagen_global'));
+* Get the size of the entire wagen_chat database
+SELECT pg_size_pretty(pg_database_size('wagen_chat'));
 
-* Get the size of each table in the wagen_global database:
+* Get the size of each table in the wagen_chat database:
 SELECT 
     table_name, 
     pg_size_pretty(pg_total_relation_size(table_name::regclass)) AS total_size
@@ -443,18 +553,18 @@ sudo -u postgres psql -c "\du"
 ```
 
 # Check the socket file permissions after starting uWSGI:
-tail -f /home/aman/wagen_global/webapp/wagen_global/log/wagen_global.log
-sudo tail -f /home/aman/wagen_global/webapp/wagen_global/log/wagen_global.log
+tail -f /home/aman/wagen_chat/backend/log/wagen_chat.log
+sudo tail -f /home/aman/wagen_chat/backend/log/wagen_chat.log
 
 # If permission errors occurred
 
-sudo chown -R www-data:www-data /home/aman/wagen_global/webapp/wagen_global
-sudo chown -R aman:aman /home/aman/wagen_global/webapp/wagen_global/log/
-sudo chmod -R 755 /home/aman/wagen_global/webapp/wagen_global/log/
+sudo chown -R www-data:www-data /home/aman/wagen_chat/backend
+sudo chown -R aman:aman /home/aman/wagen_chat/backend/log/
+sudo chmod -R 755 /home/aman/wagen_chat/backend/log/
 
 
 # check uWSGI log
-tail -f /home/aman/wagen_global/webapp/wagen_global/log/wagen_global.log
+tail -f /home/aman/wagen_chat/backend/log/wagen_chat.log
 
 
 # check apache log if errors
@@ -471,12 +581,12 @@ ps aux | grep uwsgi
 ** Kill all the workers
 sudo killall -9 uwsgi
 
-sudo chown -R aman:aman /home/aman/wagen_global/webapp/wagen_global/
-sudo chmod 755 /home/aman/wagen_global/webapp/wagen_global/
+sudo chown -R aman:aman /home/aman/wagen_chat/backend/
+sudo chmod 755 /home/aman/wagen_chat/backend/
 
-uwsgi --ini wagen_global.ini
+uwsgi --ini wagen_chat.ini
 
-tail -f /home/aman/wagen_global/webapp/wagen_global/log/wagen_global.log
+tail -f /home/aman/wagen_chat/backend/log/wagen_chat.log
 
 
 
