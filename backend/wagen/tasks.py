@@ -1481,8 +1481,27 @@ def wagen_report(self, area, start, stop, precip, et, wri_data,current_user):
     plt.plot(x,p(x),"r--")
     plt.savefig(pcptsbar, bbox_inches='tight', pad_inches = 0.1, dpi=100)
 
+    ET_MAPSETS = {
+        "ssebop": "eta_ssebop",
+        "wapor2": "wapor2",
+        "wapor3": "wapor3",
+        "enset": "enset",              # change if actual mapset name is different
+        "ensetglobal": "ensetglobal",  # change if actual mapset name is different
+        }
+
+    PCP_MAPSETS = {
+        "chirps": "pcp_chirpsv3",
+        "gpm": "pcp_gpm",
+        "gsmap": "pcp_gsmap",
+        "era5": "pcp_era5",
+        "ensemble": "pcp_ensemble",
+        }
+    et_mapset = ET_MAPSETS.get(et)
+    pcp_mapset = PCP_MAPSETS.get(precip)
+
+
     ## Bar chart monthly ETa/PCP & NDVI
-    maps_monthly_eta=grass.list_grouped(type=['raster'], pattern=f'{et}_eta_2020*')['data_monthly']
+    maps_monthly_eta=grass.list_grouped(type=['raster'], pattern=f'{et}_eta_2020*')[et_mapset]
     monthly_eta1=[]
     for i in maps_monthly_eta:
             stats = grass.parse_command('r.univar', map=i, flags='g')
@@ -1497,7 +1516,7 @@ def wagen_report(self, area, start, stop, precip, et, wri_data,current_user):
     print(monthly_eta)
 
     
-    maps_monthly_pcp=grass.list_grouped(type=['raster'], pattern=f'pcpm_{precip}_2020*')['data_monthly']
+    maps_monthly_pcp=grass.list_grouped(type=['raster'], pattern=f'pcpm_{precip}_2020*')[pcp_mapset]
     monthly_pcp=[]
     for i in maps_monthly_pcp:
             stats = grass.parse_command('r.univar', map=i, flags='g')
