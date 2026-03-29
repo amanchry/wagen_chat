@@ -167,7 +167,7 @@ def wagen_report(self, area, start, stop, precip, et, wri_data,current_user):
     centY = float(centlist[1])
     # execute some command inside PERMANENT
     # Add the data mapsets in search path
-    g.mapsets(mapset="data_annual,data_monthly,grace,cmip_ssp245,cmip_ssp585,pcp_era5,pcp_gpm,pcp_gsmap", operation="add")
+    g.mapsets(mapset="wapor3,wapor2,eta_ssebop,dmp,pcp_chirpsv3,pcp_era5,pcp_gpm,pcp_gsmap,pcp_ensemble,water_scarcity,grace,cmip_ssp245,cmip_ssp585", operation="add")
     g.region(vector=vectname, res=0.0025)
     bbox = grass.parse_command('g.region', flags='pg')
     df = gdf.read_file(out1)
